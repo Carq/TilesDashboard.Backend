@@ -1,8 +1,10 @@
 using System.Diagnostics.CodeAnalysis;
 using Autofac;
-using MetricsDashboard.WebApi.DependencyModules;
+using MetricsDashboard.WebApi.Configuration;
+using MetricsDashboard.WebApi.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,7 +24,9 @@ namespace MetricsDashboard.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var settings = new Settings(Configuration);
             services.AddControllers();
+            services.AddDbContext<MetricsDbContext>(options => options.UseSqlServer(settings.ConnectionString));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -31,7 +35,7 @@ namespace MetricsDashboard.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MetricsDbContext metricsDbContext)
         {
             if (env.IsDevelopment())
             {
@@ -48,6 +52,8 @@ namespace MetricsDashboard.WebApi
             {
                 endpoints.MapControllers();
             });
+
+            metricsDbContext.Migrate();
         }
     }
 }
