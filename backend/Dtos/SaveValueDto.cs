@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace MetricsDashboard.WebApi.Dtos
 {
@@ -11,5 +12,7 @@ namespace MetricsDashboard.WebApi.Dtos
         [Required]
         [Range(1, int.MaxValue)]
         public int Value { get; set; }
+
+        public DateTimeOffset? Date { get; set; }
     }
 }

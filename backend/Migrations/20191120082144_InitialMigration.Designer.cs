@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MetricsDashboard.WebApi.Migrations
 {
     [DbContext(typeof(MetricsDbContext))]
-    [Migration("20191119135935_InitialMigration")]
+    [Migration("20191120082144_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,9 @@ namespace MetricsDashboard.WebApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTimeOffset>("AddedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<int?>("MetricId")
                         .HasColumnType("int");

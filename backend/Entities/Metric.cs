@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MetricsDashboard.WebApi.Entities.Enums;
 
 namespace MetricsDashboard.WebApi.Entities
@@ -18,5 +19,10 @@ namespace MetricsDashboard.WebApi.Entities
         public int? Goal { get; private set; }
 
         public IList<MetricHistory> History { get; private set; }
+
+        public void SaveValue(in int value, DateTimeOffset date)
+        {
+            History.Add(new MetricHistory(value, date));
+        }
     }
 }

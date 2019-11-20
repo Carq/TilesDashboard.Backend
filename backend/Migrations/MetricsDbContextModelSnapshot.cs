@@ -55,6 +55,9 @@ namespace MetricsDashboard.WebApi.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTimeOffset>("AddedOn")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<int?>("MetricId")
                         .HasColumnType("int");
 

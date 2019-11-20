@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MetricsDashboard.WebApi.Migrations
 {
@@ -31,6 +32,7 @@ namespace MetricsDashboard.WebApi.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<int>(nullable: false),
                     MetricId = table.Column<int>(nullable: true),
+                    AddedOn = table.Column<DateTimeOffset>(nullable: false),
                 },
                 constraints: table =>
                 {

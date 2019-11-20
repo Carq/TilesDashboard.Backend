@@ -1,4 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Autofac;
 using MetricsDashboard.WebApi.Configuration;
 using MetricsDashboard.WebApi.Database;
@@ -25,7 +27,10 @@ namespace MetricsDashboard.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             var settings = new Settings(Configuration);
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(jsonOption =>
+                                                     {
+                                                         jsonOption.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+                                                     });
             services.AddDbContext<MetricsDbContext>(options => options.UseSqlServer(settings.ConnectionString));
         }
 
@@ -43,11 +48,8 @@ namespace MetricsDashboard.WebApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

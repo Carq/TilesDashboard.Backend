@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using MetricsDashboard.WebApi.Dtos;
 using MetricsDashboard.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,22 +15,33 @@ namespace MetricsDashboard.WebApi.Controllers
     {
         private readonly IMetricService _metricService;
 
-        public MetricsController(IMetricService metricService)
+        private readonly IMetricReactiveService _metricReactiveService;
+
+        public MetricsController(IMetricService metricService, IMetricReactiveService metricReactiveService)
         {
             _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
+            _metricReactiveService = metricReactiveService ?? throw new ArgumentNullException(nameof(metricReactiveService));
         }
 
         [HttpPost("[action]")]
-        public void SaveValue(SaveValueDto saveValueDto)
+        public async Task SaveValue(SaveValueDto saveValueDto, CancellationToken cancellationToken)
         {
-            _metricService.SaveValue(saveValueDto.MetricId, saveValueDto.Value);
+            await _metricService.SaveValueAsync(saveValueDto.MetricId, saveValueDto.Value, saveValueDto.Date, cancellationToken);
+        }
+
+        [HttpGet("")]
+        public async Task<IList<MetricData>> GetAll(CancellationToken cancellationToken)
+        {
+            return (await _metricService.GetAllMetricsAsync(cancellationToken))
+                .Select(x => new MetricData(x.Id, x.Name, x.Limit, x.Wish, x.Goal, x.Type))
+                .ToList();
         }
 
         [HttpGet("{metricId}/history")]
-        public string History(int metricId)
+        public async Task<IList<HistoryItem>> History(int metricId, CancellationToken cancellationToken)
         {
-            _metricService.SaveValue(metricId, metricId);
-            return "metric " + metricId;
+            return (await _metricReactiveService.GetMetricHistoryAsync(metricId, cancellationToken)).Select(x => new HistoryItem(x.Value, x.AddedOn.Date.ToShortDateString()))
+                .ToList();
         }
     }
 }
