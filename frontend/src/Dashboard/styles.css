@@ -1,0 +1,9 @@
+.main {
+  background: #333;
+  margin: 32px;
+  border-radius: 10px;
+}
+
+.dashboard-grid {
+  padding: 10px;
+}
