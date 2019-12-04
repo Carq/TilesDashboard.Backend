@@ -27,6 +27,7 @@ namespace MetricsDashboard.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             var settings = new Settings(Configuration);
+            services.AddCors();
             services.AddControllers().AddJsonOptions(jsonOption =>
                                                      {
                                                          jsonOption.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
@@ -47,6 +48,7 @@ namespace MetricsDashboard.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
