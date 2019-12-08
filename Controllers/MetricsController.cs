@@ -32,9 +32,7 @@ namespace MetricsDashboard.WebApi.Controllers
         [HttpGet("")]
         public async Task<IList<MetricData>> GetAll(CancellationToken cancellationToken)
         {
-            return (await _metricService.GetAllMetricsAsync(cancellationToken))
-                .Select(x => new MetricData(x.Id, x.Name, x.Limit, x.Wish, x.Goal, x.Type))
-                .ToList();
+            return await _metricService.GetAllMetricsAsync(cancellationToken);
         }
 
         [HttpGet("{metricId}/history")]

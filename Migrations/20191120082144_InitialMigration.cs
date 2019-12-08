@@ -53,7 +53,7 @@ namespace MetricsDashboard.WebApi.Migrations
             migrationBuilder.Sql(
                 @"INSERT INTO [dbo].[Metrics] ([Name], [Type], [Limit], [Wish], [Goal])
                     VALUES 
-                    (N'BE Unit Test Coverate', 1, 450, 75, 60),
+                    (N'BE Unit Test Coverate', 1, 450, 750, 600),
                     (N'BE Build Time', 3, 600, null, 300),
                     (N'FE Build Time', 3, 900, null, 300),
                     (N'Monthly Azure Cost', 2, 500, 300, 400);

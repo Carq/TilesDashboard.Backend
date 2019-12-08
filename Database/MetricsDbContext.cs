@@ -11,6 +11,8 @@ namespace MetricsDashboard.WebApi.Database
 
         public DbSet<Metric> Metrics { get; set; }
 
+        public DbSet<MetricHistory> MetricHistory { get; set; }
+
         public void Migrate()
         {
             Database.Migrate();

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MetricsDashboard.WebApi.Database;
-using MetricsDashboard.WebApi.Entities;
+using MetricsDashboard.WebApi.Dtos;
 using MetricsDashboard.WebApi.Exceptions;
 using MetricsDashboard.WebApi.Tools;
 using Microsoft.EntityFrameworkCore;
@@ -22,9 +23,11 @@ namespace MetricsDashboard.WebApi.Services
             _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
         }
 
-        public async Task<IList<Metric>> GetAllMetricsAsync(CancellationToken cancellationToken)
+        public async Task<IList<MetricData>> GetAllMetricsAsync(CancellationToken cancellationToken)
         {
-            return await _dbContext.Metrics.ToArrayAsync(cancellationToken);
+            return await _dbContext.Metrics.Select(x =>
+                    new MetricData(x.Id, x.Name, x.History.OrderByDescending(y => y.AddedOn).First().Value, x.Limit, x.Goal, x.Wish, x.History.OrderByDescending(y => y.AddedOn).First().AddedOn, x.Type))
+                    .ToListAsync(cancellationToken);
         }
 
         public async Task SaveValueAsync(int metricId, int value, DateTimeOffset? date, CancellationToken token)
