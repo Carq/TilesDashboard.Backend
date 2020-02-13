@@ -1,72 +1,46 @@
 {
 	"info": {
-		"_postman_id": "7e866c5f-d30c-49cb-b1f7-04db7511d630",
+		"_postman_id": "f7d939fc-596e-47a4-b588-2e6c6dfcb0ea",
 		"name": "MetricsDashboard",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "SaveValues",
+			"name": "GetLatest",
 			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"metridId\": 1,\n\t\"value\": 10\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "https://localhost:44360/metrics/saveValue",
+					"raw": "https://localhost:44360/metrics?kind=percentage&name=Humidity",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "44360",
 					"path": [
-						"metrics",
-						"saveValue"
+						"metrics"
+					],
+					"query": [
+						{
+							"key": "kind",
+							"value": "percentage"
+						},
+						{
+							"key": "name",
+							"value": "Humidity"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GetAllMetrics",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
+			"name": "GetAvailableMetrics",
 			"request": {
 				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"metridId\": 1,\n\t\"value\": 10\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
+				"header": [],
 				"url": {
-					"raw": "https://localhost:44360/metrics/",
+					"raw": "https://localhost:44360/metrics/available",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -74,47 +48,7 @@
 					"port": "44360",
 					"path": [
 						"metrics",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetMetricHistory",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44360/metrics/1/history",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44360",
-					"path": [
-						"metrics",
-						"1",
-						"history"
+						"available"
 					]
 				}
 			},

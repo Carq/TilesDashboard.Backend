@@ -34,7 +34,7 @@ namespace MetricsDashboard.WebApi.Controllers
         [HttpGet("available")]
         public async Task<IList<AvailableMetric>> GetAvailableMetrics(CancellationToken cancellationToken)
         {
-            return (await _repository.GetAvailableMetricsAsync(cancellationToken)).ToList();
+            return (await _repository.GetAvailableMetricsAsync(cancellationToken)).Select(m => m.ToDto()).ToList();
         }
     }
 }

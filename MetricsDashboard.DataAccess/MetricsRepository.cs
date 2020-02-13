@@ -33,6 +33,15 @@ namespace MetricsDashboard.DataAccess
                 mk => mk.GetAttributeOfType<MetricKindTypeAttribute>().ValueType);
         }
 
+        public async Task<IEnumerable<MetricType>> GetAvailableMetricsAsync(CancellationToken cancellationToken)
+        {
+            var grouped = await _metricsCollection.Aggregate().Group(new BsonDocument { { "_id", new BsonDocument { {"kind", "$metricKind"}, { "name", "$metricName"} } } })
+                .As<Group<MetricType>>()
+                .ToListAsync(cancellationToken);
+
+            return grouped.Select(g => g.Id);
+        }
+
         public async Task<IMetric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
         {
             if (!_metricKinds.TryGetValue(metricKind, out var valueType))
@@ -51,11 +60,6 @@ namespace MetricsDashboard.DataAccess
             // TODO: catch serialization exception
             var metricType = typeof(Metric<>).MakeGenericType(valueType);
             return result.Select(metric => (IMetric) BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
-        }
-
-        public Task<IEnumerable<AvailableMetric>> GetAvailableMetricsAsync(CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

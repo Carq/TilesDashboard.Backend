@@ -8,8 +8,8 @@ namespace MetricsDashboard.DataAccess.Interfaces
 {
     public interface IMetricsRepository
     {
-        Task<IMetric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
+        Task<IEnumerable<MetricType>> GetAvailableMetricsAsync(CancellationToken cancellationToken);
 
-        Task<IEnumerable<AvailableMetric>> GetAvailableMetricsAsync(CancellationToken cancellationToken);
+        Task<IMetric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
     }
 }
