@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsDashboard.WebApi.Dtos;
-using MetricsDashboard.WebApi.Services;
+using MetricsDashboard.DataAccess.Interfaces;
+using MetricsDashboard.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MetricsDashboard.WebApi.Controllers
@@ -13,33 +12,29 @@ namespace MetricsDashboard.WebApi.Controllers
     [ApiController]
     public class MetricsController : ControllerBase
     {
-        private readonly IMetricService _metricService;
+        private readonly IMetricsRepository _repository;
 
-        private readonly IMetricReactiveService _metricReactiveService;
-
-        public MetricsController(IMetricService metricService, IMetricReactiveService metricReactiveService)
+        public MetricsController(IMetricsRepository repository)
         {
-            _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
-            _metricReactiveService = metricReactiveService ?? throw new ArgumentNullException(nameof(metricReactiveService));
+            _repository = repository;
         }
 
-        [HttpPost("[action]")]
-        public async Task SaveValue(SaveValueDto saveValueDto, CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<ActionResult<Metric>> Get([FromQuery]MetricKind kind, [FromQuery]string name, CancellationToken cancellationToken)
         {
-            await _metricService.SaveValueAsync(saveValueDto.MetricId, saveValueDto.Value, saveValueDto.Date, cancellationToken);
+            var latest = await _repository.GetLatestAsync(kind, name, cancellationToken);
+            if (latest == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(latest.ToDto());
         }
 
-        [HttpGet("")]
-        public async Task<IList<MetricData>> GetAll(CancellationToken cancellationToken)
+        [HttpGet("available")]
+        public async Task<IList<AvailableMetric>> GetAvailableMetrics(CancellationToken cancellationToken)
         {
-            return await _metricService.GetAllMetricsAsync(cancellationToken);
-        }
-
-        [HttpGet("{metricId}/history")]
-        public async Task<IList<HistoryItem>> History(int metricId, CancellationToken cancellationToken)
-        {
-            return (await _metricReactiveService.GetMetricHistoryAsync(metricId, cancellationToken)).Select(x => new HistoryItem(x.Value, x.AddedOn.Date.ToShortDateString()))
-                .ToList();
+            return (await _repository.GetAvailableMetricsAsync(cancellationToken)).ToList();
         }
     }
 }

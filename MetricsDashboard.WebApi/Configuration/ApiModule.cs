@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using MetricsDashboard.WebApi.Services;
 using MetricsDashboard.WebApi.Tools;
 
 namespace MetricsDashboard.WebApi.Configuration
@@ -10,8 +9,6 @@ namespace MetricsDashboard.WebApi.Configuration
         {
             builder.RegisterType<Settings>().AsImplementedInterfaces();
             builder.RegisterType<DateTimeOffsetProvider>().AsImplementedInterfaces();
-            builder.RegisterType<MetricService>().AsImplementedInterfaces();
-            builder.RegisterType<MetricReactiveService>().AsImplementedInterfaces();
         }
     }
 }

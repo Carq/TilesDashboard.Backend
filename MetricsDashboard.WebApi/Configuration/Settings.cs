@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MetricsDashboard.DataAccess.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace MetricsDashboard.WebApi.Configuration
 {
-    public class Settings : BaseSettings
+    public class Settings : BaseSettings, IDatabaseSettings
     {
         public Settings(IConfiguration configuration)
             : base(configuration)
@@ -10,5 +11,7 @@ namespace MetricsDashboard.WebApi.Configuration
         }
 
         public string ConnectionString => GetValue<string>("Application:ConnectionString");
+
+        public string DatabaseName => GetValue<string>("Application:DatabaseName");
     }
 }
