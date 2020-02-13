@@ -5,8 +5,13 @@ namespace MetricsDashboard.Dto
 {
     public enum MetricKind
     {
-        [MetricKindType(typeof(decimal))] Percentage,
-        [MetricKindType(typeof(decimal))] Money,
-        [MetricKindType(typeof(TimeSpan))] Time
+        [MetricKindType(typeof(decimal))]
+        Percentage,
+
+        [MetricKindType(typeof(decimal))]
+        Money,
+
+        [MetricKindType(typeof(TimeSpan))]
+        Time,
     }
 }

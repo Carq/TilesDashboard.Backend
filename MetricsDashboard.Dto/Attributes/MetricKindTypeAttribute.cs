@@ -3,7 +3,7 @@
 namespace MetricsDashboard.Dto.Attributes
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
-    public class MetricKindTypeAttribute : Attribute
+    public sealed class MetricKindTypeAttribute : Attribute
     {
         public MetricKindTypeAttribute(Type valueType)
         {

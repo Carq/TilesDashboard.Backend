@@ -17,7 +17,7 @@ namespace MetricsDashboard.DataAccess.Entities
             return new AvailableMetric
             {
                 Name = MetricName,
-                Kind = (MetricKind) Enum.Parse(typeof(MetricKind), MetricKind, true)
+                Kind = (MetricKind)Enum.Parse(typeof(MetricKind), MetricKind, true),
             };
         }
     }

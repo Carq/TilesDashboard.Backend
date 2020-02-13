@@ -4,7 +4,8 @@ namespace MetricsDashboard.DataAccess.Utils
 {
     public static class EnumHelper
     {
-        public static T GetAttributeOfType<T>(this Enum enumValue) where T : Attribute
+        public static T GetAttributeOfType<T>(this Enum enumValue)
+            where T : Attribute
         {
             var type = enumValue.GetType();
             var memberInfo = type.GetMember(enumValue.ToString());

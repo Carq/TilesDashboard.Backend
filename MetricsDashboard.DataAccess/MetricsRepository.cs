@@ -29,13 +29,14 @@ namespace MetricsDashboard.DataAccess
             _metricsCollection = database.GetCollection<BsonDocument>(MetricsCollectionName);
 
             var metricKinds = (MetricKind[])Enum.GetValues(typeof(MetricKind));
-            _metricKinds = metricKinds.ToDictionary(mk => mk,
+            _metricKinds = metricKinds.ToDictionary(
+                mk => mk,
                 mk => mk.GetAttributeOfType<MetricKindTypeAttribute>().ValueType);
         }
 
         public async Task<IEnumerable<MetricType>> GetAvailableMetricsAsync(CancellationToken cancellationToken)
         {
-            var grouped = await _metricsCollection.Aggregate().Group(new BsonDocument { { "_id", new BsonDocument { {"kind", "$metricKind"}, { "name", "$metricName"} } } })
+            var grouped = await _metricsCollection.Aggregate().Group(new BsonDocument { { "_id", new BsonDocument { { "kind", "$metricKind" }, { "name", "$metricName" } } } })
                 .As<Group<MetricType>>()
                 .ToListAsync(cancellationToken);
 
@@ -56,10 +57,10 @@ namespace MetricsDashboard.DataAccess
                 .Sort(Builders<BsonDocument>.Sort.Descending("addedOn"))
                 .Limit(1)
                 .ToListAsync(cancellationToken);
-            
+
             // TODO: catch serialization exception
             var metricType = typeof(Metric<>).MakeGenericType(valueType);
-            return result.Select(metric => (IMetric) BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
+            return result.Select(metric => (IMetric)BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
         }
     }
 }
