@@ -5,9 +5,9 @@ namespace MetricsDashboard.Contract
 {
     public class MetricDto
     {
-        public decimal? Value { get; set; }
+        public decimal Current { get; set; }
 
-        public DateTimeOffset? LastUpdated { get; set; }
+        public DateTimeOffset LastUpdated { get; set; }
 
         public decimal Limit { get; set; }
 
