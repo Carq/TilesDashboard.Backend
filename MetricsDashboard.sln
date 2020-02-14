@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsDashboard.WebApi", "MetricsDashboard.WebApi\MetricsDashboard.WebApi.csproj", "{EF625894-5273-4E61-9831-C80BDA7948B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsDashboard.DataAccess", "MetricsDashboard.DataAccess\MetricsDashboard.DataAccess.csproj", "{E5385620-C87A-43C8-96F8-0A09EBCD4B7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsDashboard.Core", "MetricsDashboard.Core\MetricsDashboard.Core.csproj", "{E5385620-C87A-43C8-96F8-0A09EBCD4B7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsDashboard.Dto", "MetricsDashboard.Dto\MetricsDashboard.Dto.csproj", "{9C6314AB-8B5C-426D-80A3-9850B626B986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsDashboard.Contract", "MetricsDashboard.Contract\MetricsDashboard.Contract.csproj", "{9C6314AB-8B5C-426D-80A3-9850B626B986}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

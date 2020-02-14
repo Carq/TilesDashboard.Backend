@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace MetricsDashboard.Dto
+namespace MetricsDashboard.Contract
 {
-    public class Metric
+    public class MetricDto
     {
         public DateTimeOffset AddedOn { get; set; }
 

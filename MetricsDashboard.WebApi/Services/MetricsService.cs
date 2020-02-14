@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsDashboard.DataAccess.Interfaces;
-using MetricsDashboard.Dto;
+using MetricsDashboard.Contract;
+using MetricsDashboard.Core.Interfaces;
 
 namespace MetricsDashboard.WebApi.Services
 {
@@ -28,11 +28,11 @@ namespace MetricsDashboard.WebApi.Services
             }).ToList();
         }
 
-        public async Task<Metric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
+        public async Task<MetricDto> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
         {
             var latest = await _repository.GetLatestAsync(metricKind, metricName, cancellationToken);
             return latest != null
-                ? new Metric
+                ? new MetricDto
                 {
                     AddedOn = latest.AddedOn,
                     Value = latest.MetricValue,

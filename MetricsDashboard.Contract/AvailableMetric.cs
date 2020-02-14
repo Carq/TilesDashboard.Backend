@@ -1,4 +1,4 @@
-﻿namespace MetricsDashboard.Dto
+﻿namespace MetricsDashboard.Contract
 {
     public class AvailableMetric
     {

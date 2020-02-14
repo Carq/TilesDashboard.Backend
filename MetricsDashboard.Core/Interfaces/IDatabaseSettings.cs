@@ -1,4 +1,4 @@
-﻿namespace MetricsDashboard.DataAccess.Interfaces
+﻿namespace MetricsDashboard.Core.Interfaces
 {
     public interface IDatabaseSettings
     {

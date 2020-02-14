@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsDashboard.DataAccess.Utils
+namespace MetricsDashboard.Core.Utils
 {
     public static class EnumHelper
     {

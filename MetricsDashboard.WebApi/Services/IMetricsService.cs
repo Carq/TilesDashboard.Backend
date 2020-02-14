@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsDashboard.Dto;
+using MetricsDashboard.Contract;
 
 namespace MetricsDashboard.WebApi.Services
 {
@@ -9,6 +9,6 @@ namespace MetricsDashboard.WebApi.Services
     {
         Task<IList<AvailableMetric>> GetAvailableMetricsAsync(CancellationToken cancellationToken);
 
-        Task<Metric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
+        Task<MetricDto> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using MetricsDashboard.DataAccess;
-using MetricsDashboard.DataAccess.Interfaces;
+using MetricsDashboard.Core;
+using MetricsDashboard.Core.Interfaces;
 
 namespace MetricsDashboard.WebApi.Configuration
 {

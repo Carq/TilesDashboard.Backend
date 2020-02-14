@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsDashboard.DataAccess.Entities;
-using MetricsDashboard.DataAccess.Interfaces;
-using MetricsDashboard.DataAccess.Utils;
-using MetricsDashboard.Dto;
-using MetricsDashboard.Dto.Attributes;
+using MetricsDashboard.Contract;
+using MetricsDashboard.Contract.Attributes;
+using MetricsDashboard.Core.Entities;
+using MetricsDashboard.Core.Interfaces;
+using MetricsDashboard.Core.Utils;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
-namespace MetricsDashboard.DataAccess
+namespace MetricsDashboard.Core
 {
     public class MetricsRepository : IMetricsRepository
     {
@@ -36,14 +36,14 @@ namespace MetricsDashboard.DataAccess
 
         public async Task<IEnumerable<MetricType>> GetAvailableMetricsAsync(CancellationToken cancellationToken)
         {
-            var grouped = await _metricsCollection.Aggregate().Group(new BsonDocument { { "_id", new BsonDocument { { "kind", "$metricKind" }, { "name", "$metricName" } } } })
+            var grouped = await _metricsCollection.Aggregate().Group(new BsonDocument { { "_id", new BsonDocument { { nameof(AvailableMetric.Kind), "$metricKind" }, { "name", "$metricName" } } } })
                 .As<Group<MetricType>>()
                 .ToListAsync(cancellationToken);
 
             return grouped.Select(g => g.Id);
         }
 
-        public async Task<Entities.Metric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
+        public async Task<MetricBase> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
         {
             if (!_metricKinds.TryGetValue(metricKind, out var valueType))
             {
@@ -60,7 +60,7 @@ namespace MetricsDashboard.DataAccess
 
             // TODO: catch serialization exception
             var metricType = typeof(Metric<>).MakeGenericType(valueType);
-            return result.Select(metric => (Entities.Metric)BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
+            return result.Select(metric => (MetricBase)BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
         }
     }
 }

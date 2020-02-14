@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsDashboard.Dto.Attributes
+namespace MetricsDashboard.Contract.Attributes
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public sealed class MetricKindTypeAttribute : Attribute

@@ -21,8 +21,9 @@
     </PackageReference>
     <PackageReference Include="System.Reactive" Version="4.3.2" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\MetricsDashboard.DataAccess\MetricsDashboard.DataAccess.csproj" />
+    <ProjectReference Include="..\MetricsDashboard.Core\MetricsDashboard.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,9 +2,9 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace MetricsDashboard.DataAccess.Entities
+namespace MetricsDashboard.Core.Entities
 {
-    public abstract class Metric
+    public abstract class MetricBase
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

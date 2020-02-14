@@ -1,4 +1,4 @@
-﻿using MetricsDashboard.DataAccess.Interfaces;
+﻿using MetricsDashboard.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace MetricsDashboard.WebApi.Configuration

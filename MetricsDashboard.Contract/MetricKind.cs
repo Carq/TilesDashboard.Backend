@@ -1,10 +1,13 @@
 ﻿using System;
-using MetricsDashboard.Dto.Attributes;
+using MetricsDashboard.Contract.Attributes;
 
-namespace MetricsDashboard.Dto
+namespace MetricsDashboard.Contract
 {
     public enum MetricKind
     {
+        [MetricKindType(typeof(void))]
+        Undefined = 0,
+
         [MetricKindType(typeof(decimal))]
         Percentage,
 

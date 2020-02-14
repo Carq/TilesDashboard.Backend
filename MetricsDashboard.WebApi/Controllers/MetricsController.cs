@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsDashboard.Dto;
+using MetricsDashboard.Contract;
 using MetricsDashboard.WebApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +19,7 @@ namespace MetricsDashboard.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Metric>> Get([FromQuery]MetricKind kind, [FromQuery]string name, CancellationToken cancellationToken)
+        public async Task<ActionResult<MetricDto>> Get([FromQuery]MetricKind kind, [FromQuery]string name, CancellationToken cancellationToken)
         {
             var latest = await _service.GetLatestAsync(kind, name, cancellationToken);
             if (latest == null)

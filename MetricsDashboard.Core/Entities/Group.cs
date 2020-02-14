@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace MetricsDashboard.DataAccess.Entities
+namespace MetricsDashboard.Core.Entities
 {
     public class Group<TKey>
     {

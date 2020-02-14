@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using MetricsDashboard.DataAccess.Entities;
-using MetricsDashboard.Dto;
+using MetricsDashboard.Contract;
+using MetricsDashboard.Core.Entities;
 
-namespace MetricsDashboard.DataAccess.Interfaces
+namespace MetricsDashboard.Core.Interfaces
 {
     public interface IMetricsRepository
     {
         Task<IEnumerable<MetricType>> GetAvailableMetricsAsync(CancellationToken cancellationToken);
 
-        Task<Entities.Metric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
+        Task<Entities.MetricBase> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
     }
 }

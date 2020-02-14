@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MetricsDashboard.Dto\MetricsDashboard.Dto.csproj" />
+    <ProjectReference Include="..\MetricsDashboard.Contract\MetricsDashboard.Contract.csproj" />
   </ItemGroup>
 
 </Project>
