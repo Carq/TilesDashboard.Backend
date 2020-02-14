@@ -1,6 +1,4 @@
-﻿using System;
-using MetricsDashboard.Dto;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson.Serialization.Attributes;
 
 namespace MetricsDashboard.DataAccess.Entities
 {
@@ -11,14 +9,5 @@ namespace MetricsDashboard.DataAccess.Entities
 
         [BsonElement("kind")]
         public string MetricKind { get; set; }
-
-        public AvailableMetric ToDto()
-        {
-            return new AvailableMetric
-            {
-                Name = MetricName,
-                Kind = (MetricKind)Enum.Parse(typeof(MetricKind), MetricKind, true),
-            };
-        }
     }
 }

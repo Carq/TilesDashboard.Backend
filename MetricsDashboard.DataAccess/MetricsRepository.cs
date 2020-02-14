@@ -43,7 +43,7 @@ namespace MetricsDashboard.DataAccess
             return grouped.Select(g => g.Id);
         }
 
-        public async Task<IMetric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
+        public async Task<Entities.Metric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken)
         {
             if (!_metricKinds.TryGetValue(metricKind, out var valueType))
             {
@@ -60,7 +60,7 @@ namespace MetricsDashboard.DataAccess
 
             // TODO: catch serialization exception
             var metricType = typeof(Metric<>).MakeGenericType(valueType);
-            return result.Select(metric => (IMetric)BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
+            return result.Select(metric => (Entities.Metric)BsonSerializer.Deserialize(metric, metricType)).FirstOrDefault();
         }
     }
 }

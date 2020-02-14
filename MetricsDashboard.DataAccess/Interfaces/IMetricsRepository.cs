@@ -10,6 +10,6 @@ namespace MetricsDashboard.DataAccess.Interfaces
     {
         Task<IEnumerable<MetricType>> GetAvailableMetricsAsync(CancellationToken cancellationToken);
 
-        Task<IMetric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
+        Task<Entities.Metric> GetLatestAsync(MetricKind metricKind, string metricName, CancellationToken cancellationToken);
     }
 }

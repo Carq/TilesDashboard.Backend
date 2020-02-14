@@ -1,11 +1,10 @@
 ﻿using System;
-using MetricsDashboard.Dto;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace MetricsDashboard.DataAccess.Entities
 {
-    public class Metric<TValue> : IMetric
+    public abstract class Metric
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -20,9 +19,6 @@ namespace MetricsDashboard.DataAccess.Entities
         [BsonElement("addedOn")]
         public DateTimeOffset AddedOn { get; set; }
 
-        [BsonElement("value")]
-        public TValue Value { get; set; }
-
-        public Metric ToDto() => new Metric { AddedOn = AddedOn, Value = Value };
+        public abstract object MetricValue { get; }
     }
 }
