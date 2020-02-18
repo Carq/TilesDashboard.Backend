@@ -18,12 +18,6 @@ namespace MetricsDashboard.WebApi.Controllers
             _tileService = tileService;
         }
 
-        [HttpGet("{name}")]
-        public async Task<TileDto> Get(string name, CancellationToken cancellationToken)
-        {
-            return await _tileService.GetTileAsync(name, cancellationToken);
-        }
-
         [HttpGet("")]
         public async Task<IList<TileDto>> GetAll(CancellationToken cancellationToken)
         {

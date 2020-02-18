@@ -8,6 +8,7 @@ namespace MetricsDashboard.WebApi.Configuration
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<TileService>().As<ITileService>();
+            builder.RegisterType<TileDataService>().As<ITileDataService>();
             builder.RegisterType<TileRepository>().As<ITileRepository>();
         }
     }

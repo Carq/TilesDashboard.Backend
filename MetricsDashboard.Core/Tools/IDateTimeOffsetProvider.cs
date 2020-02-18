@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsDashboard.WebApi.Tools
+namespace MetricsDashboard.Core.Tools
 {
     public interface IDateTimeOffsetProvider
     {

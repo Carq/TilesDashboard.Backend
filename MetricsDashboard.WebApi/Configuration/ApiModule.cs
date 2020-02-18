@@ -1,6 +1,6 @@
 ﻿using Autofac;
+using MetricsDashboard.Core.Tools;
 using MetricsDashboard.WebApi.Services;
-using MetricsDashboard.WebApi.Tools;
 
 namespace MetricsDashboard.WebApi.Configuration
 {

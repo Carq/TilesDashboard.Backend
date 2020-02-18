@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MetricsDashboard.Core.Exceptions;
+using MetricsDashboard.Core.Tools;
 using MetricsDashboard.WebApi.Database;
 using MetricsDashboard.WebApi.Dtos;
-using MetricsDashboard.WebApi.Exceptions;
-using MetricsDashboard.WebApi.Tools;
 using Microsoft.EntityFrameworkCore;
 
 namespace MetricsDashboard.WebApi.Services
