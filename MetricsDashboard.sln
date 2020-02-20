@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsDashboard.WebApi", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsDashboard.Contract", "MetricsDashboard.Contract\MetricsDashboard.Contract.csproj", "{EBF6491E-6B4C-4809-9B45-90A50EA2E3A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsDashboard.Core", "MetricsDashboard.Core\MetricsDashboard.Core.csproj", "{E8820CFC-0159-4FF1-A34B-28217E0C1DA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EBF6491E-6B4C-4809-9B45-90A50EA2E3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBF6491E-6B4C-4809-9B45-90A50EA2E3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBF6491E-6B4C-4809-9B45-90A50EA2E3A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8820CFC-0159-4FF1-A34B-28217E0C1DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8820CFC-0159-4FF1-A34B-28217E0C1DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8820CFC-0159-4FF1-A34B-28217E0C1DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8820CFC-0159-4FF1-A34B-28217E0C1DA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

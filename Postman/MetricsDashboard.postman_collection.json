@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7e866c5f-d30c-49cb-b1f7-04db7511d630",
+		"_postman_id": "de778d89-88dc-4f1e-8ce6-20adef5f19ec",
 		"name": "MetricsDashboard",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -115,6 +115,97 @@
 						"metrics",
 						"1",
 						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllTiles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44360/tiles",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44360",
+					"path": [
+						"tiles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveMetric",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"BE Build Time\",\n\t\"value\": 451.45\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44360/tileData/metric",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44360",
+					"path": [
+						"tileData",
+						"metric"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SaveBoolean",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"Automation Tests\",\n\t\"value\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44360/tileData/status",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44360",
+					"path": [
+						"tileData",
+						"status"
 					]
 				}
 			},

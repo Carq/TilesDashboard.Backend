@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5e4a5a22157a1441e4e6f969"},"TileId":{"$oid":"5e4a5954157a1441e4e6f967"},"Limit":{"$numberDecimal":"600"},"Goal":{"$numberDecimal":"300"},"MetricType":"Time"}
+{"_id":{"$oid":"5e4a7f2c157a1441e4e6f973"},"TileId":{"$oid":"5e4a7ef6157a1441e4e6f972"},"Limit":{"$numberDecimal":"500"},"Goal":{"$numberDecimal":"400"},"Wish":{"$numberDecimal":"300"},"MetricType":"Money"}
+{"_id":{"$oid":"5e4a7f9c157a1441e4e6f974"},"TileId":{"$oid":"5e4a7eda157a1441e4e6f970"},"Limit":{"$numberDecimal":"45"},"Goal":{"$numberDecimal":"60"},"Wish":{"$numberDecimal":"75"},"MetricType":"Percentage"}
+{"_id":{"$oid":"5e4a7fc2157a1441e4e6f975"},"TileId":{"$oid":"5e4a7ee7157a1441e4e6f971"},"Limit":{"$numberDecimal":"900"},"Goal":{"$numberDecimal":"300"},"MetricType":"Time"}

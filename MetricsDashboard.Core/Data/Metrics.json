@@ -1,0 +1,8 @@
+{"_id":{"$oid":"5e4a6b43157a1441e4e6f96a"},"TileId":{"$oid":"5e4a5954157a1441e4e6f967"},"Value":{"$numberDecimal":"35.4"},"AddedOn":"2020-02-17T10:45:00Z"}
+{"_id":{"$oid":"5e4a6b6c157a1441e4e6f96b"},"TileId":{"$oid":"5e4a5954157a1441e4e6f967"},"Value":{"$numberDecimal":"45.4"},"AddedOn":"2020-02-17T09:30:00Z"}
+{"_id":{"$oid":"5e4a6b7c157a1441e4e6f96c"},"TileId":{"$oid":"5e4a5954157a1441e4e6f967"},"Value":{"$numberDecimal":"28.9"},"AddedOn":"2020-02-17T10:30:00Z"}
+{"_id":{"$oid":"5e4a7cbe157a1441e4e6f96e"},"TileId":{"$oid":"5e4a7c98157a1441e4e6f96d"},"Value":false,"AddedOn":"2020-02-17T09:45:00Z"}
+{"_id":{"$oid":"5e4a7cc8157a1441e4e6f96f"},"TileId":{"$oid":"5e4a7c98157a1441e4e6f96d"},"Value":true,"AddedOn":"2020-02-17T10:15:00Z"}
+{"_id":{"$oid":"5e4a801e157a1441e4e6f976"},"TileId":{"$oid":"5e4a7eda157a1441e4e6f970"},"Value":{"$numberDecimal":"48.54"},"AddedOn":"2020-02-17T10:30:00Z"}
+{"_id":{"$oid":"5e4a8042157a1441e4e6f977"},"TileId":{"$oid":"5e4a7ee7157a1441e4e6f971"},"Value":{"$numberDecimal":"560.5"},"AddedOn":"2020-02-17T10:30:00Z"}
+{"_id":{"$oid":"5e4a8070157a1441e4e6f978"},"TileId":{"$oid":"5e4a7ef6157a1441e4e6f972"},"Value":{"$numberDecimal":"490.45"},"AddedOn":"2020-02-17T10:30:00Z"}

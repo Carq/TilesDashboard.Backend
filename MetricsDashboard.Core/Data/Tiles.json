@@ -1,0 +1,5 @@
+{"_id":{"$oid":"5e4a5954157a1441e4e6f967"},"Name":"BE Build Time","TileType":"Metric"}
+{"_id":{"$oid":"5e4a7c98157a1441e4e6f96d"},"Name":"Automation Tests","TileType":"Status"}
+{"_id":{"$oid":"5e4a7eda157a1441e4e6f970"},"Name":"BE Unit Test Coverage","TileType":"Metric"}
+{"_id":{"$oid":"5e4a7ee7157a1441e4e6f971"},"Name":"FE Build Time","TileType":"Metric"}
+{"_id":{"$oid":"5e4a7ef6157a1441e4e6f972"},"Name":"Monthly Azure Cost","TileType":"Metric"}

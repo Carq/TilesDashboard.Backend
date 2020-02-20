@@ -37,7 +37,8 @@ namespace MetricsDashboard.WebApi
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new ApiModule());
+            builder.RegisterModule<ApiModule>();
+            builder.RegisterModule<CoreModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

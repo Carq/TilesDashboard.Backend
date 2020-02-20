@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MetricsDashboard.WebApi.Exceptions
+namespace MetricsDashboard.Core.Exceptions
 {
     public class NotFoundException : Exception
     {
