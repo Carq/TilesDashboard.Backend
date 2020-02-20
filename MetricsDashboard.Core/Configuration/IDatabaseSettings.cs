@@ -1,4 +1,4 @@
-﻿namespace MetricsDashboard.Core.Models
+﻿namespace MetricsDashboard.Core.Configuration
 {
     public interface IDatabaseSettings
     {

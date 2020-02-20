@@ -4,7 +4,7 @@
     {
         Unspecified = 0,
         Metric = 1,
-        Boolean = 2,
+        Status = 2,
         Chart = 3,
     }
 }

@@ -4,6 +4,7 @@ using MetricsDashboard.Contract;
 using MetricsDashboard.Contract.Enums;
 using MetricsDashboard.Core.Entities;
 using MetricsDashboard.Core.Exceptions;
+using MetricsDashboard.Core.Extensions;
 using MetricsDashboard.Core.Tools;
 
 namespace MetricsDashboard.Core
@@ -24,9 +25,9 @@ namespace MetricsDashboard.Core
             await SaveTileDataAsync(saveValueDto, TileType.Metric, cancellationToken);
         }
 
-        public async Task SaveBooleanAsync(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken)
+        public async Task SaveStatusAsync(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken)
         {
-            await SaveTileDataAsync(saveValueDto, TileType.Boolean, cancellationToken);
+            await SaveTileDataAsync(saveValueDto, TileType.Status, cancellationToken);
         }
 
         private async Task SaveTileDataAsync<TValue>(
@@ -35,7 +36,7 @@ namespace MetricsDashboard.Core
             CancellationToken cancellationToken)
         {
             var tile = await _tileRepository.GetTileAsync(saveValueDto.Name, cancellationToken);
-            if (tile == null)
+            if (tile.NotExists())
             {
                 throw new NotFoundException($"Tile {saveValueDto.Name} does not exist.");
             }

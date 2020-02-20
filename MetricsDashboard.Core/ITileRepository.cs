@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MetricsDashboard.Core.Entities;
-using MetricsDashboard.Core.Models;
 
 namespace MetricsDashboard.Core
 {
@@ -10,9 +9,10 @@ namespace MetricsDashboard.Core
     {
         Task<TileEntity> GetTileAsync(string tileName, CancellationToken cancellationToken);
 
-        Task<IList<ITile>> GetMetricTilesAsync(CancellationToken cancellationToken);
+        Task<IList<(TileEntity, MetricEntity<decimal>, MetricSettingsEntity)>> GetMetricTilesAsync(
+            CancellationToken cancellationToken);
 
-        Task<IList<ITile>> GetBooleanTilesAsync(CancellationToken cancellationToken);
+        Task<IList<(TileEntity, MetricEntity<bool>)>> GetStatusTilesAsync(CancellationToken cancellationToken);
 
         Task SaveTileDataAsync<TValue>(MetricEntity<TValue> metric, CancellationToken cancellationToken);
     }

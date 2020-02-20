@@ -2,9 +2,9 @@
 
 namespace MetricsDashboard.Contract
 {
-    public class BooleanResultDto
+    public class StatusDto
     {
-        public bool IsSuccess { get; set; }
+        public bool Current { get; set; }
 
         public DateTimeOffset LastUpdated { get; set; }
     }

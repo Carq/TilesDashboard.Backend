@@ -8,6 +8,6 @@ namespace MetricsDashboard.Core
     {
         Task SaveMetricAsync(SaveValueDto<decimal> saveValueDto, CancellationToken cancellationToken);
 
-        Task SaveBooleanAsync(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken);
+        Task SaveStatusAsync(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken);
     }
 }

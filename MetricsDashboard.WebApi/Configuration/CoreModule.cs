@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using MetricsDashboard.Core;
+using MetricsDashboard.Core.Mappers;
 
 namespace MetricsDashboard.WebApi.Configuration
 {
@@ -10,6 +11,7 @@ namespace MetricsDashboard.WebApi.Configuration
             builder.RegisterType<TileService>().As<ITileService>();
             builder.RegisterType<TileDataService>().As<ITileDataService>();
             builder.RegisterType<TileRepository>().As<ITileRepository>();
+            builder.RegisterType<TileMapper>().As<ITileMapper>();
         }
     }
 }

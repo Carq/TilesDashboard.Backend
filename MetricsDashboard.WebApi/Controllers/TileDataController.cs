@@ -23,10 +23,10 @@ namespace MetricsDashboard.WebApi.Controllers
             await _tileDataService.SaveMetricAsync(saveValueDto, cancellationToken);
         }
 
-        [HttpPost("boolean")]
-        public async Task SaveBoolean(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken)
+        [HttpPost("status")]
+        public async Task SaveStatus(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken)
         {
-            await _tileDataService.SaveBooleanAsync(saveValueDto, cancellationToken);
+            await _tileDataService.SaveStatusAsync(saveValueDto, cancellationToken);
         }
     }
 }
