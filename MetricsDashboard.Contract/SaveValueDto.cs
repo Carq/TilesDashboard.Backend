@@ -2,7 +2,7 @@
 {
     public class SaveValueDto<TValue>
     {
-        public string Name { get; set; }
+        public string TileName { get; set; }
 
         public TValue Value { get; set; }
     }

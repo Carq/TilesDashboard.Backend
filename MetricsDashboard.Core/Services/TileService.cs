@@ -5,8 +5,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using MetricsDashboard.Contract;
 using MetricsDashboard.Core.Mappers;
+using MetricsDashboard.Core.Repositories;
 
-namespace MetricsDashboard.Core
+namespace MetricsDashboard.Core.Services
 {
     public class TileService : ITileService
     {

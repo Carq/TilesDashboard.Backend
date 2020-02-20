@@ -3,10 +3,8 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Autofac;
 using MetricsDashboard.WebApi.Configuration;
-using MetricsDashboard.WebApi.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +30,6 @@ namespace MetricsDashboard.WebApi
                                                      {
                                                          jsonOption.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                                                      });
-            services.AddDbContext<MetricsDbContext>(options => options.UseSqlServer(settings.ConnectionString));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -42,7 +39,7 @@ namespace MetricsDashboard.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MetricsDbContext metricsDbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -57,8 +54,6 @@ namespace MetricsDashboard.WebApi
             {
                 endpoints.MapControllers();
             });
-
-            metricsDbContext.Migrate();
         }
     }
 }

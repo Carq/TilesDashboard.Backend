@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MetricsDashboard.Contract;
 
-namespace MetricsDashboard.Core
+namespace MetricsDashboard.Core.Services
 {
     public interface ITileDataService
     {

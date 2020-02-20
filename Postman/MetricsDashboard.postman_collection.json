@@ -1,125 +1,10 @@
 {
 	"info": {
-		"_postman_id": "de778d89-88dc-4f1e-8ce6-20adef5f19ec",
+		"_postman_id": "8d815935-e5ce-4bca-8c09-11b92599ccf7",
 		"name": "MetricsDashboard",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
-		{
-			"name": "SaveValues",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"metridId\": 1,\n\t\"value\": 10\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44360/metrics/saveValue",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44360",
-					"path": [
-						"metrics",
-						"saveValue"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetAllMetrics",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"metridId\": 1,\n\t\"value\": 10\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44360/metrics/",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44360",
-					"path": [
-						"metrics",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetMetricHistory",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"type": "text",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44360/metrics/1/history",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44360",
-					"path": [
-						"metrics",
-						"1",
-						"history"
-					]
-				}
-			},
-			"response": []
-		},
 		{
 			"name": "GetAllTiles",
 			"request": {
@@ -161,14 +46,14 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44360/tileData/metric",
+					"raw": "https://localhost:44360/tiles/metric",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "44360",
 					"path": [
-						"tileData",
+						"tiles",
 						"metric"
 					]
 				}
@@ -189,7 +74,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"Automation Tests\",\n\t\"value\": true\n}",
+					"raw": "{\n\t\"tileName\": \"Automation Tests\",\n\t\"value\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -197,14 +82,14 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44360/tileData/status",
+					"raw": "https://localhost:44360/tiles/status",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "44360",
 					"path": [
-						"tileData",
+						"tiles",
 						"status"
 					]
 				}

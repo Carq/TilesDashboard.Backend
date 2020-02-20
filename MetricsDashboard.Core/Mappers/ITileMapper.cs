@@ -13,9 +13,6 @@ namespace MetricsDashboard.Core.Mappers
         TileDto ConvertMetricTile((TileEntity, MetricEntity<decimal>, MetricSettingsEntity) tileData)
             => ConvertMetricTile(tileData.Item1, tileData.Item2, tileData.Item3);
 
-        TileDto ConvertMetricTile(
-            TileEntity tile,
-            MetricEntity<decimal> metric,
-            MetricSettingsEntity metricSettings);
+        TileDto ConvertMetricTile(TileEntity tile, MetricEntity<decimal> metric, MetricSettingsEntity metricSettings);
     }
 }

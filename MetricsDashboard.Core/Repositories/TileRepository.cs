@@ -10,7 +10,7 @@ using MetricsDashboard.Core.Entities;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace MetricsDashboard.Core
+namespace MetricsDashboard.Core.Repositories
 {
     public class TileRepository : ITileRepository
     {
@@ -41,17 +41,17 @@ namespace MetricsDashboard.Core
         public async Task<IList<(TileEntity, MetricEntity<decimal>, MetricSettingsEntity)>> GetMetricTilesAsync(CancellationToken cancellationToken)
         {
             var query = from tile in _tiles.AsQueryable().Where(t => t.TileType == TileType.Metric)
-                join setting in _metricSettings.AsQueryable() on tile.Id equals setting.TileId
-                join metric in GetMetrics<decimal>().AsQueryable() on tile.Id equals metric.TileId into metrics
-                select new { tile.Id, tile.Name, setting,  metrics };
+                        join setting in _metricSettings.AsQueryable() on tile.Id equals setting.TileId
+                        join metric in GetMetrics<decimal>().AsQueryable() on tile.Id equals metric.TileId into metrics
+                        select new { tile.Id, tile.Name, setting, metrics };
 
             var result = await query.ToListAsync(cancellationToken);
             return result.Select(x => (new TileEntity
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    TileType = TileType.Metric,
-                },
+            {
+                Id = x.Id,
+                Name = x.Name,
+                TileType = TileType.Metric,
+            },
                 x.metrics.OrderByDescending(m => m.AddedOn).First(),
                 x.setting)).ToList();
         }
@@ -59,16 +59,16 @@ namespace MetricsDashboard.Core
         public async Task<IList<(TileEntity, MetricEntity<bool>)>> GetStatusTilesAsync(CancellationToken cancellationToken)
         {
             var query = from tile in _tiles.AsQueryable().Where(t => t.TileType == TileType.Status)
-                join metric in GetMetrics<bool>().AsQueryable() on tile.Id equals metric.TileId into metrics
-                select new { tile.Id, tile.Name, metrics };
+                        join metric in GetMetrics<bool>().AsQueryable() on tile.Id equals metric.TileId into metrics
+                        select new { tile.Id, tile.Name, metrics };
 
             var result = await query.ToListAsync(cancellationToken);
             return result.Select(x => (new TileEntity
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    TileType = TileType.Status,
-                },
+            {
+                Id = x.Id,
+                Name = x.Name,
+                TileType = TileType.Status,
+            },
                 x.metrics.OrderByDescending(m => m.AddedOn).First())).ToList();
         }
 

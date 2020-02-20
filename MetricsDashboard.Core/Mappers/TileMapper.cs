@@ -20,10 +20,7 @@ namespace MetricsDashboard.Core.Mappers
             };
         }
 
-        public TileDto ConvertMetricTile(
-            TileEntity tile,
-            MetricEntity<decimal> metric,
-            MetricSettingsEntity metricSettings)
+        public TileDto ConvertMetricTile(TileEntity tile, MetricEntity<decimal> metric, MetricSettingsEntity metricSettings)
         {
             return new TileDto
             {
