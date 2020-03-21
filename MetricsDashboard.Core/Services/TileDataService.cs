@@ -5,9 +5,10 @@ using MetricsDashboard.Contract.Enums;
 using MetricsDashboard.Core.Entities;
 using MetricsDashboard.Core.Exceptions;
 using MetricsDashboard.Core.Extensions;
+using MetricsDashboard.Core.Repositories;
 using MetricsDashboard.Core.Tools;
 
-namespace MetricsDashboard.Core
+namespace MetricsDashboard.Core.Services
 {
     public class TileDataService : ITileDataService
     {
@@ -35,10 +36,10 @@ namespace MetricsDashboard.Core
             TileType tileType,
             CancellationToken cancellationToken)
         {
-            var tile = await _tileRepository.GetTileAsync(saveValueDto.Name, cancellationToken);
+            var tile = await _tileRepository.GetTileAsync(saveValueDto.TileName, cancellationToken);
             if (tile.NotExists())
             {
-                throw new NotFoundException($"Tile {saveValueDto.Name} does not exist.");
+                throw new NotFoundException($"Tile {saveValueDto.TileName} does not exist.");
             }
 
             if (tile.TileType != tileType)

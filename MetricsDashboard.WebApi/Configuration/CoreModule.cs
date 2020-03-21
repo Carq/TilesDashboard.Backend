@@ -1,6 +1,7 @@
 ﻿using Autofac;
-using MetricsDashboard.Core;
 using MetricsDashboard.Core.Mappers;
+using MetricsDashboard.Core.Repositories;
+using MetricsDashboard.Core.Services;
 
 namespace MetricsDashboard.WebApi.Configuration
 {
