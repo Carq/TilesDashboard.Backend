@@ -1,13 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TilesDashboard.Contract.Enums;
+using TilesDashboard.Core.Domain.Enums;
 
-namespace TilesDashboard.Core.Entities
+namespace TilesDashboard.Core.Storage.Entities
 {
-    public class TileEntity
+    public class TileId
     {
-        public ObjectId Id { get; set; }
-
         public string Name { get; set; }
 
         [BsonRepresentation(BsonType.String)]

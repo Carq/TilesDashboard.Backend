@@ -1,31 +1,54 @@
 {
 	"info": {
-		"_postman_id": "8d815935-e5ce-4bca-8c09-11b92599ccf7",
-		"name": "MetricsDashboard",
+		"_postman_id": "ff9ba42e-c83d-402a-a152-85ab3806448c",
+		"name": "TilesDashboard",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "GetAllTiles",
+			"name": "WeatherRecentData",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
 				"url": {
-					"raw": "https://localhost:44360/tiles",
+					"raw": "https://localhost:44360/tiles/weather/:tileName/recent",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
 					"port": "44360",
 					"path": [
-						"tiles"
+						"tiles",
+						"weather",
+						":tileName",
+						"recent"
+					],
+					"query": [
+						{
+							"key": "tileName",
+							"value": null,
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "tileName",
+							"value": "Gliwice"
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "SaveMetric",
+			"name": "RecordWeatherData",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -38,7 +61,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"BE Build Time\",\n\t\"value\": 451.45\n}",
+					"raw": "{\n\t\"Temperature\": 20.5,\n\t\"Huminidy\": 0.45\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -46,7 +69,7 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44360/tiles/metric",
+					"raw": "https://localhost:44360/tiles/weather/:tileName/record",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -54,43 +77,15 @@
 					"port": "44360",
 					"path": [
 						"tiles",
-						"metric"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "SaveBoolean",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"tileName\": \"Automation Tests\",\n\t\"value\": true\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+						"weather",
+						":tileName",
+						"record"
+					],
+					"variable": [
+						{
+							"key": "tileName",
+							"value": "Gliwice"
 						}
-					}
-				},
-				"url": {
-					"raw": "https://localhost:44360/tiles/status",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "44360",
-					"path": [
-						"tiles",
-						"status"
 					]
 				}
 			},

@@ -1,6 +1,6 @@
-﻿namespace TilesDashboard.Contract.Enums
+﻿namespace TilesDashboard.Core.Domain.Enums
 {
-    public enum TileTypeDto
+    public enum TileType
     {
         Undefined = 0,
         Metric = 1,

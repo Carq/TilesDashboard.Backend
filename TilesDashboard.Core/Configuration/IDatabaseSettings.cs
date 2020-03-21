@@ -1,8 +1,8 @@
 ﻿namespace TilesDashboard.Core.Configuration
 {
-    public interface IDatabaseSettings
+    public interface IDatabaseConfiguration
     {
-        string MongoConnectionString { get; }
+        string ConnectionString { get; }
 
         string DatabaseName { get; }
     }

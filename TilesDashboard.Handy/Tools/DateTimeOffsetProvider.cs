@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TilesDashboard.Core.Tools
+namespace TilesDashboard.Handy.Tools
 {
     public class DateTimeOffsetProvider : IDateTimeOffsetProvider
     {

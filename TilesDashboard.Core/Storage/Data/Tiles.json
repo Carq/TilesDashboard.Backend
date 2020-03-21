@@ -1,0 +1,1 @@
+{"_id":{"Name":"Gliwice","TileType":"Weather"},"Data":[{"Temperature":{"Value":{"$numberDecimal":"22.4"}},"Humidity":{"Value":{"$numberDecimal":"0.43"}},"AddedOn":"2020-03-21T10:30:00Z"},{"AddedOn":[{"$numberLong":"637204086819758144"},{"$numberInt":"60"}],"Temperature":{"Value":"20.5"},"Humidity":{"Value":"0.45"}}]}

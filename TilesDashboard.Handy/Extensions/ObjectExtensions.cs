@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.Core.Extensions
+﻿namespace TilesDashboard.Handy.Extensions
 {
     public static class ObjectExtensions
     {

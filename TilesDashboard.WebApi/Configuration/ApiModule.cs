@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using TilesDashboard.Core.Tools;
+using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.WebApi.Configuration
 {

@@ -11,5 +11,5 @@
 - Add MongoDB bin to path (`C:\Program Files\MongoDB\Server\4.2\bin`)
 - Run DB server (cmd): `mongod --dbpath <data_directory_path>`
 - Run Compass and connect to `localhost:27017`
-- Create Database `TilesDatabase` with `Tiles`, `Metrics` and `MetricSettings` collections
-- Import data to those collections from proper json files in `TilesDashboard.Core\Data` directory
+- Create Database `TilesDatabase` with `Tiles` collection
+- Import data to this collection from proper json files in `TilesDashboard.Core\Storage\Data` directory

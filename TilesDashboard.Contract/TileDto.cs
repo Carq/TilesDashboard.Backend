@@ -6,7 +6,7 @@ namespace TilesDashboard.Contract
     {
         public string Name { get; set; }
 
-        public TileType TileType { get; set; }
+        public TileTypeDto TileType { get; set; }
 
         public object TileData { get; set; }
     }

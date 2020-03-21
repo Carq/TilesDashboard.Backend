@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TilesDashboard.Contract;
-using TilesDashboard.Core.Services;
+using TilesDashboard.Core.Domain.Services;
+using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
 {
@@ -11,32 +11,23 @@ namespace TilesDashboard.WebApi.Controllers
     [ApiController]
     public class TilesController : ControllerBase
     {
-        private readonly ITileService _tileService;
+        private readonly IWeatherServices _weatherRepository;
 
-        private readonly ITileDataService _tileDataService;
-
-        public TilesController(ITileService tileService, ITileDataService tileDataService)
+        public TilesController(IWeatherServices weatherServices)
         {
-            _tileService = tileService;
-            _tileDataService = tileDataService;
+            _weatherRepository = weatherServices ?? throw new System.ArgumentNullException(nameof(weatherServices));
         }
 
-        [HttpGet("")]
-        public async Task<IList<TileDto>> GetAll(CancellationToken cancellationToken)
+        [HttpGet("weather/{tileName}/recent")]
+        public async Task<TileDataDto> GetWeatherRecentData(string tileName, CancellationToken cancellationToken)
         {
-            return await _tileService.GetAllTilesAsync(cancellationToken);
+            return TileDtoMapper.Map(await _weatherRepository.GetWeatherRecentDataAsync(tileName, cancellationToken));
         }
 
-        [HttpPost("metric")]
-        public async Task SaveMetric(SaveValueDto<decimal> saveValueDto, CancellationToken cancellationToken)
+        [HttpPost("weather/{tileName}/record")]
+        public async Task RecortdWeatherRecentData(string tileName, [FromBody]WeatherDataDto weatherDataDto, CancellationToken cancellationToken)
         {
-            await _tileDataService.SaveMetricAsync(saveValueDto, cancellationToken);
-        }
-
-        [HttpPost("status")]
-        public async Task SaveStatus(SaveValueDto<bool> saveValueDto, CancellationToken cancellationToken)
-        {
-            await _tileDataService.SaveStatusAsync(saveValueDto, cancellationToken);
+            await _weatherRepository.RecordWeatherDataAsync(tileName, weatherDataDto.Temperature, weatherDataDto.Huminidy, cancellationToken);
         }
     }
 }

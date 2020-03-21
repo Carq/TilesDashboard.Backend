@@ -1,7 +1,6 @@
 ﻿using Autofac;
-using TilesDashboard.Core.Mappers;
-using TilesDashboard.Core.Repositories;
-using TilesDashboard.Core.Services;
+using TilesDashboard.Core.Domain.Services;
+using TilesDashboard.Core.Storage;
 
 namespace TilesDashboard.WebApi.Configuration
 {
@@ -9,10 +8,8 @@ namespace TilesDashboard.WebApi.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TileService>().As<ITileService>();
-            builder.RegisterType<TileDataService>().As<ITileDataService>();
-            builder.RegisterType<TileRepository>().As<ITileRepository>();
-            builder.RegisterType<TileMapper>().As<ITileMapper>();
+            builder.RegisterType<TileContext>().As<ITileContext>();
+            builder.RegisterType<WeatherService>().As<IWeatherServices>();
         }
     }
 }
