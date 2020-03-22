@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TilesDashboard.Contract;
@@ -19,10 +20,19 @@ namespace TilesDashboard.WebApi.Controllers
 
         private readonly IMetricService _metricService;
 
-        public TilesController(IWeatherServices weatherServices, IMetricService metricService)
+        private readonly ITileService _tileService;
+
+        public TilesController(IWeatherServices weatherServices, IMetricService metricService, ITileService tileService)
         {
             _weatherService = weatherServices ?? throw new System.ArgumentNullException(nameof(weatherServices));
             _metricService = metricService ?? throw new System.ArgumentNullException(nameof(weatherServices));
+            _tileService = tileService ?? throw new System.ArgumentNullException(nameof(tileService));
+        }
+
+        [HttpGet("all")]
+        public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData(CancellationToken cancellationToken)
+        {
+            return TileDtoMapper.Map(await _tileService.GetAllAsync(cancellationToken));
         }
 
         [HttpGet("weather/{tileName}/recent")]

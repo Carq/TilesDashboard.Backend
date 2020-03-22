@@ -1,6 +1,8 @@
-﻿using TilesDashboard.Contract;
+﻿using System.Collections.Generic;
+using TilesDashboard.Contract;
 using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
+using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.WebApi.Mappers
 {
@@ -31,6 +33,23 @@ namespace TilesDashboard.WebApi.Mappers
                 },
                 Type = TileTypeDto.Metric,
             };
+        }
+
+        public static IList<TileWithCurrentDataDto> Map(IList<TileWithCurrentData> list)
+        {
+            var result = new List<TileWithCurrentDataDto>();
+            foreach (var item in list)
+            {
+                result.Add(new TileWithCurrentDataDto
+                {
+                    Name = item.Name,
+                    Type = item.Type.Convert<TileTypeDto>(),
+                    CurrentData = item.CurrentData,
+                    Configuration = item.Configuration,
+                });
+            }
+
+            return result;
         }
     }
 }

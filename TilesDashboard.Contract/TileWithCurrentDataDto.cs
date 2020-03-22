@@ -2,12 +2,14 @@
 
 namespace TilesDashboard.Contract
 {
-    public class TileDataDto
+    public class TileWithCurrentDataDto
     {
         public string Name { get; set; }
 
         public TileTypeDto Type { get; set; }
 
-        public object Data { get; set; }
+        public object CurrentData { get; set; }
+
+        public object Configuration { get; set; }
     }
 }
