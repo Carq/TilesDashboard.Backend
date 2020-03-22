@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace TilesDashboard.Core.Domain.ValueObjects
 {
@@ -9,6 +11,7 @@ namespace TilesDashboard.Core.Domain.ValueObjects
             Value = value;
         }
 
+        [BsonRepresentation(BsonType.Decimal128)]
         public decimal Value { get; private set; }
 
         protected override IEnumerable<object> GetEqualityComponents()

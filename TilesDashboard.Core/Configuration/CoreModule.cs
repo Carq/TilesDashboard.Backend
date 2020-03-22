@@ -9,7 +9,9 @@ namespace TilesDashboard.WebApi.Configuration
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<TileContext>().As<ITileContext>();
+            builder.RegisterType<TileService>().As<ITileService>();
             builder.RegisterType<WeatherService>().As<IWeatherServices>();
+            builder.RegisterType<MetricService>().As<IMetricService>();
         }
     }
 }

@@ -6,7 +6,7 @@ namespace TilesDashboard.Core.Domain.Entities
 {
     public class WeatherTile : TileBase
     {
-        public WeatherTile(string tileName, Temperature temperature, Humidity humidity)
+        public WeatherTile(string tileName, Temperature temperature, Percentage humidity)
             : base(tileName, TileType.Weather)
         {
             Temperature = Guard.Argument(temperature, nameof(temperature)).NotNull();
@@ -15,6 +15,6 @@ namespace TilesDashboard.Core.Domain.Entities
 
         public Temperature Temperature { get; private set; }
 
-        public Humidity Humidity { get; private set; }
+        public Percentage Humidity { get; private set; }
     }
 }

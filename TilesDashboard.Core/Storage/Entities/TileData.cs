@@ -1,6 +1,8 @@
 ﻿using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace TilesDashboard.Core.Entities
+namespace TilesDashboard.Core.Storage.Entities
 {
     public class TileData
     {
@@ -9,6 +11,7 @@ namespace TilesDashboard.Core.Entities
             AddedOn = addedOn;
         }
 
+        [BsonRepresentation(BsonType.String)]
         public DateTimeOffset AddedOn { get; private set; }
     }
 }

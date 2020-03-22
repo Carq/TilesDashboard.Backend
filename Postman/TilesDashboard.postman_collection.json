@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "WeatherRecentData",
+			"name": "Get Weather recent data",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -48,20 +48,62 @@
 			"response": []
 		},
 		{
-			"name": "RecordWeatherData",
+			"name": "Get Metric recent data",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://localhost:44360/tiles/metric/:tileName/recent",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44360",
+					"path": [
+						"tiles",
+						"metric",
+						":tileName",
+						"recent"
+					],
+					"query": [
+						{
+							"key": "tileName",
+							"value": null,
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "tileName",
+							"value": "BE Unit Test Coverage"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Record Weather data",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Temperature\": 20.5,\n\t\"Huminidy\": 0.45\n}",
+					"raw": "{\n\t\"Temperature\": 20.5,\n\t\"Huminidy\": 48\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -85,6 +127,50 @@
 						{
 							"key": "tileName",
 							"value": "Gliwice"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Record Metric data",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Value\": 48.5,\n\t\"Type\": \"percentage\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44360/tiles/metric/:tileName/record",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44360",
+					"path": [
+						"tiles",
+						"metric",
+						":tileName",
+						"record"
+					],
+					"variable": [
+						{
+							"key": "tileName",
+							"value": "BE Unit Test Coverage"
 						}
 					]
 				}

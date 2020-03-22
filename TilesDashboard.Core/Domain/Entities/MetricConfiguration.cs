@@ -1,15 +1,11 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TilesDashboard.Contract.Enums;
+using TilesDashboard.Core.Domain.Enums;
 
 namespace TilesDashboard.Core.Entities
 {
-    public class MetricSettingsEntity
+    public class MetricConfiguration
     {
-        public ObjectId Id { get; set; }
-
-        public ObjectId TileId { get; set; }
-
         public decimal Limit { get; set; }
 
         public decimal? Wish { get; set; }

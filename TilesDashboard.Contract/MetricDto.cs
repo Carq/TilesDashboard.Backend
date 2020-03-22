@@ -15,6 +15,6 @@ namespace TilesDashboard.Contract
 
         public decimal? Goal { get; set; }
 
-        public MetricType Type { get; set; }
+        public MetricTypeDto Type { get; set; }
     }
 }

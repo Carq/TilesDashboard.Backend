@@ -2,6 +2,7 @@
 using TilesDashboard.Core.Configuration;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Storage.Constants;
+using TilesDashboard.Core.Storage.Entities;
 
 namespace TilesDashboard.Core.Storage
 {

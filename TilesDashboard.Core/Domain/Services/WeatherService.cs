@@ -37,9 +37,9 @@ namespace TilesDashboard.Core.Domain.Services
             return tileDbEntity.Data.OrderBy(x => x.AddedOn).Last();
         }
 
-        public async Task RecordWeatherDataAsync(string tileName, decimal temperature, decimal huminidy, CancellationToken token)
+        public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, CancellationToken token)
         {
-            var weatherData = new WeatherData(new Temperature(temperature), new Humidity(huminidy), _dateTimeOffsetProvider.Now);
+            var weatherData = new WeatherData(temperature, huminidy, _dateTimeOffsetProvider.Now);
             var filter = Builders<TileDbEntity<WeatherData>>.Filter.And(
                     Builders<TileDbEntity<WeatherData>>.Filter.Eq(x => x.Id.Name, tileName),
                     Builders<TileDbEntity<WeatherData>>.Filter.Eq(x => x.Id.TileType, TileType.Weather));

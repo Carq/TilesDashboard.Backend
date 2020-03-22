@@ -1,6 +1,6 @@
-﻿namespace TilesDashboard.Contract
+﻿namespace TilesDashboard.Contract.RecordData
 {
-    public class WeatherDataDto
+    public class RecordWeatherDataDto
     {
         public decimal Temperature { get; set; }
 

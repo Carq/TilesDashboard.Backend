@@ -25,9 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
     <ProjectReference Include="..\TilesDashboard.Core\TilesDashboard.Core.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Startup\" />
+    <ProjectReference Include="..\TilesDashboard.Handy\TilesDashboard.Handy.csproj" />
   </ItemGroup>
 
 </Project>

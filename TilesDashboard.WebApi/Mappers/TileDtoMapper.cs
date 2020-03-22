@@ -19,5 +19,18 @@ namespace TilesDashboard.WebApi.Mappers
                 Type = TileTypeDto.Weather,
             };
         }
+
+        public static TileDataDto Map(MetricData metricData)
+        {
+            return new TileDataDto
+            {
+                Data = new
+                {
+                    metricData.Value,
+                    AddedOn = metricData.AddedOn,
+                },
+                Type = TileTypeDto.Metric,
+            };
+        }
     }
 }

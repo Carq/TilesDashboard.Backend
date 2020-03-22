@@ -1,9 +1,7 @@
 ﻿namespace TilesDashboard.Contract
 {
-    public class SaveValueDto<TValue>
+    public class RecordValueDto<TValue>
     {
-        public string TileName { get; set; }
-
         public TValue Value { get; set; }
     }
 }
