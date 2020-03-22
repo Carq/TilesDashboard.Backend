@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
@@ -9,6 +10,7 @@ using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
 
@@ -28,21 +30,21 @@ namespace TilesDashboard.Core.Domain.Services
 
         public async Task<MetricData> GetMetricRecentDataAsync(string tileName, CancellationToken token)
         {
-            var tileDbEntity = await _context.GetTiles<MetricData>().Find(Filter(tileName)).SingleOrDefaultAsync(token);
+            var tileDbEntity = await _context.GetTiles().Find(Filter(tileName)).SingleOrDefaultAsync(token);
             if (tileDbEntity.NotExists())
             {
                 throw new NotFoundException($"Tile {tileName} does not exist.");
             }
 
-            return tileDbEntity.Data.OrderBy(x => x.AddedOn).Last();
+            var rawData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).Last();
+            return BsonSerializer.Deserialize<MetricData>(rawData);
         }
 
         public async Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken token)
         {
             var metricData = new MetricData(currentValue, metricType, _dateTimeOffsetProvider.Now);
-            var filter = Filter(tileName);
 
-            var tile = await _context.GetTiles<MetricData>().Find(filter).SingleOrDefaultAsync(token);
+            var tile = await _context.GetTiles().Find(Filter(tileName)).SingleOrDefaultAsync(token);
             if (tile.NotExists())
             {
                 throw new NotFoundException($"Tile {tileName} does not exist.");
@@ -54,18 +56,18 @@ namespace TilesDashboard.Core.Domain.Services
                 throw new NotSupportedOperationException($"Metric {tileName} is type of {metricConfiguration.MetricType} but type {metricType} has been passed.");
             }
 
-            await _context.GetTiles<MetricData>().UpdateOneAsync(
-               filter,
-               Builders<TileDbEntity<MetricData>>.Update.Push(x => x.Data, metricData),
+            await _context.GetTiles().UpdateOneAsync(
+               Filter(tileName),
+               Builders<TileDbEntity>.Update.Push(x => x.Data, metricData.ToBsonDocument()),
                null,
                token);
         }
 
-        private FilterDefinition<TileDbEntity<MetricData>> Filter(string tileName)
+        private FilterDefinition<TileDbEntity> Filter(string tileName)
         {
-            return Builders<TileDbEntity<MetricData>>.Filter.And(
-                    Builders<TileDbEntity<MetricData>>.Filter.Eq(x => x.Id.Name, tileName),
-                    Builders<TileDbEntity<MetricData>>.Filter.Eq(x => x.Id.TileType, TileType.Metric));
+            return Builders<TileDbEntity>.Filter.And(
+                    Builders<TileDbEntity>.Filter.Eq(x => x.Id.Name, tileName),
+                    Builders<TileDbEntity>.Filter.Eq(x => x.Id.TileType, TileType.Metric));
         }
     }
 }

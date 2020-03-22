@@ -2,7 +2,6 @@
 using TilesDashboard.Core.Configuration;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Storage.Constants;
-using TilesDashboard.Core.Storage.Entities;
 
 namespace TilesDashboard.Core.Storage
 {
@@ -19,7 +18,6 @@ namespace TilesDashboard.Core.Storage
             }
         }
 
-        public IMongoCollection<TileDbEntity<TData>> GetTiles<TData>()
-           where TData : TileData => _database.GetCollection<TileDbEntity<TData>>(CollectionNames.Tiles);
+        public IMongoCollection<TileDbEntity> GetTiles() => _database.GetCollection<TileDbEntity>(CollectionNames.Tiles);
     }
 }

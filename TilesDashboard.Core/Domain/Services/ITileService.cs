@@ -7,6 +7,6 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public interface ITileService
     {
-        Task<IList<TileWithCurrentData>> GetAllAsync(CancellationToken token);
+        Task<IList<GenericTileWithCurrentData>> GetAllAsync(CancellationToken token);
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
+using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Storage.Entities;
 
 namespace TilesDashboard.Core.Domain.Services
 {
@@ -20,21 +22,27 @@ namespace TilesDashboard.Core.Domain.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IList<TileWithCurrentData>> GetAllAsync(CancellationToken token)
+        public async Task<IList<GenericTileWithCurrentData>> GetAllAsync(CancellationToken token)
         {
-            var weatherTiles = await _context.GetTiles<WeatherData>().Find(Filters.WeatherTiles).ToListAsync(token);
-            var metricTiles = await _context.GetTiles<MetricData>().Find(Filters.MetricsTiles).ToListAsync(token);
+            var weatherTiles = await _context.GetTiles().Find(_ => true).ToListAsync(token);
 
-            var tilesWithCurrentData = new List<TileWithCurrentData>();
+            var tilesWithCurrentData = new List<GenericTileWithCurrentData>();
 
             foreach (var tile in weatherTiles)
             {
-                tilesWithCurrentData.Add(new TileWithCurrentData(tile.Id.Name, tile.Id.TileType, tile.Data.Last(), tile.Configuration));
-            }
+                object configuration = null;
+                TileData data = null;
+                if (tile.Id.TileType == TileType.Metric)
+                {
+                    configuration = BsonSerializer.Deserialize<MetricConfiguration>(tile.Configuration);
+                    data = BsonSerializer.Deserialize<MetricData>(tile.Data.Last());
+                }
+                else if (tile.Id.TileType == TileType.Weather)
+                {
+                    data = BsonSerializer.Deserialize<WeatherData>(tile.Data.Last());
+                }
 
-            foreach (var tile in metricTiles)
-            {
-                tilesWithCurrentData.Add(new TileWithCurrentData(tile.Id.Name, tile.Id.TileType, tile.Data.Last(), BsonSerializer.Deserialize<MetricConfiguration>(tile.Configuration)));
+                tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, configuration));
             }
 
             return tilesWithCurrentData;

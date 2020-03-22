@@ -48,6 +48,48 @@
 			"response": []
 		},
 		{
+			"name": "Get all Tiles",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://localhost:44360/tiles/weather/:tileName/recent",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44360",
+					"path": [
+						"tiles",
+						"weather",
+						":tileName",
+						"recent"
+					],
+					"query": [
+						{
+							"key": "tileName",
+							"value": null,
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "tileName",
+							"value": "Gliwice"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Metric recent data",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true

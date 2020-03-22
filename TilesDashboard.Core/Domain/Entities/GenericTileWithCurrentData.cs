@@ -1,11 +1,12 @@
 ﻿using Dawn;
 using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Storage.Entities;
 
 namespace TilesDashboard.Core.Domain.Entities
 {
-    public class TileWithCurrentData
+    public class GenericTileWithCurrentData
     {
-        public TileWithCurrentData(string name, TileType type, object currentData, object configuration = null)
+        public GenericTileWithCurrentData(string name, TileType type, TileData currentData, object configuration = null)
         {
             Name = Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
             Type = Guard.Argument(type, nameof(type)).NotDefault();
@@ -19,6 +20,6 @@ namespace TilesDashboard.Core.Domain.Entities
 
         public object Configuration { get; private set; }
 
-        public object CurrentData { get; private set; }
+        public TileData CurrentData { get; private set; }
     }
 }

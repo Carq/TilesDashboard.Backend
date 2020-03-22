@@ -2,6 +2,8 @@
 using TilesDashboard.Contract;
 using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
+using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.WebApi.Mappers
@@ -35,7 +37,7 @@ namespace TilesDashboard.WebApi.Mappers
             };
         }
 
-        public static IList<TileWithCurrentDataDto> Map(IList<TileWithCurrentData> list)
+        public static IList<TileWithCurrentDataDto> Map(IList<GenericTileWithCurrentData> list)
         {
             var result = new List<TileWithCurrentDataDto>();
             foreach (var item in list)
@@ -44,12 +46,47 @@ namespace TilesDashboard.WebApi.Mappers
                 {
                     Name = item.Name,
                     Type = item.Type.Convert<TileTypeDto>(),
-                    CurrentData = item.CurrentData,
+                    CurrentData = Map(item.Type, item.CurrentData),
                     Configuration = item.Configuration,
                 });
             }
 
             return result;
+        }
+
+        private static object Map(TileType type, TileData currentData)
+        {
+            switch (type)
+            {
+                case TileType.Metric:
+                    return MapMetricData(currentData);
+                case TileType.Weather:
+                    return MapWeatherData(currentData);
+                default:
+                    return null;
+            }
+        }
+
+        private static object MapMetricData(TileData metricData)
+        {
+            var converted = metricData as MetricData;
+            return new
+            {
+                converted.Value,
+                AddedOn = converted.AddedOn,
+            };
+        }
+
+        private static object MapWeatherData(TileData weatherData)
+        {
+            var converted = weatherData as WeatherData;
+
+            return new
+            {
+                Temperature = converted.Temperature.Value,
+                Humidity = converted.Humidity.Value,
+                AddedOn = converted.AddedOn,
+            };
         }
     }
 }
