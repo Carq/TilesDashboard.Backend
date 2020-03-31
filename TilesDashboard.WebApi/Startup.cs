@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Configuration;
 
 namespace TilesDashboard.WebApi
@@ -24,7 +26,11 @@ namespace TilesDashboard.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settings = new Settings(Configuration);
+            var settings = new TileDashboardSettings(Configuration);
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
+
+            services.AddSingleton<IHostedService, TilesBackgroundWorker>();
+
             services.AddCors();
             services.AddControllers().AddJsonOptions(jsonOption =>
                                                      {

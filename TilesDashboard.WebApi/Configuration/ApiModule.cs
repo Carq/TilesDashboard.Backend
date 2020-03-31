@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using Microsoft.Extensions.Hosting;
 using TilesDashboard.Handy.Tools;
+using TilesDashboard.WebApi.BackgroundWorkers;
 
 namespace TilesDashboard.WebApi.Configuration
 {
@@ -7,7 +9,7 @@ namespace TilesDashboard.WebApi.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<Settings>().AsImplementedInterfaces();
+            builder.RegisterType<TileDashboardSettings>().AsImplementedInterfaces();
             builder.RegisterType<DateTimeOffsetProvider>().AsImplementedInterfaces();
         }
     }

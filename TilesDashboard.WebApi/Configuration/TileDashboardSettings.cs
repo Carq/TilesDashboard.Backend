@@ -3,9 +3,9 @@ using TilesDashboard.Core.Configuration;
 
 namespace TilesDashboard.WebApi.Configuration
 {
-    public class Settings : BaseSettings, IDatabaseConfiguration
+    public class TileDashboardSettings : BaseSettings, IDatabaseConfiguration
     {
-        public Settings(IConfiguration configuration)
+        public TileDashboardSettings(IConfiguration configuration)
             : base(configuration)
         {
         }
