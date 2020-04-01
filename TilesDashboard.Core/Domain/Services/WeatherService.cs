@@ -41,9 +41,9 @@ namespace TilesDashboard.Core.Domain.Services
             return BsonSerializer.Deserialize<WeatherData>(rawWeatherData);
         }
 
-        public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, CancellationToken token)
+        public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, DateTimeOffset? dateOfChange, CancellationToken token)
         {
-            var weatherData = new WeatherData(temperature, huminidy, _dateTimeOffsetProvider.Now);
+            var weatherData = new WeatherData(temperature, huminidy, dateOfChange ?? _dateTimeOffsetProvider.Now);
             var tileExists = await _context.GetTiles().Find(Filter(tileName)).AnyAsync(token);
             if (!tileExists)
             {

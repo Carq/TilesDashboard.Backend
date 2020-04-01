@@ -11,7 +11,7 @@ namespace TilesDashboard.Core.Domain.Entities
             : base(addedOn)
         {
             Temperature = Guard.Argument(temperature, nameof(temperature)).NotNull();
-            Humidity = Guard.Argument(humidity, nameof(humidity)).NotNull();
+            Humidity = humidity;
         }
 
         public Temperature Temperature { get; private set; }

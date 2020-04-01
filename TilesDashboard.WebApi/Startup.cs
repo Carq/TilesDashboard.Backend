@@ -29,7 +29,7 @@ namespace TilesDashboard.WebApi
             var settings = new TileDashboardSettings(Configuration);
             Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
 
-            services.AddSingleton<IHostedService, TilesBackgroundWorker>();
+            services.AddSingleton<IHostedService, PluginBackgroundWorker>();
 
             services.AddCors();
             services.AddControllers().AddJsonOptions(jsonOption =>

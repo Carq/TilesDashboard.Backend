@@ -44,7 +44,7 @@ namespace TilesDashboard.WebApi.Controllers
         [HttpPost("weather/{tileName}/record")]
         public async Task RecortdWeatherData(string tileName, [FromBody]RecordWeatherDataDto weatherDataDto, CancellationToken cancellationToken)
         {
-            await _weatherService.RecordWeatherDataAsync(tileName, new Temperature(weatherDataDto.Temperature), new Percentage(weatherDataDto.Huminidy), cancellationToken);
+            await _weatherService.RecordWeatherDataAsync(tileName, new Temperature(weatherDataDto.Temperature), new Percentage(weatherDataDto.Huminidy), null, cancellationToken);
         }
 
         [HttpGet("metric/{tileName}/recent")]

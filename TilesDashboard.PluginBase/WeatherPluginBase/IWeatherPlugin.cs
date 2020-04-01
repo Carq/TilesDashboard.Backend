@@ -1,11 +1,12 @@
-﻿using TilesDashboard.PluginBase.WeatherPluginBase;
+﻿using System.Threading.Tasks;
+using TilesDashboard.PluginBase.WeatherPluginBase;
 
 namespace TilesDashboard.PluginBase
 {
     public interface IWeatherPlugin
     {
-        public string Name { get; }
+        public string TileName { get; }
 
-        WeatherData GetData();
+        Task<WeatherData> GetDataAsync();
     }
 }

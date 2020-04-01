@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
+using TilesDashboard.WebApi.Configuration;
 
 namespace TilesDashboard.WebApi.PluginInfrastructure
 {
@@ -45,6 +46,7 @@ namespace TilesDashboard.WebApi.PluginInfrastructure
                 loadedPlugins.Merge(LoadPluginsFromAssembly(pluginAssembly));
             }
 
+            _logger.LogInformation("Loading plugins compelted.");
             return loadedPlugins;
         }
 

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Handy", "Til
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.PluginBase", "TilesDashboard.PluginBase\TilesDashboard.PluginBase.csproj", "{33FDAAA3-9955-489F-ACF9-5319B41019B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.DefaultPlugins", "TilesDashboard.DefaultPlugins\TilesDashboard.DefaultPlugins.csproj", "{C9A0981A-BB84-4877-9F66-A5CAE1679B63}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.TestPlugins", "TilesDashboard.TestPlugins\TilesDashboard.TestPlugins.csproj", "{C9A0981A-BB84-4877-9F66-A5CAE1679B63}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

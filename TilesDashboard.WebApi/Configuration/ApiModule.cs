@@ -17,7 +17,8 @@ namespace TilesDashboard.WebApi.Configuration
 
         private void PluginInfrastructure(ContainerBuilder builder)
         {
-            builder.RegisterType<PluginLoader>().AsImplementedInterfaces();
+            builder.RegisterType<PluginLoader>().As<IPluginLoader>();
+            builder.RegisterType<PluginSystemConfig>().As<IPluginSystemConfig>();
         }
     }
 }
