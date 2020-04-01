@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CodeAnalysisRuleSet>..\TilesDashboard.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,6 +18,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
@@ -29,6 +31,7 @@
     <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
     <ProjectReference Include="..\TilesDashboard.Core\TilesDashboard.Core.csproj" />
     <ProjectReference Include="..\TilesDashboard.Handy\TilesDashboard.Handy.csproj" />
+    <ProjectReference Include="..\TilesDashboard.PluginBase\TilesDashboard.PluginBase.csproj" />
   </ItemGroup>
 
 </Project>

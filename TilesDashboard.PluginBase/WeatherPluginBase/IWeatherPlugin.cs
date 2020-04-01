@@ -2,7 +2,7 @@
 
 namespace TilesDashboard.PluginBase
 {
-    interface IGetWeatherTileData
+    public interface IWeatherPlugin
     {
         public string Name { get; }
 
