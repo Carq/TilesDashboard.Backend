@@ -1,7 +1,9 @@
-﻿namespace TilesDashboard.WebApi.PluginSystem
+﻿using System.Threading.Tasks;
+
+namespace TilesDashboard.WebApi.PluginSystem
 {
     public interface IPluginLoader
     {
-        public LoadedPlugins LoadPlugins(string rootPath);
+        public Task<Plugins> LoadPluginsAsync(string rootPath);
     }
 }

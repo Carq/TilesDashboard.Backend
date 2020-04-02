@@ -18,12 +18,12 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "https://localhost:44360/tiles/weather/:tileName/recent",
+					"raw": "https://localhost:5001/tiles/weather/:tileName/recent",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "44360",
+					"port": "5001",
 					"path": [
 						"tiles",
 						"weather",
@@ -60,29 +60,21 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "https://localhost:44360/tiles/weather/:tileName/recent",
+					"raw": "https://localhost:5001/tiles/all",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "44360",
+					"port": "5001",
 					"path": [
 						"tiles",
-						"weather",
-						":tileName",
-						"recent"
+						"all"
 					],
 					"query": [
 						{
 							"key": "tileName",
 							"value": null,
 							"disabled": true
-						}
-					],
-					"variable": [
-						{
-							"key": "tileName",
-							"value": "Gliwice"
 						}
 					]
 				}
@@ -102,12 +94,12 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "https://localhost:44360/tiles/metric/:tileName/recent",
+					"raw": "https://localhost:5001/tiles/metric/:tileName/recent",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "44360",
+					"port": "5001",
 					"path": [
 						"tiles",
 						"metric",
@@ -145,7 +137,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"Temperature\": 20.5,\n\t\"Huminidy\": 48\n}",
+					"raw": "{\n\t\"Temperature\": -1.5,\n\t\"Huminidy\": 35\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -153,12 +145,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44360/tiles/weather/:tileName/record",
+					"raw": "https://localhost:5001/tiles/weather/:tileName/record",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "44360",
+					"port": "5001",
 					"path": [
 						"tiles",
 						"weather",
@@ -197,12 +189,12 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:44360/tiles/metric/:tileName/record",
+					"raw": "https://localhost:5001/tiles/metric/:tileName/record",
 					"protocol": "https",
 					"host": [
 						"localhost"
 					],
-					"port": "44360",
+					"port": "5001",
 					"path": [
 						"tiles",
 						"metric",

@@ -9,6 +9,7 @@ using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.WebApi.Configuration;
 using TilesDashboard.WebApi.PluginSystem;
+using TilesDashboard.WebApi.PluginSystem.Extensions;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -34,7 +35,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Tiles background worker started.");
-            var loadedPlugins = _pluginLoader.LoadPlugins(AppDomain.CurrentDomain.BaseDirectory);
+            var loadedPlugins = await _pluginLoader.LoadPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -48,10 +49,17 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                         {
                             await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, data.DateOfChange, stoppingToken);
                         }
+
+                        if (data.Status.IsError())
+                        {
+                            _logger.LogError($"Weather plugin: \"{weatherPlugin.TileName}\" return Status \"{data.Status}\" with message: \"{data.ErrorMessage}\". Plugin will be disabled");
+                            loadedPlugins.WeatherPlugins.Remove(weatherPlugin);
+                            break;
+                        }
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError($"Weather plugin: \"{weatherPlugin.TileName}\" threw exception. Plugin will be disabled.", ex);
+                        _logger.LogError($"Weather plugin: \"{weatherPlugin.TileName}\" threw exception. Plugin will be disabled. Error: {ex.Message}", ex);
                         loadedPlugins.WeatherPlugins.Remove(weatherPlugin);
                         break;
                     }

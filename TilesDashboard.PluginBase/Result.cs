@@ -25,6 +25,14 @@ namespace TilesDashboard.PluginBase
         /// </summary>
         public Status Status { get; }
 
+        public string ErrorMessage { get; private set; }
+
         public DateTimeOffset? DateOfChange { get; }
+
+        public Result WithErrorMessage(string errorMessage)
+        {
+            ErrorMessage = errorMessage;
+            return this;
+        }
     }
 }

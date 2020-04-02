@@ -24,6 +24,15 @@ namespace TilesDashboard.PluginBase.WeatherPlugin
             Temperature = temperature;
         }
 
+        public WeatherData(Status status)
+          : base(status)
+        {
+        }
+
+        public static WeatherData Error(string errorMessage) => new WeatherData(Status.Error).WithErrorMessage(errorMessage) as WeatherData;
+
+        public static WeatherData NoUpdate => new WeatherData(Status.NoUpdate);
+
         public decimal Temperature { get; private set; }
 
         public decimal? Huminidy { get; private set; }

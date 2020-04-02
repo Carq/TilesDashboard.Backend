@@ -4,22 +4,22 @@ using TilesDashboard.PluginBase.WeatherPlugin;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
-    public class LoadedPlugins
+    public class Plugins
     {
-        public LoadedPlugins(IList<BaseWeatherPlugin> weatherPlugins)
+        public Plugins(IList<BaseWeatherPlugin> weatherPlugins)
         {
             WeatherPlugins.AddRange(weatherPlugins);
         }
 
-        public LoadedPlugins()
+        public Plugins()
         {
         }
 
-        public static LoadedPlugins NoPluginsLoaded => new LoadedPlugins();
+        public static Plugins NoPluginsLoaded => new Plugins();
 
         public IList<BaseWeatherPlugin> WeatherPlugins { get; } = new List<BaseWeatherPlugin>();
 
-        public void Merge(LoadedPlugins loadedPlugins)
+        public void Merge(Plugins loadedPlugins)
         {
             WeatherPlugins.AddRange(loadedPlugins.WeatherPlugins);
         }

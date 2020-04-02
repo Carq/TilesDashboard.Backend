@@ -7,6 +7,11 @@ namespace TilesDashboard.TestPlugins.Weather
 {
     public class TestWeatherPlugin : BaseWeatherPlugin
     {
+        public TestWeatherPlugin(IPluginConfigProvider pluginConfigProvider) 
+            :base (pluginConfigProvider)
+        {
+        }
+
         public override string TileName => "Test Weather";
 
         public override Task<WeatherData> GetDataAsync()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
@@ -24,24 +25,57 @@ namespace TilesDashboard.WebApi.PluginSystem
             _pluginConfigProvider = pluginConfigProvider ?? throw new ArgumentNullException(nameof(pluginConfigProvider));
         }
 
-        public LoadedPlugins LoadPlugins(string rootPath)
+        public async Task<Plugins> LoadPluginsAsync(string rootPath)
         {
-            _logger.LogInformation("Initializing plugins...");
+            _logger.LogInformation("Loading plugins...");
             var pluginsFolder = Path.Combine(rootPath, _pluginFolder);
             if (!Directory.Exists(pluginsFolder))
             {
                 _logger.LogInformation("Plugin folder does not exist, plugins will not be loaded.");
-                return LoadedPlugins.NoPluginsLoaded;
+                return Plugins.NoPluginsLoaded;
             }
 
             var pluginPaths = Directory.GetFiles(pluginsFolder);
             if (pluginPaths.IsEmpty())
             {
                 _logger.LogInformation("There is no plugins to load.");
-                return LoadedPlugins.NoPluginsLoaded;
+                return Plugins.NoPluginsLoaded;
             }
 
-            var loadedPlugins = new LoadedPlugins();
+            var loadedPlugins = LoadPluginsFromDlls(pluginPaths);
+            var initializedPlugins = await InitializePlugins(loadedPlugins);
+
+            return initializedPlugins;
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
+        private async Task<Plugins> InitializePlugins(Plugins loadedPlugins)
+        {
+            _logger.LogInformation("Initialazing plugins...");
+
+            var initializedPlugins = new Plugins();
+            foreach (var plugin in loadedPlugins.WeatherPlugins)
+            {
+                try
+                {
+                    await plugin.InitializeAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Weather plugin: \"{plugin.TileName}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
+                    break;
+                }
+
+                initializedPlugins.WeatherPlugins.Add(plugin);
+            }
+
+            _logger.LogInformation("Plugins have been initialized.");
+            return initializedPlugins;
+        }
+
+        private Plugins LoadPluginsFromDlls(string[] pluginPaths)
+        {
+            var loadedPlugins = new Plugins();
             foreach (var pluginPath in pluginPaths)
             {
                 _logger.LogInformation($"Loading plugins from {pluginPath}.");
@@ -50,25 +84,33 @@ namespace TilesDashboard.WebApi.PluginSystem
                 loadedPlugins.Merge(LoadPluginsFromAssembly(pluginAssembly));
             }
 
-            _logger.LogInformation("Loading plugins compelted.");
+            _logger.LogInformation("Loading plugins completed.");
             return loadedPlugins;
         }
 
-        private LoadedPlugins LoadPluginsFromAssembly(Assembly assembly)
+        private Plugins LoadPluginsFromAssembly(Assembly assembly)
         {
             var weatherPlugins = new List<BaseWeatherPlugin>();
             foreach (Type type in assembly.GetTypes())
             {
                 if (typeof(BaseWeatherPlugin).IsAssignableFrom(type))
                 {
-                    BaseWeatherPlugin plugin = Activator.CreateInstance(type) as BaseWeatherPlugin;
-                    PrivatePropertySetter.SetPropertyWithNoSetter(plugin, nameof(BaseWeatherPlugin.ConfigProvider), _pluginConfigProvider);
+                    BaseWeatherPlugin plugin;
+                    if (type.GetConstructor(new[] { typeof(IPluginConfigProvider) }).Exists())
+                    {
+                        plugin = Activator.CreateInstance(type, _pluginConfigProvider) as BaseWeatherPlugin;
+                    }
+                    else
+                    {
+                        plugin = Activator.CreateInstance(type) as BaseWeatherPlugin;
+                    }
+
                     weatherPlugins.Add(plugin);
                 }
             }
 
             _logger.LogInformation($"Loaded: {weatherPlugins.Count} Weather plugins");
-            return new LoadedPlugins(weatherPlugins);
+            return new Plugins(weatherPlugins);
         }
     }
 }
