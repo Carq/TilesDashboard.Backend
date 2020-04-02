@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.WebApi.PluginInfrastructure
+﻿namespace TilesDashboard.WebApi.PluginSystem
 {
     public interface IPluginLoader
     {

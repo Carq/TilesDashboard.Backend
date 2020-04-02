@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.WeatherPluginBase;
+using TilesDashboard.PluginBase.WeatherPlugin;
 
 namespace TilesDashboard.TestPlugins.Weather
 {
-    public class TestExceptionWeatherPlugin : IWeatherPlugin
+    public class TestExceptionWeatherPlugin : BaseWeatherPlugin
     {
-        public string TileName => "Test Exception Weather";
+        public override string TileName => "Test Exception Weather";
 
-        public Task<WeatherData> GetDataAsync()
+        public override Task<WeatherData> GetDataAsync()
         {
             throw new NotImplementedException("Test exception");
         }

@@ -4,10 +4,11 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
+using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
-using TilesDashboard.WebApi.Configuration;
+using TilesDashboard.PluginBase.WeatherPlugin;
 
-namespace TilesDashboard.WebApi.PluginInfrastructure
+namespace TilesDashboard.WebApi.PluginSystem
 {
     public class PluginLoader : IPluginLoader
     {
@@ -15,9 +16,12 @@ namespace TilesDashboard.WebApi.PluginInfrastructure
 
         private readonly string _pluginFolder = "plugins";
 
-        public PluginLoader(ILogger<PluginLoader> logger)
+        private readonly IPluginConfigProvider _pluginConfigProvider;
+
+        public PluginLoader(ILogger<PluginLoader> logger, IPluginConfigProvider pluginConfigProvider)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _pluginConfigProvider = pluginConfigProvider ?? throw new ArgumentNullException(nameof(pluginConfigProvider));
         }
 
         public LoadedPlugins LoadPlugins(string rootPath)
@@ -52,13 +56,14 @@ namespace TilesDashboard.WebApi.PluginInfrastructure
 
         private LoadedPlugins LoadPluginsFromAssembly(Assembly assembly)
         {
-            var weatherPlugins = new List<IWeatherPlugin>();
+            var weatherPlugins = new List<BaseWeatherPlugin>();
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(IWeatherPlugin).IsAssignableFrom(type))
+                if (typeof(BaseWeatherPlugin).IsAssignableFrom(type))
                 {
-                    IWeatherPlugin result = Activator.CreateInstance(type) as IWeatherPlugin;
-                    weatherPlugins.Add(result);
+                    BaseWeatherPlugin plugin = Activator.CreateInstance(type) as BaseWeatherPlugin;
+                    PrivatePropertySetter.SetPropertyWithNoSetter(plugin, nameof(BaseWeatherPlugin.ConfigProvider), _pluginConfigProvider);
+                    weatherPlugins.Add(plugin);
                 }
             }
 

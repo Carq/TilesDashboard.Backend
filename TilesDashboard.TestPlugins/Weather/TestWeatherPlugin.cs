@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.WeatherPluginBase;
+using TilesDashboard.PluginBase.WeatherPlugin;
 
 namespace TilesDashboard.TestPlugins.Weather
 {
-    public class TestWeatherPlugin : IWeatherPlugin
+    public class TestWeatherPlugin : BaseWeatherPlugin
     {
-        public string TileName => "Test Weather";
+        public override string TileName => "Test Weather";
 
-        public Task<WeatherData> GetDataAsync()
+        public override Task<WeatherData> GetDataAsync()
         {
             var random = new Random();
-            return Task.FromResult(new WeatherData(random.Next(-8, 30), random.Next(1, 100), DateTimeOffset.Now));
+            int maxTemperature = int.Parse(ConfigProvider.GetConfigEntry("TestWeatherPlugin:MaxTemp"));
+
+            return Task.FromResult(new WeatherData(random.Next(-8, maxTemperature), random.Next(1, 100), Status.OK, DateTimeOffset.Now));
         }
     }
 }

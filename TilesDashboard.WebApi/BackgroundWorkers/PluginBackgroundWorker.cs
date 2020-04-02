@@ -5,8 +5,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Core.Domain.ValueObjects;
+using TilesDashboard.Handy.Extensions;
+using TilesDashboard.PluginBase;
 using TilesDashboard.WebApi.Configuration;
-using TilesDashboard.WebApi.PluginInfrastructure;
+using TilesDashboard.WebApi.PluginSystem;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -42,7 +44,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                     {
                         var data = await weatherPlugin.GetDataAsync();
                         _logger.LogDebug($"Weather plugin: \"{weatherPlugin.TileName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
-                        await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, data.DateOfChange, stoppingToken);
+                        if (data.Status.Is(Status.OK))
+                        {
+                            await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, data.DateOfChange, stoppingToken);
+                        }
                     }
                     catch (Exception ex)
                     {

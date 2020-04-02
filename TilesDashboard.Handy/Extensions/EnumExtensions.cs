@@ -9,5 +9,17 @@ namespace TilesDashboard.Handy.Extensions
         {
             return (TDesc)Enum.Parse(typeof(TDesc), enumToConvert.ToString(), true);
         }
+
+        public static bool Is<TEnum>(this TEnum enumToConvert, Enum toCompare)
+          where TEnum : Enum
+        {
+            return Equals(enumToConvert.ToString(), toCompare.ToString());
+        }
+
+        public static bool IsNot<TEnum>(this TEnum enumToConvert, Enum toCompare)
+            where TEnum : Enum
+        {
+            return !enumToConvert.Is(toCompare);
+        }
     }
 }

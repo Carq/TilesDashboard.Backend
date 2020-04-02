@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.WeatherPlugin;
 
-namespace TilesDashboard.WebApi.PluginInfrastructure
+namespace TilesDashboard.WebApi.PluginSystem
 {
     public class LoadedPlugins
     {
-        public LoadedPlugins(IList<IWeatherPlugin> weatherPlugins)
+        public LoadedPlugins(IList<BaseWeatherPlugin> weatherPlugins)
         {
             WeatherPlugins.AddRange(weatherPlugins);
         }
@@ -17,7 +17,7 @@ namespace TilesDashboard.WebApi.PluginInfrastructure
 
         public static LoadedPlugins NoPluginsLoaded => new LoadedPlugins();
 
-        public IList<IWeatherPlugin> WeatherPlugins { get; } = new List<IWeatherPlugin>();
+        public IList<BaseWeatherPlugin> WeatherPlugins { get; } = new List<BaseWeatherPlugin>();
 
         public void Merge(LoadedPlugins loadedPlugins)
         {

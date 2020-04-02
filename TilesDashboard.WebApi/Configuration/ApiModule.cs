@@ -1,7 +1,8 @@
 ﻿using Autofac;
 using TilesDashboard.Core.Configuration;
 using TilesDashboard.Handy.Tools;
-using TilesDashboard.WebApi.PluginInfrastructure;
+using TilesDashboard.PluginBase;
+using TilesDashboard.WebApi.PluginSystem;
 
 namespace TilesDashboard.WebApi.Configuration
 {
@@ -19,6 +20,7 @@ namespace TilesDashboard.WebApi.Configuration
         {
             builder.RegisterType<PluginLoader>().As<IPluginLoader>();
             builder.RegisterType<PluginSystemConfig>().As<IPluginSystemConfig>();
+            builder.RegisterType<PluginConfigProvider>().As<IPluginConfigProvider>();
         }
     }
 }

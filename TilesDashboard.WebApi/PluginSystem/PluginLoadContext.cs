@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.Loader;
 
-namespace TilesDashboard.WebApi.PluginInfrastructure
+namespace TilesDashboard.WebApi.PluginSystem
 {
     public class PluginLoadContext : AssemblyLoadContext
     {
