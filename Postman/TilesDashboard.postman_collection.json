@@ -18,12 +18,10 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "https://localhost:5001/tiles/weather/:tileName/recent",
-					"protocol": "https",
+					"raw": "{{tileBackendUrl}}/tiles/weather/:tileName/recent",
 					"host": [
-						"localhost"
+						"{{tileBackendUrl}}"
 					],
-					"port": "5001",
 					"path": [
 						"tiles",
 						"weather",
@@ -40,7 +38,7 @@
 					"variable": [
 						{
 							"key": "tileName",
-							"value": "Gliwice"
+							"value": "LivingRoom"
 						}
 					]
 				}
@@ -60,12 +58,10 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "https://localhost:5001/tiles/all",
-					"protocol": "https",
+					"raw": "{{tileBackendUrl}}/tiles/all",
 					"host": [
-						"localhost"
+						"{{tileBackendUrl}}"
 					],
-					"port": "5001",
 					"path": [
 						"tiles",
 						"all"
@@ -94,12 +90,10 @@
 					"formdata": []
 				},
 				"url": {
-					"raw": "https://localhost:5001/tiles/metric/:tileName/recent",
-					"protocol": "https",
+					"raw": "{{tileBackendUrl}}/tiles/metric/:tileName/recent",
 					"host": [
-						"localhost"
+						"{{tileBackendUrl}}"
 					],
-					"port": "5001",
 					"path": [
 						"tiles",
 						"metric",
@@ -145,12 +139,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/tiles/weather/:tileName/record",
-					"protocol": "https",
+					"raw": "{{tileBackendUrl}}/tiles/weather/:tileName/record",
 					"host": [
-						"localhost"
+						"{{tileBackendUrl}}"
 					],
-					"port": "5001",
 					"path": [
 						"tiles",
 						"weather",
@@ -160,7 +152,7 @@
 					"variable": [
 						{
 							"key": "tileName",
-							"value": "Gliwice"
+							"value": "LivingRoom"
 						}
 					]
 				}
@@ -189,12 +181,10 @@
 					}
 				},
 				"url": {
-					"raw": "https://localhost:5001/tiles/metric/:tileName/record",
-					"protocol": "https",
+					"raw": "{{tileBackendUrl}}/tiles/metric/:tileName/record",
 					"host": [
-						"localhost"
+						"{{tileBackendUrl}}"
 					],
-					"port": "5001",
 					"path": [
 						"tiles",
 						"metric",
