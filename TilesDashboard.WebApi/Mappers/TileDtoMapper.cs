@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using TilesDashboard.Contract;
 using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
@@ -16,8 +18,8 @@ namespace TilesDashboard.WebApi.Mappers
             {
                 Data = new
                 {
-                    Temperature = weatherData.Temperature.Value,
-                    Humidity = weatherData.Humidity.Value,
+                    Temperature = Math.Round(weatherData.Temperature.Value, 1),
+                    Humidity = Math.Round(weatherData.Humidity.Value, 0),
                     AddedOn = weatherData.AddedOn,
                 },
                 Type = TileTypeDto.Weather,
@@ -42,16 +44,32 @@ namespace TilesDashboard.WebApi.Mappers
             var result = new List<TileWithCurrentDataDto>();
             foreach (var item in list)
             {
-                result.Add(new TileWithCurrentDataDto
+                var tileWithDataDto = new TileWithCurrentDataDto
                 {
                     Name = item.Name,
                     Type = item.Type.Convert<TileTypeDto>(),
                     CurrentData = Map(item.Type, item.CurrentData),
                     Configuration = item.Configuration,
-                });
+                };
+
+                tileWithDataDto.RecentData.AddRange(Map(item.Type, item.RecentData));
+                result.Add(tileWithDataDto);
             }
 
             return result;
+        }
+
+        private static IList<object> Map(TileType type, IList<TileData> recentData)
+        {
+            switch (type)
+            {
+                case TileType.Metric:
+                    return recentData.Select(x => MapMetricData(x)).ToList();
+                case TileType.Weather:
+                    return recentData.Select(x => MapWeatherData(x)).ToList();
+                default:
+                    return null;
+            }
         }
 
         private static object Map(TileType type, TileData currentData)
@@ -83,8 +101,8 @@ namespace TilesDashboard.WebApi.Mappers
 
             return new
             {
-                Temperature = converted.Temperature.Value,
-                Humidity = converted.Humidity.Value,
+                Temperature = Math.Round(converted.Temperature.Value, 1),
+                Humidity = Math.Round(converted.Humidity.Value, 0),
                 AddedOn = converted.AddedOn,
             };
         }
