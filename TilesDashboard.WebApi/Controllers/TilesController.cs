@@ -32,7 +32,7 @@ namespace TilesDashboard.WebApi.Controllers
         [HttpGet("all")]
         public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData(CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _tileService.GetAllAsync(cancellationToken));
+            return TileDtoMapper.Map(await _tileService.GetAllAsync(5, cancellationToken));
         }
 
         [HttpGet("weather/{tileName}/recent")]
