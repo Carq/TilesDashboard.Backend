@@ -7,8 +7,6 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public interface ITileService
     {
-        Task<IList<GenericTileWithCurrentData>> GetAllAsync(CancellationToken token);
-
-        Task<IList<GenericTileWithCurrentData>> GetAllAsync(int amountOfRecentData, CancellationToken token);
+        Task<IList<GenericTileWithCurrentData>> GetAllAsync(int amountOfData, CancellationToken token);
     }
 }

@@ -12,33 +12,6 @@ namespace TilesDashboard.WebApi.Mappers
 {
     public static class TileDtoMapper
     {
-        public static TileDataDto Map(WeatherData weatherData)
-        {
-            return new TileDataDto
-            {
-                Data = new
-                {
-                    Temperature = Math.Round(weatherData.Temperature.Value, 1),
-                    Humidity = Math.Round(weatherData.Humidity.Value, 0),
-                    AddedOn = weatherData.AddedOn,
-                },
-                Type = TileTypeDto.Weather,
-            };
-        }
-
-        public static TileDataDto Map(MetricData metricData)
-        {
-            return new TileDataDto
-            {
-                Data = new
-                {
-                    metricData.Value,
-                    AddedOn = metricData.AddedOn,
-                },
-                Type = TileTypeDto.Metric,
-            };
-        }
-
         public static IList<TileWithCurrentDataDto> Map(IList<GenericTileWithCurrentData> list)
         {
             var result = new List<TileWithCurrentDataDto>();
@@ -48,18 +21,27 @@ namespace TilesDashboard.WebApi.Mappers
                 {
                     Name = item.Name,
                     Type = item.Type.Convert<TileTypeDto>(),
-                    CurrentData = Map(item.Type, item.CurrentData),
                     Configuration = item.Configuration,
                 };
 
-                tileWithDataDto.RecentData.AddRange(Map(item.Type, item.RecentData));
+                tileWithDataDto.Data.AddRange(Map(item.Type, item.Data));
                 result.Add(tileWithDataDto);
             }
 
             return result;
         }
 
-        private static IList<object> Map(TileType type, IList<TileData> recentData)
+        public static IList<object> Map(IList<WeatherData> data)
+        {
+            return data.Select(x => MapWeatherData(x)).ToList();
+        }
+
+        public static IList<object> Map(IList<MetricData> data)
+        {
+            return data.Select(x => MapMetricData(x)).ToList();
+        }
+
+        public static IList<object> Map(TileType type, IList<TileData> recentData)
         {
             switch (type)
             {

@@ -8,12 +8,11 @@ namespace TilesDashboard.Core.Domain.Entities
 {
     public class GenericTileWithCurrentData
     {
-        public GenericTileWithCurrentData(string name, TileType type, TileData currentData, IList<TileData> recentData, object configuration = null)
+        public GenericTileWithCurrentData(string name, TileType type, IList<TileData> data, object configuration = null)
         {
             Name = Guard.Argument(name, nameof(name)).NotNull().NotEmpty();
             Type = Guard.Argument(type, nameof(type)).NotDefault();
-            CurrentData = currentData;
-            RecentData.AddRange(recentData);
+            Data.AddRange(data);
             Configuration = configuration;
         }
 
@@ -23,8 +22,6 @@ namespace TilesDashboard.Core.Domain.Entities
 
         public object Configuration { get; private set; }
 
-        public TileData CurrentData { get; private set; }
-
-        public IList<TileData> RecentData { get; private set; } = new List<TileData>();
+        public IList<TileData> Data { get; private set; } = new List<TileData>();
     }
 }

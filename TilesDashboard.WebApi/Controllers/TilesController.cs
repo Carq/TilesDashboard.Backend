@@ -16,6 +16,8 @@ namespace TilesDashboard.WebApi.Controllers
     [ApiController]
     public class TilesController : ControllerBase
     {
+        private const int AmountOfDate = 5;
+
         private readonly IWeatherServices _weatherService;
 
         private readonly IMetricService _metricService;
@@ -32,13 +34,13 @@ namespace TilesDashboard.WebApi.Controllers
         [HttpGet("all")]
         public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData(CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _tileService.GetAllAsync(5, cancellationToken));
+            return TileDtoMapper.Map(await _tileService.GetAllAsync(AmountOfDate, cancellationToken));
         }
 
         [HttpGet("weather/{tileName}/recent")]
-        public async Task<TileDataDto> GetWeatherRecentData(string tileName, CancellationToken cancellationToken)
+        public async Task<IList<object>> GetWeatherRecentData(string tileName, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, cancellationToken));
+            return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, AmountOfDate, cancellationToken));
         }
 
         [HttpPost("weather/{tileName}/record")]
@@ -48,9 +50,9 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpGet("metric/{tileName}/recent")]
-        public async Task<TileDataDto> GetMetricRecentData(string tileName, CancellationToken cancellationToken)
+        public async Task<IList<object>> GetMetricRecentData(string tileName, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _metricService.GetMetricRecentDataAsync(tileName, cancellationToken));
+            return TileDtoMapper.Map(await _metricService.GetMetricRecentDataAsync(tileName, AmountOfDate, cancellationToken));
         }
 
         [HttpPost("metric/{tileName}/record")]

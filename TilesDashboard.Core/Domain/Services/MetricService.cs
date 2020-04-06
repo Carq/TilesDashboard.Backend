@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,28 +17,22 @@ using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.Core.Domain.Services
 {
-    public class MetricService : IMetricService
+    public class MetricService : TileService, IMetricService
     {
         private readonly ITileContext _context;
 
         private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
 
         public MetricService(ITileContext context, IDateTimeOffsetProvider dateTimeOffsetProvider)
+            : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
         }
 
-        public async Task<MetricData> GetMetricRecentDataAsync(string tileName, CancellationToken token)
+        public async Task<IList<MetricData>> GetMetricRecentDataAsync(string tileName, int amountOfData, CancellationToken token)
         {
-            var tileDbEntity = await _context.GetTiles().Find(Filter(tileName)).SingleOrDefaultAsync(token);
-            if (tileDbEntity.NotExists())
-            {
-                throw new NotFoundException($"Tile {tileName} does not exist.");
-            }
-
-            var rawData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).Last();
-            return BsonSerializer.Deserialize<MetricData>(rawData);
+            return await GetRecentDataAsync<MetricData>(tileName, TileType.Metric, amountOfData, token);
         }
 
         public async Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken token)

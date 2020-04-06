@@ -9,9 +9,7 @@ namespace TilesDashboard.Contract
 
         public TileTypeDto Type { get; set; }
 
-        public object CurrentData { get; set; }
-
-        public IList<object> RecentData { get; } = new List<object>();
+        public IList<object> Data { get; } = new List<object>();
 
         public object Configuration { get; set; }
     }

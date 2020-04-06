@@ -1,4 +1,5 @@
-﻿using TilesDashboard.Contract.Enums;
+﻿using System.Collections.Generic;
+using TilesDashboard.Contract.Enums;
 
 namespace TilesDashboard.Contract
 {
@@ -8,6 +9,6 @@ namespace TilesDashboard.Contract
 
         public TileTypeDto Type { get; set; }
 
-        public object Data { get; set; }
+        public IList<object> Data { get; private set; } = new List<object>();
     }
 }

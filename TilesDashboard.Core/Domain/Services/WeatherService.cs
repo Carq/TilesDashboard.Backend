@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
@@ -11,34 +10,26 @@ using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
-using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.Core.Domain.Services
 {
-    public class WeatherService : IWeatherServices
+    public class WeatherService : TileService, IWeatherServices
     {
         private readonly ITileContext _context;
 
         private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
 
         public WeatherService(ITileContext context, IDateTimeOffsetProvider dateTimeOffsetProvider)
+            : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
         }
 
-        public async Task<WeatherData> GetWeatherRecentDataAsync(string tileName, CancellationToken token)
+        public async Task<IList<WeatherData>> GetWeatherRecentDataAsync(string tileName, int amountOfData, CancellationToken token)
         {
-            var tileDbEntity = await _context.GetTiles().Find(x => x.Id.Name.ToLowerInvariant() == tileName.ToLowerInvariant() && x.Id.TileType == TileType.Weather).SingleOrDefaultAsync(token);
-            if (tileDbEntity.NotExists())
-            {
-                throw new NotFoundException($"Tile {tileName} does not exist.");
-            }
-
-            var rawWeatherData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).Last();
-            return BsonSerializer.Deserialize<WeatherData>(rawWeatherData);
+            return await GetRecentDataAsync<WeatherData>(tileName, TileType.Weather, amountOfData, token);
         }
 
         public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, DateTimeOffset? dateOfChange, CancellationToken token)

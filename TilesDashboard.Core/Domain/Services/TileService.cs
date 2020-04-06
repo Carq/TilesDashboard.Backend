@@ -10,6 +10,7 @@ using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Entities;
+using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Extensions;
@@ -25,67 +26,54 @@ namespace TilesDashboard.Core.Domain.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IList<GenericTileWithCurrentData>> GetAllAsync(CancellationToken token)
+        public async Task<IList<GenericTileWithCurrentData>> GetAllAsync(int amountOfData, CancellationToken token)
         {
-            var weatherTiles = await _context.GetTiles().Find(_ => true).ToListAsync(token);
+            Guard.Argument(amountOfData, nameof(amountOfData)).GreaterThan(0);
 
+            var allTiles = await _context.GetTiles().Find(_ => true).ToListAsync(token);
             var tilesWithCurrentData = new List<GenericTileWithCurrentData>();
 
-            foreach (var tile in weatherTiles)
+            foreach (var tile in allTiles)
             {
                 object configuration = null;
-                TileData data = null;
-                if (tile.Id.TileType == TileType.Metric)
-                {
-                    configuration = BsonSerializer.Deserialize<MetricConfiguration>(tile.Configuration);
-                    data = BsonSerializer.Deserialize<MetricData>(tile.Data.Last());
-                }
-                else if (tile.Id.TileType == TileType.Weather)
-                {
-                    data = BsonSerializer.Deserialize<WeatherData>(tile.Data.Last());
-                }
-
-                tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, null, configuration));
-            }
-
-            return tilesWithCurrentData;
-        }
-
-        public async Task<IList<GenericTileWithCurrentData>> GetAllAsync(int amountOfRecentData, CancellationToken token)
-        {
-            Guard.Argument(amountOfRecentData, nameof(amountOfRecentData)).GreaterThan(0);
-
-            var weatherTiles = await _context.GetTiles().Find(_ => true).ToListAsync(token);
-            var tilesWithCurrentData = new List<GenericTileWithCurrentData>();
-
-            foreach (var tile in weatherTiles)
-            {
-                object configuration = null;
-                var rawData = tile.Data.TakeLast(amountOfRecentData);
+                var rawData = tile.Data.TakeLast(amountOfData);
                 var data = new List<TileData>();
                 if (tile.Id.TileType == TileType.Metric)
                 {
                     configuration = BsonSerializer.Deserialize<MetricConfiguration>(tile.Configuration);
-                    data = DeserializeData<MetricData>(rawData);
+                    data = DeserializeData<MetricData>(rawData).Cast<TileData>().ToList();
                 }
                 else if (tile.Id.TileType == TileType.Weather)
                 {
-                    data = DeserializeData<WeatherData>(rawData);
+                    data = DeserializeData<WeatherData>(rawData).Cast<TileData>().ToList();
                 }
 
-                tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data.First(), data.Skip(1).ToList(), configuration));
+                tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, configuration));
             }
 
             return tilesWithCurrentData;
         }
 
-        private static List<TileData> DeserializeData<T>(IEnumerable<BsonDocument> rawData)
-            where T : TileData
+        public async Task<IList<TData>> GetRecentDataAsync<TData>(string tileName, TileType type, int amountOfData, CancellationToken token)
+            where TData : TileData
         {
-            var result = new List<TileData>();
+            var tileDbEntity = await _context.GetTiles().Find(x => x.Id.Name.ToLowerInvariant() == tileName.ToLowerInvariant() && x.Id.TileType == type).SingleOrDefaultAsync(token);
+            if (tileDbEntity.NotExists())
+            {
+                throw new NotFoundException($"Tile {tileName} with Type {type} does not exist.");
+            }
+
+            var rawWeatherData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).TakeLast(amountOfData);
+            return DeserializeData<TData>(rawWeatherData);
+        }
+
+        protected static List<TData> DeserializeData<TData>(IEnumerable<BsonDocument> rawData)
+            where TData : TileData
+        {
+            var result = new List<TData>();
             foreach (var item in rawData)
             {
-                result.Add(BsonSerializer.Deserialize<T>(item));
+                result.Add(BsonSerializer.Deserialize<TData>(item));
             }
 
             return result.OrderByDescending(x => x.AddedOn).ToList();

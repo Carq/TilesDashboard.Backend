@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.Core.Domain.Entities;
@@ -8,7 +9,7 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public interface IWeatherServices
     {
-        Task<WeatherData> GetWeatherRecentDataAsync(string tileName, CancellationToken token);
+        Task<IList<WeatherData>> GetWeatherRecentDataAsync(string tileName, int amountOfData, CancellationToken token);
 
         Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, DateTimeOffset? dateOfChange, CancellationToken token);
     }
