@@ -1,8 +1,9 @@
 ﻿using Autofac;
 using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Handy.Events;
 
-namespace TilesDashboard.WebApi.Configuration
+namespace TilesDashboard.Core.Configuration
 {
     public class CoreModule : Module
     {
@@ -12,6 +13,7 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<TileService>().As<ITileService>();
             builder.RegisterType<WeatherService>().As<IWeatherServices>();
             builder.RegisterType<MetricService>().As<IMetricService>();
+            builder.RegisterType<EventDispatcher>().As<IEventDispatcher>();
         }
     }
 }

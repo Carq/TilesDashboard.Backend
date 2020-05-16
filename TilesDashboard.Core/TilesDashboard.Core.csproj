@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
     <ProjectReference Include="..\TilesDashboard.Handy\TilesDashboard.Handy.csproj" />
   </ItemGroup>
 

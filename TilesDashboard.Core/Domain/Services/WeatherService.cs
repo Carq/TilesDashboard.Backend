@@ -4,12 +4,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using TilesDashboard.Contract.Enums;
+using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.Core.Domain.Services
@@ -20,11 +23,14 @@ namespace TilesDashboard.Core.Domain.Services
 
         private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
 
-        public WeatherService(ITileContext context, IDateTimeOffsetProvider dateTimeOffsetProvider)
+        private readonly IEventDispatcher _eventDispatcher;
+
+        public WeatherService(ITileContext context, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
             : base(context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
+            _eventDispatcher = eventDispatcher ?? throw new ArgumentNullException(nameof(eventDispatcher));
         }
 
         public async Task<IList<WeatherData>> GetWeatherRecentDataAsync(string tileName, int amountOfData, CancellationToken token)
@@ -46,6 +52,8 @@ namespace TilesDashboard.Core.Domain.Services
                 Builders<TileDbEntity>.Update.Push(x => x.Data, weatherData.ToBsonDocument()),
                 null,
                 token);
+
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Weather), token);
         }
 
         private FilterDefinition<TileDbEntity> Filter(string tileName)

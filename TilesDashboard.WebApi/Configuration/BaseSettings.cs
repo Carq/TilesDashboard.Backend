@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 
 namespace TilesDashboard.WebApi.Configuration
@@ -73,6 +74,17 @@ namespace TilesDashboard.WebApi.Configuration
             }
 
             throw new InvalidOperationException("Not supported type.");
+        }
+
+        protected string[] GetArray(string key)
+        {
+            var array = _configuration.GetSection(key);
+            if (array == null)
+            {
+                throw new ArgumentException($"Missing configuration key - ${key}.");
+            }
+
+            return array.AsEnumerable().Where(x => x.Value != null).Select(x => x.Value).ToArray();
         }
 
         private static void ThrowArgumentException<T>()

@@ -1,7 +1,10 @@
 ﻿using Autofac;
+using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Configuration;
+using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
+using TilesDashboard.WebApi.Hubs;
 using TilesDashboard.WebApi.PluginSystem;
 
 namespace TilesDashboard.WebApi.Configuration
@@ -12,6 +15,7 @@ namespace TilesDashboard.WebApi.Configuration
         {
             builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>();
             builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeOffsetProvider>();
+            builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
 
             PluginInfrastructure(builder);
         }

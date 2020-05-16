@@ -8,8 +8,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using TilesDashboard.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Configuration;
+using TilesDashboard.WebApi.Hubs;
+using TilesDashboard.WebApi.StartupConfig;
 
 namespace TilesDashboard.WebApi
 {
@@ -26,17 +29,17 @@ namespace TilesDashboard.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var settings = new TileDashboardSettings(Configuration);
             Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
 
             services.AddSingleton<IHostedService, PluginBackgroundWorker>();
 
-            services.AddCors();
+            services.AddCors(Configuration);
             services.AddControllers().AddJsonOptions(jsonOption =>
                                                      {
                                                          jsonOption.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                                                          jsonOption.JsonSerializerOptions.IgnoreNullValues = true;
                                                      });
+            services.AddSignalR();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -53,13 +56,14 @@ namespace TilesDashboard.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors(Configuration);
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<TilesNotificationHub>("/notifications");
             });
         }
     }
