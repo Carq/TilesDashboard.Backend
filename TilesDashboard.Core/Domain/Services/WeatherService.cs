@@ -9,9 +9,9 @@ using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.ValueObjects;
-using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 
@@ -41,19 +41,16 @@ namespace TilesDashboard.Core.Domain.Services
         public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, DateTimeOffset? dateOfChange, CancellationToken token)
         {
             var weatherData = new WeatherData(temperature, huminidy, dateOfChange ?? _dateTimeOffsetProvider.Now);
-            var tileExists = await _context.GetTiles().Find(Filter(tileName)).AnyAsync(token);
-            if (!tileExists)
-            {
-                throw new NotFoundException($"Tile {tileName} does not exist.");
-            }
-
-            await _context.GetTiles().UpdateOneAsync(
+            var result = await _context.GetTiles().UpdateOneAsync(
                 Filter(tileName),
                 Builders<TileDbEntity>.Update.Push(x => x.Data, weatherData.ToBsonDocument()),
                 null,
                 token);
 
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Weather), token);
+            if (result.ModifiedCount > 0)
+            {
+                await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Weather), token);
+            }
         }
 
         private FilterDefinition<TileDbEntity> Filter(string tileName)

@@ -9,9 +9,11 @@ using TilesDashboard.Contract.Enums;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
@@ -69,7 +71,7 @@ namespace TilesDashboard.Core.Domain.Services
 
         private async Task<TileDbEntity> GetTile(string tileName, CancellationToken token)
         {
-            var tile = await _context.GetTiles().Find(Filter(tileName)).SingleOrDefaultAsync(token);
+            var tile = await _context.GetTiles().Find(Filter(tileName)).FetchRecentData(0).SingleOrDefaultAsync(token);
             if (tile.NotExists())
             {
                 throw new NotFoundException($"Tile {tileName} does not exist.");

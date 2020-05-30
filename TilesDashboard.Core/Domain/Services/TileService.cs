@@ -9,6 +9,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Entities;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
@@ -30,7 +31,9 @@ namespace TilesDashboard.Core.Domain.Services
         {
             Guard.Argument(amountOfData, nameof(amountOfData)).GreaterThan(0);
 
-            var allTiles = await _context.GetTiles().Find(_ => true).ToListAsync(token);
+            var allTiles = await _context.GetTiles().Find(_ => true)
+                .FetchRecentData(amountOfData)
+                .ToListAsync(token);
             var tilesWithCurrentData = new List<GenericTileWithCurrentData>();
 
             foreach (var tile in allTiles)
@@ -57,7 +60,10 @@ namespace TilesDashboard.Core.Domain.Services
         public async Task<IList<TData>> GetRecentDataAsync<TData>(string tileName, TileType type, int amountOfData, CancellationToken token)
             where TData : TileData
         {
-            var tileDbEntity = await _context.GetTiles().Find(x => x.Id.Name.ToLowerInvariant() == tileName.ToLowerInvariant() && x.Id.TileType == type).SingleOrDefaultAsync(token);
+            var tileDbEntity = await _context.GetTiles().Find(x => x.Id.Name.ToLowerInvariant() == tileName.ToLowerInvariant() && x.Id.TileType == type)
+                .FetchRecentData(amountOfData)
+                .SingleOrDefaultAsync(token);
+
             if (tileDbEntity.NotExists())
             {
                 throw new NotFoundException($"Tile {tileName} with Type {type} does not exist.");

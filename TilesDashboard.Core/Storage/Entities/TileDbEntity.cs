@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TilesDashboard.Core.Storage.Entities;
 
-namespace TilesDashboard.Core.Entities
+namespace TilesDashboard.Core.Storage.Entities
 {
     public class TileDbEntity
     {

@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.Core.Storage.Constants
+﻿namespace TilesDashboard.Core.Storage
 {
     internal class CollectionNames
     {
