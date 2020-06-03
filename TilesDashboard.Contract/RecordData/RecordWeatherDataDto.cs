@@ -4,6 +4,6 @@
     {
         public decimal Temperature { get; set; }
 
-        public decimal Huminidy { get; set; }
+        public decimal Humidity { get; set; }
     }
 }

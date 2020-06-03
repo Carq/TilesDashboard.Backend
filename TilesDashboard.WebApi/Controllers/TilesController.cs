@@ -8,6 +8,7 @@ using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Handy.Extensions;
+using TilesDashboard.WebApi.Authorization;
 using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
@@ -44,9 +45,10 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpPost("weather/{tileName}/record")]
+        [BearerAuthorization]
         public async Task RecordWeatherData(string tileName, [FromBody]RecordWeatherDataDto weatherDataDto, CancellationToken cancellationToken)
         {
-            await _weatherService.RecordWeatherDataAsync(tileName, new Temperature(weatherDataDto.Temperature), new Percentage(weatherDataDto.Huminidy), null, cancellationToken);
+            await _weatherService.RecordWeatherDataAsync(tileName, new Temperature(weatherDataDto.Temperature), new Percentage(weatherDataDto.Humidity), null, cancellationToken);
         }
 
         [HttpGet("metric/{tileName}/recent")]
@@ -56,6 +58,7 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpPost("metric/{tileName}/record")]
+        [BearerAuthorization]
         public async Task RecordMetricData(string tileName, [FromBody]RecordMetricData<decimal> metricData, CancellationToken cancellationToken)
         {
             await _metricService.RecordMetricDataAsync(tileName, metricData.Type.Convert<MetricType>(), metricData.Value, cancellationToken);

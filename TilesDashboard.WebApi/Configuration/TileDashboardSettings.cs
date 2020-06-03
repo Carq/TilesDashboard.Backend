@@ -3,7 +3,7 @@ using TilesDashboard.Core.Configuration;
 
 namespace TilesDashboard.WebApi.Configuration
 {
-    public class TileDashboardSettings : BaseSettings, IDatabaseConfiguration
+    public class TileDashboardSettings : BaseSettings, IDatabaseConfiguration, ISecurityConfig
     {
         public TileDashboardSettings(IConfiguration configuration)
             : base(configuration)
@@ -14,6 +14,6 @@ namespace TilesDashboard.WebApi.Configuration
 
         public string DatabaseName => GetValue<string>("Application:DatabaseName");
 
-        public string MongoConnectionString => GetValue<string>("Application:MongoConnectionString");
+        public string SecurityToken => GetValue<string>("Application:SecurityToken");
     }
 }

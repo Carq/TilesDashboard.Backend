@@ -1,4 +1,5 @@
-﻿using Dawn;
+﻿using System;
+using Dawn;
 
 namespace TilesDashboard.Core.Domain.ValueObjects
 {
@@ -17,6 +18,11 @@ namespace TilesDashboard.Core.Domain.ValueObjects
         public static void Validate(decimal value)
         {
             Guard.Argument(value, nameof(Percentage)).InRange(Min, Max);
+        }
+
+        public decimal GetRoundedValue()
+        {
+            return Math.Round(Value, 0);
         }
     }
 }

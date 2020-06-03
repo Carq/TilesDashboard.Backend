@@ -56,7 +56,6 @@ namespace TilesDashboard.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(Configuration);
             app.UseAuthorization();

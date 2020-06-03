@@ -9,7 +9,6 @@ using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.ValueObjects;
-using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Events;
@@ -38,9 +37,9 @@ namespace TilesDashboard.Core.Domain.Services
             return await GetRecentDataAsync<WeatherData>(tileName, TileType.Weather, amountOfData, token);
         }
 
-        public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage huminidy, DateTimeOffset? dateOfChange, CancellationToken token)
+        public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage humidity, DateTimeOffset? dateOfChange, CancellationToken token)
         {
-            var weatherData = new WeatherData(temperature, huminidy, dateOfChange ?? _dateTimeOffsetProvider.Now);
+            var weatherData = new WeatherData(temperature, humidity, dateOfChange ?? _dateTimeOffsetProvider.Now);
             var result = await _context.GetTiles().UpdateOneAsync(
                 Filter(tileName),
                 Builders<TileDbEntity>.Update.Push(x => x.Data, weatherData.ToBsonDocument()),
@@ -49,7 +48,7 @@ namespace TilesDashboard.Core.Domain.Services
 
             if (result.ModifiedCount > 0)
             {
-                await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Weather), token);
+                await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Weather, new { Temperature = weatherData.Temperature.GetRoundedValue(), Humidity = weatherData.Humidity.GetRoundedValue(), weatherData.AddedOn }), token);
             }
         }
 

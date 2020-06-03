@@ -13,8 +13,8 @@ namespace TilesDashboard.WebApi.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>();
-            builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeOffsetProvider>();
+            builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>().As<ISecurityConfig>().SingleInstance();
+            builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeOffsetProvider>().SingleInstance();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
 
             PluginInfrastructure(builder);

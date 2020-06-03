@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TilesDashboard.Contract;
 using TilesDashboard.Contract.Enums;
@@ -33,12 +32,12 @@ namespace TilesDashboard.WebApi.Mappers
 
         public static IList<object> Map(IList<WeatherData> data)
         {
-            return data.Select(x => MapWeatherData(x)).ToList();
+            return data.Select(MapWeatherData).ToList();
         }
 
         public static IList<object> Map(IList<MetricData> data)
         {
-            return data.Select(x => MapMetricData(x)).ToList();
+            return data.Select(MapMetricData).ToList();
         }
 
         public static IList<object> Map(TileType type, IList<TileData> recentData)
@@ -46,9 +45,9 @@ namespace TilesDashboard.WebApi.Mappers
             switch (type)
             {
                 case TileType.Metric:
-                    return recentData.Select(x => MapMetricData(x)).ToList();
+                    return recentData.Select(MapMetricData).ToList();
                 case TileType.Weather:
-                    return recentData.Select(x => MapWeatherData(x)).ToList();
+                    return recentData.Select(MapWeatherData).ToList();
                 default:
                     return null;
             }
@@ -73,7 +72,7 @@ namespace TilesDashboard.WebApi.Mappers
             return new
             {
                 converted.Value,
-                AddedOn = converted.AddedOn,
+                converted.AddedOn,
             };
         }
 
@@ -83,9 +82,9 @@ namespace TilesDashboard.WebApi.Mappers
 
             return new
             {
-                Temperature = Math.Round(converted.Temperature.Value, 1),
-                Humidity = Math.Round(converted.Humidity.Value, 0),
-                AddedOn = converted.AddedOn,
+                Temperature = converted.Temperature.GetRoundedValue(),
+                Humidity = converted.Humidity.GetRoundedValue(),
+                converted.AddedOn,
             };
         }
     }

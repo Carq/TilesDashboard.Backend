@@ -59,7 +59,7 @@ namespace TilesDashboard.Core.Domain.Services
                null,
                token);
 
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Metric), token);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Metric, new { metricData.Value, metricData.AddedOn }), token);
         }
 
         private static FilterDefinition<TileDbEntity> Filter(string tileName)
