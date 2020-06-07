@@ -8,6 +8,7 @@ using TilesDashboard.Contract.Enums;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
@@ -24,8 +25,8 @@ namespace TilesDashboard.Core.Domain.Services
 
         private readonly IEventDispatcher _eventDispatcher;
 
-        public WeatherService(ITileContext context, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
-            : base(context)
+        public WeatherService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
+            : base(context, tilesRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));

@@ -13,6 +13,6 @@ namespace TilesDashboard.Core.Storage.Entities
 
         public BsonDocument Configuration { get; set; }
 
-        public int Name { get; private set; }
+        public string Group { get; set; }
     }
 }

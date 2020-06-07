@@ -8,7 +8,7 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public interface IMetricService
     {
-        Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken token);
+        Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken cancellationToken);
 
         Task<IList<MetricData>> GetMetricRecentDataAsync(string tileName, int amountOfData, CancellationToken token);
     }
