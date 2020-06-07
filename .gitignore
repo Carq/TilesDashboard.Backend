@@ -61,3 +61,5 @@ _[Ss]cripts
 *.ncrunchsolution
 
 _ReSharper.Caches
+/azureDeploy
+/TilesDashboard.WebApi/Properties/PublishProfiles

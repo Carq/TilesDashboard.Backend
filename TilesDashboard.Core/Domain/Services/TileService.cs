@@ -9,12 +9,9 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
-using TilesDashboard.Core.Domain.Extensions;
-using TilesDashboard.Core.Entities;
-using TilesDashboard.Core.Exceptions;
+using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.Core.Domain.Services
 {
@@ -22,18 +19,19 @@ namespace TilesDashboard.Core.Domain.Services
     {
         private readonly ITileContext _context;
 
-        public TileService(ITileContext context)
+        public TileService(ITileContext context, ITilesRepository tilesRepository)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            TilesRepository = tilesRepository ?? throw new ArgumentNullException(nameof(tilesRepository));
         }
 
-        public async Task<IList<GenericTileWithCurrentData>> GetAllAsync(int amountOfData, CancellationToken token)
+        protected ITilesRepository TilesRepository { get; }
+
+        public async Task<IList<GenericTileWithCurrentData>> GetAllAsync(int amountOfData, CancellationToken cancellationToken)
         {
             Guard.Argument(amountOfData, nameof(amountOfData)).GreaterThan(0);
+            var allTiles = await TilesRepository.GetAllTilesWithLimitedRecentData(amountOfData, cancellationToken);
 
-            var allTiles = await _context.GetTiles().Find(_ => true)
-                .FetchRecentData(amountOfData)
-                .ToListAsync(token);
             var tilesWithCurrentData = new List<GenericTileWithCurrentData>();
 
             foreach (var tile in allTiles)
@@ -51,24 +49,25 @@ namespace TilesDashboard.Core.Domain.Services
                     data = DeserializeData<WeatherData>(rawData).Cast<TileData>().ToList();
                 }
 
-                tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, configuration));
+                tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, new Group(tile.Group), configuration));
             }
 
             return tilesWithCurrentData;
         }
 
-        public async Task<IList<TData>> GetRecentDataAsync<TData>(string tileName, TileType type, int amountOfData, CancellationToken token)
+        public async Task SetGroupToTile(string tileName, TileType tileType, string groupName, CancellationToken cancellationToken)
+        {
+            await _context.GetTiles().UpdateOneAsync(
+                Filter(tileName),
+                Builders<TileDbEntity>.Update.Set(x => x.Group, groupName),
+                null,
+                cancellationToken);
+        }
+
+        public async Task<IList<TData>> GetRecentDataAsync<TData>(string tileName, TileType type, int amountOfData, CancellationToken cancellationToken)
             where TData : TileData
         {
-            var tileDbEntity = await _context.GetTiles().Find(x => x.Id.Name.ToLowerInvariant() == tileName.ToLowerInvariant() && x.Id.TileType == type)
-                .FetchRecentData(amountOfData)
-                .SingleOrDefaultAsync(token);
-
-            if (tileDbEntity.NotExists())
-            {
-                throw new NotFoundException($"Tile {tileName} with Type {type} does not exist.");
-            }
-
+            var tileDbEntity = await TilesRepository.GetTileWithLimitedRecentData(tileName, type, amountOfData, cancellationToken);
             var rawWeatherData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).TakeLast(amountOfData);
             return DeserializeData<TData>(rawWeatherData);
         }
@@ -83,6 +82,13 @@ namespace TilesDashboard.Core.Domain.Services
             }
 
             return result.OrderByDescending(x => x.AddedOn).ToList();
+        }
+
+        private FilterDefinition<TileDbEntity> Filter(string tileName)
+        {
+            return Builders<TileDbEntity>.Filter.And(
+                Builders<TileDbEntity>.Filter.Eq(x => x.Id.Name, tileName),
+                Builders<TileDbEntity>.Filter.Eq(x => x.Id.TileType, TileType.Weather));
         }
     }
 }

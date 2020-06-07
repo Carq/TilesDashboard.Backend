@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using TilesDashboard.Core.Domain.Enums;
 
-namespace TilesDashboard.Core.Entities
+namespace TilesDashboard.Core.Domain.Entities
 {
     public class MetricConfiguration
     {

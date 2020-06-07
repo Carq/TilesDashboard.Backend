@@ -11,6 +11,8 @@ namespace TilesDashboard.Contract
 
         public IList<object> Data { get; } = new List<object>();
 
+        public GroupDto Group { get; set; }
+
         public object Configuration { get; set; }
     }
 }

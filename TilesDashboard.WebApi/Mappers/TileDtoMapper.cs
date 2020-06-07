@@ -21,6 +21,7 @@ namespace TilesDashboard.WebApi.Mappers
                     Name = item.Name,
                     Type = item.Type.Convert<TileTypeDto>(),
                     Configuration = item.Configuration,
+                    Group = item.Group != null ? new GroupDto(item.Group.Name, item.Group.Order) : null,
                 };
 
                 tileWithDataDto.Data.AddRange(Map(item.Type, item.Data));
@@ -48,19 +49,6 @@ namespace TilesDashboard.WebApi.Mappers
                     return recentData.Select(MapMetricData).ToList();
                 case TileType.Weather:
                     return recentData.Select(MapWeatherData).ToList();
-                default:
-                    return null;
-            }
-        }
-
-        private static object Map(TileType type, TileData currentData)
-        {
-            switch (type)
-            {
-                case TileType.Metric:
-                    return MapMetricData(currentData);
-                case TileType.Weather:
-                    return MapWeatherData(currentData);
                 default:
                     return null;
             }

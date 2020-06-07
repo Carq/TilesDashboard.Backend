@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,13 @@ namespace TilesDashboard.WebApi.Controllers
         public async Task<IList<object>> GetWeatherRecentData(string tileName, CancellationToken cancellationToken)
         {
             return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, AmountOfDate, cancellationToken));
+        }
+
+        [HttpPost("{tileType}/{tileName}/group")]
+        [BearerAuthorization]
+        public async Task SetTileGroup(string tileType, string tileName, [FromBody]string group, CancellationToken cancellationToken)
+        {
+            await _tileService.SetGroupToTile(tileName, Enum.Parse<TileType>(tileType), group, cancellationToken);
         }
 
         [HttpPost("weather/{tileName}/record")]
