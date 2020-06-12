@@ -12,6 +12,7 @@ using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
+using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.Core.Domain.Services
 {
@@ -19,11 +20,14 @@ namespace TilesDashboard.Core.Domain.Services
     {
         private readonly ITileContext _context;
 
-        public TileService(ITileContext context, ITilesRepository tilesRepository)
+        public TileService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             TilesRepository = tilesRepository ?? throw new ArgumentNullException(nameof(tilesRepository));
+            DateTimeOffsetProvider = dateTimeOffsetProvider;
         }
+
+        protected IDateTimeOffsetProvider DateTimeOffsetProvider { get; }
 
         protected ITilesRepository TilesRepository { get; }
 
@@ -70,6 +74,13 @@ namespace TilesDashboard.Core.Domain.Services
             var tileDbEntity = await TilesRepository.GetTileWithLimitedRecentData(tileName, type, amountOfData, cancellationToken);
             var rawWeatherData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).TakeLast(amountOfData);
             return DeserializeData<TData>(rawWeatherData);
+        }
+
+        public async Task<IList<TData>> GetTodayDataAsync<TData>(string tileName, TileType type, CancellationToken cancellationToken)
+            where TData : TileData
+        {
+            var tileDbEntity = await TilesRepository.GetTileDataForOneDay(tileName, type, DateTimeOffsetProvider.Now.Date, cancellationToken);
+            return DeserializeData<TData>(tileDbEntity?.Data ?? Array.Empty<BsonDocument>());
         }
 
         protected static List<TData> DeserializeData<TData>(IEnumerable<BsonDocument> rawData)

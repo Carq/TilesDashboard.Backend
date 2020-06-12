@@ -21,15 +21,12 @@ namespace TilesDashboard.Core.Domain.Services
     {
         private readonly ITileContext _context;
 
-        private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
-
         private readonly IEventDispatcher _eventDispatcher;
 
         public WeatherService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
-            : base(context, tilesRepository)
+            : base(context, tilesRepository, dateTimeOffsetProvider)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
             _eventDispatcher = eventDispatcher ?? throw new ArgumentNullException(nameof(eventDispatcher));
         }
 
@@ -38,9 +35,14 @@ namespace TilesDashboard.Core.Domain.Services
             return await GetRecentDataAsync<WeatherData>(tileName, TileType.Weather, amountOfData, token);
         }
 
+        public async Task<IList<WeatherData>> GetWeatherTodayDataAsync(string tileName, CancellationToken token)
+        {
+            return await GetTodayDataAsync<WeatherData>(tileName, TileType.Weather, token);
+        }
+
         public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage humidity, DateTimeOffset? dateOfChange, CancellationToken token)
         {
-            var weatherData = new WeatherData(temperature, humidity, dateOfChange ?? _dateTimeOffsetProvider.Now);
+            var weatherData = new WeatherData(temperature, humidity, dateOfChange ?? DateTimeOffsetProvider.Now);
             var result = await _context.GetTiles().UpdateOneAsync(
                 Filter(tileName),
                 Builders<TileDbEntity>.Update.Push(x => x.Data, weatherData.ToBsonDocument()),

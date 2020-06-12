@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.Extensions;
@@ -31,9 +33,9 @@ namespace TilesDashboard.Core.Domain.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<TileDbEntity> GetTileWithLimitedRecentData(string tileName, TileType tileType, int amountOfRecentData, CancellationToken cancellationToken)
+        public async Task<TileDbEntity> GetTileWithLimitedRecentData(string tileName, TileType type, int amountOfRecentData, CancellationToken cancellationToken)
         {
-            var filter = TileDbEntityExtensions.TileDbFilter(tileName, tileType);
+            var filter = TileDbEntityExtensions.TileDbFilter(tileName, type);
             var projection = Builders<TileDbEntity>.Projection.FetchRecentData(amountOfRecentData).FetchGroup().FetchConfiguration();
 
             var tile = await _context.GetTiles()
@@ -47,6 +49,25 @@ namespace TilesDashboard.Core.Domain.Repositories
             }
 
             return tile;
+        }
+
+        public async Task<TileDbEntity> GetTileDataForOneDay(string tileName, TileType type, DateTimeOffset nowDate, CancellationToken cancellationToken)
+        {
+            var filter = TileDbEntityExtensions.TileDbFilter(tileName, type);
+            var onlyToday = Builders<BsonDocument>.Filter.And(
+                Builders<BsonDocument>.Filter.Gte($"{nameof(TileDbEntity.Data)}.{nameof(TileData.AddedOn)}", nowDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
+                Builders<BsonDocument>.Filter.Lt($"{nameof(TileDbEntity.Data)}.{nameof(TileData.AddedOn)}", nowDate.AddDays(1).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)));
+
+            var group = BsonSerializer.Deserialize<BsonDocument>($"{{ _id: \"$_id\", Data: {{ $push: \"$Data\" }} }}");
+
+            return await _context.GetTiles()
+                .Aggregate()
+                .Match(filter)
+                .Unwind(x => x.Data)
+                .Match(onlyToday)
+                .Group(group)
+                .As<TileDbEntity>()
+                .SingleOrDefaultAsync(cancellationToken);
         }
 
         public async Task<TileDbEntity> GetTileWithoutData(string tileName, TileType tileType, CancellationToken cancellationToken)

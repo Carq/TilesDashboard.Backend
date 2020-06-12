@@ -45,6 +45,12 @@ namespace TilesDashboard.WebApi.Controllers
             return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, AmountOfDate, cancellationToken));
         }
 
+        [HttpGet("weather/{tileName}/today")]
+        public async Task<IList<object>> GetWeatherTodayData(string tileName, CancellationToken cancellationToken)
+        {
+            return TileDtoMapper.Map(await _weatherService.GetWeatherTodayDataAsync(tileName, cancellationToken));
+        }
+
         [HttpPost("{tileType}/{tileName}/group")]
         [BearerAuthorization]
         public async Task SetTileGroup(string tileType, string tileName, [FromBody]string group, CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
@@ -11,7 +12,9 @@ namespace TilesDashboard.Core.Domain.Repositories
     {
         Task<IList<TileDbEntity>> GetAllTilesWithLimitedRecentData(int amountOfRecentData, CancellationToken cancellationToken);
 
-        Task<TileDbEntity> GetTileWithLimitedRecentData(string tileName, TileType tileType, int amountOfRecentData, CancellationToken cancellationToken);
+        Task<TileDbEntity> GetTileWithLimitedRecentData(string tileName, TileType type, int amountOfRecentData, CancellationToken cancellationToken);
+
+        Task<TileDbEntity> GetTileDataForOneDay(string tileName, TileType type, DateTimeOffset nowDate, CancellationToken cancellationToken);
 
         Task<TileDbEntity> GetTileWithoutData(string tileName, TileType tileType, CancellationToken cancellationToken);
 
