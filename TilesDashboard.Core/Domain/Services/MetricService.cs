@@ -4,16 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
 using TilesDashboard.Contract.Enums;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
-using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
-using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 
@@ -21,17 +18,11 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public class MetricService : TileService, IMetricService
     {
-        private readonly ITileContext _context;
-
-        private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
-
         private readonly IEventDispatcher _eventDispatcher;
 
         public MetricService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
-            : base(context, tilesRepository)
+            : base(context, tilesRepository, dateTimeOffsetProvider)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
             _eventDispatcher = eventDispatcher ?? throw new ArgumentNullException(nameof(eventDispatcher));
         }
 
@@ -42,7 +33,7 @@ namespace TilesDashboard.Core.Domain.Services
 
         public async Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken cancellationToken)
         {
-            var metricData = new MetricData(currentValue, metricType, _dateTimeOffsetProvider.Now);
+            var metricData = new MetricData(currentValue, metricType, DateTimeOffsetProvider.Now);
             var tile = await TilesRepository.GetTileWithoutData(tileName, TileType.Metric, cancellationToken);
 
             var metricConfiguration = BsonSerializer.Deserialize<MetricConfiguration>(tile.Configuration);
