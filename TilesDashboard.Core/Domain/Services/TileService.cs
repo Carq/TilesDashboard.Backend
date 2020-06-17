@@ -9,6 +9,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
@@ -18,14 +19,14 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public class TileService : ITileService
     {
-        private readonly ITileContext _context;
-
         public TileService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            Context = context ?? throw new ArgumentNullException(nameof(context));
             TilesRepository = tilesRepository ?? throw new ArgumentNullException(nameof(tilesRepository));
             DateTimeOffsetProvider = dateTimeOffsetProvider;
         }
+
+        protected ITileContext Context { get; }
 
         protected IDateTimeOffsetProvider DateTimeOffsetProvider { get; }
 
@@ -61,8 +62,8 @@ namespace TilesDashboard.Core.Domain.Services
 
         public async Task SetGroupToTile(string tileName, TileType tileType, string groupName, CancellationToken cancellationToken)
         {
-            await _context.GetTiles().UpdateOneAsync(
-                Filter(tileName),
+            await Context.GetTiles().UpdateOneAsync(
+                TileDbEntityExtensions.TileDbFilter(tileName, tileType),
                 Builders<TileDbEntity>.Update.Set(x => x.Group, groupName),
                 null,
                 cancellationToken);
@@ -93,13 +94,6 @@ namespace TilesDashboard.Core.Domain.Services
             }
 
             return result.OrderByDescending(x => x.AddedOn).ToList();
-        }
-
-        private FilterDefinition<TileDbEntity> Filter(string tileName)
-        {
-            return Builders<TileDbEntity>.Filter.And(
-                Builders<TileDbEntity>.Filter.Eq(x => x.Id.Name, tileName),
-                Builders<TileDbEntity>.Filter.Eq(x => x.Id.TileType, TileType.Weather));
         }
     }
 }

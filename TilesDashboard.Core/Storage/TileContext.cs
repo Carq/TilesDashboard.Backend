@@ -6,7 +6,7 @@ namespace TilesDashboard.Core.Storage
 {
     public class TileContext : ITileContext
     {
-        private readonly IMongoDatabase _database = null;
+        private readonly IMongoDatabase _database;
 
         public TileContext(IDatabaseConfiguration config)
         {

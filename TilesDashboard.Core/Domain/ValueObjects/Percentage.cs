@@ -15,6 +15,8 @@ namespace TilesDashboard.Core.Domain.ValueObjects
             Validate(value);
         }
 
+        public static Percentage Zero => new Percentage(0);
+
         public static void Validate(decimal value)
         {
             Guard.Argument(value, nameof(Percentage)).InRange(Min, Max);
