@@ -28,9 +28,9 @@ namespace TilesDashboard.WebApi.Controllers
 
         public TilesController(IWeatherServices weatherServices, IMetricService metricService, ITileService tileService)
         {
-            _weatherService = weatherServices ?? throw new System.ArgumentNullException(nameof(weatherServices));
-            _metricService = metricService ?? throw new System.ArgumentNullException(nameof(weatherServices));
-            _tileService = tileService ?? throw new System.ArgumentNullException(nameof(tileService));
+            _weatherService = weatherServices ?? throw new ArgumentNullException(nameof(weatherServices));
+            _metricService = metricService ?? throw new ArgumentNullException(nameof(weatherServices));
+            _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));
         }
 
         [HttpGet("all")]
@@ -63,6 +63,13 @@ namespace TilesDashboard.WebApi.Controllers
         public async Task RecordWeatherData(string tileName, [FromBody]RecordWeatherDataDto weatherDataDto, CancellationToken cancellationToken)
         {
             await _weatherService.RecordWeatherDataAsync(tileName, new Temperature(weatherDataDto.Temperature), new Percentage(weatherDataDto.Humidity), null, cancellationToken);
+        }
+
+        [HttpDelete("weather/{tileName}/removeFakeData")]
+        [BearerAuthorization]
+        public async Task RemoveWeatherFakeData(string tileName, CancellationToken cancellationToken)
+        {
+            await _weatherService.RemoveFakeDataAsync(tileName, cancellationToken);
         }
 
         [HttpGet("metric/{tileName}/recent")]

@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.Contract
+﻿namespace TilesDashboard.Contract.RecordData
 {
     public class RecordValueDto<TValue>
     {

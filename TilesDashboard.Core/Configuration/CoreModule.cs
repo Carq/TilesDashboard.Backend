@@ -13,6 +13,8 @@ namespace TilesDashboard.Core.Configuration
             builder.RegisterType<TileContext>().As<ITileContext>();
             builder.RegisterType<TilesRepository>().As<ITilesRepository>();
             builder.RegisterType<TileService>().As<ITileService>();
+
+            builder.RegisterType<WeatherRepository>().As<IWeatherRepository>();
             builder.RegisterType<WeatherService>().As<IWeatherServices>();
             builder.RegisterType<MetricService>().As<IMetricService>();
             builder.RegisterType<EventDispatcher>().As<IEventDispatcher>();

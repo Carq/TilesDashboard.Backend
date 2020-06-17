@@ -9,6 +9,8 @@ namespace TilesDashboard.Core.Domain.ValueObjects
         {
         }
 
+        public static Temperature Zero => new Temperature(0);
+
         public decimal GetRoundedValue()
         {
             return Math.Round(Value, 1);

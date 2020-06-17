@@ -14,5 +14,7 @@ namespace TilesDashboard.Core.Domain.Services
         Task<IList<WeatherData>> GetWeatherTodayDataAsync(string tileName, CancellationToken token);
 
         Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage humidity, DateTimeOffset? dateOfChange, CancellationToken token);
+
+        Task RemoveFakeDataAsync(string tileName, CancellationToken cancellationToken);
     }
 }
