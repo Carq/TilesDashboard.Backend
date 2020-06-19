@@ -32,9 +32,9 @@ namespace TilesDashboard.Core.Domain.Services
             return await GetRecentDataAsync<WeatherData>(tileName, TileType.Weather, amountOfData, token);
         }
 
-        public async Task<IList<WeatherData>> GetWeatherDataFromLast24hAsync(string tileName, CancellationToken token)
+        public async Task<IList<WeatherData>> GetWeatherDataSinceAsync(string tileName, int since, CancellationToken token)
         {
-            return await GetDataSinceAsync<WeatherData>(tileName, TileType.Weather, DateTimeOffsetProvider.Now.AddDays(-1), token);
+            return await GetDataSinceAsync<WeatherData>(tileName, TileType.Weather, DateTimeOffsetProvider.Now.AddHours(-since), token);
         }
 
         public async Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage humidity, DateTimeOffset? dateOfChange, CancellationToken token)

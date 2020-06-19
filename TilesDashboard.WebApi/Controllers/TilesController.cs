@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -45,10 +46,10 @@ namespace TilesDashboard.WebApi.Controllers
             return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, AmountOfDate, cancellationToken));
         }
 
-        [HttpGet("weather/{tileName}/last24h")]
-        public async Task<IList<object>> GetWeatherTodayData(string tileName, CancellationToken cancellationToken)
+        [HttpGet("weather/{tileName}/since")]
+        public async Task<IList<object>> GetWeatherDataSince(string tileName, [FromQuery][Required][Range(1, 24)] int hours, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _weatherService.GetWeatherDataFromLast24hAsync(tileName, cancellationToken));
+            return TileDtoMapper.Map(await _weatherService.GetWeatherDataSinceAsync(tileName, hours, cancellationToken));
         }
 
         [HttpPost("{tileType}/{tileName}/group")]
