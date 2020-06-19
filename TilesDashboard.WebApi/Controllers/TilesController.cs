@@ -45,10 +45,10 @@ namespace TilesDashboard.WebApi.Controllers
             return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, AmountOfDate, cancellationToken));
         }
 
-        [HttpGet("weather/{tileName}/today")]
+        [HttpGet("weather/{tileName}/last24h")]
         public async Task<IList<object>> GetWeatherTodayData(string tileName, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _weatherService.GetWeatherTodayDataAsync(tileName, cancellationToken));
+            return TileDtoMapper.Map(await _weatherService.GetWeatherDataFromLast24hAsync(tileName, cancellationToken));
         }
 
         [HttpPost("{tileType}/{tileName}/group")]

@@ -77,10 +77,10 @@ namespace TilesDashboard.Core.Domain.Services
             return DeserializeData<TData>(rawWeatherData);
         }
 
-        public async Task<IList<TData>> GetTodayDataAsync<TData>(string tileName, TileType type, CancellationToken cancellationToken)
+        public async Task<IList<TData>> GetDataSinceAsync<TData>(string tileName, TileType type, DateTimeOffset sinceDate, CancellationToken cancellationToken)
             where TData : TileData
         {
-            var tileDbEntity = await TilesRepository.GetTileDataForOneDay(tileName, type, DateTimeOffsetProvider.Now.Date, cancellationToken);
+            var tileDbEntity = await TilesRepository.GetTileDataSince(tileName, type, sinceDate, cancellationToken);
             return DeserializeData<TData>(tileDbEntity?.Data ?? Array.Empty<BsonDocument>());
         }
 

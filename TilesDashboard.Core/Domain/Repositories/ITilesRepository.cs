@@ -14,7 +14,7 @@ namespace TilesDashboard.Core.Domain.Repositories
 
         Task<TileDbEntity> GetTileWithLimitedRecentData(string tileName, TileType type, int amountOfRecentData, CancellationToken cancellationToken);
 
-        Task<TileDbEntity> GetTileDataForOneDay(string tileName, TileType type, DateTimeOffset nowDate, CancellationToken cancellationToken);
+        Task<TileDbEntity> GetTileDataSince(string tileName, TileType type, DateTimeOffset sinceDate, CancellationToken cancellationToken);
 
         Task<TileDbEntity> GetTileWithoutData(string tileName, TileType tileType, CancellationToken cancellationToken);
 

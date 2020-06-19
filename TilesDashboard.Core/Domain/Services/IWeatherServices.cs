@@ -11,7 +11,7 @@ namespace TilesDashboard.Core.Domain.Services
     {
         Task<IList<WeatherData>> GetWeatherRecentDataAsync(string tileName, int amountOfData, CancellationToken token);
 
-        Task<IList<WeatherData>> GetWeatherTodayDataAsync(string tileName, CancellationToken token);
+        Task<IList<WeatherData>> GetWeatherDataFromLast24hAsync(string tileName, CancellationToken token);
 
         Task RecordWeatherDataAsync(string tileName, Temperature temperature, Percentage humidity, DateTimeOffset? dateOfChange, CancellationToken token);
 
