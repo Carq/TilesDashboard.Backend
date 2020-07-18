@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.OpenW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugins.Terminal", "Plugins\TilesDashboard.Plugins.Terminal\TilesDashboard.Plugins.Terminal.csproj", "{F5DE5C07-108A-4FED-9365-58141B4D0B06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.Plugin.Azure.CodeCoverage", "Plugins\TilesDashboard.Plugin.Azure.CodeCoverage\TilesDashboard.Plugin.Azure.CodeCoverage.csproj", "{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{F5DE5C07-108A-4FED-9365-58141B4D0B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5DE5C07-108A-4FED-9365-58141B4D0B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5DE5C07-108A-4FED-9365-58141B4D0B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D614A6F8-814E-4E65-9471-695255A3B25A} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 		{F5DE5C07-108A-4FED-9365-58141B4D0B06} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
+		{BCE40E04-34BC-4A34-89F1-1BCFE87CF632} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5F2A81D-3D93-48C4-A41D-F37B94675B12}

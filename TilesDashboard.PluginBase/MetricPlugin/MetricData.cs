@@ -8,8 +8,13 @@ namespace TilesDashboard.PluginBase.MetricPlugin
         {
         }
 
-        public MetricData(Status status, DateTimeOffset dateOfChange) : base(status, dateOfChange)
+        public MetricData(decimal percentageCodeCoverage, Status status) : base(status)
         {
+            PercentageCodeCoverage = percentageCodeCoverage;
         }
+
+        public static MetricData Error(string errorMessage) => new MetricData(Status.Error).WithErrorMessage(errorMessage) as MetricData;
+
+        public decimal PercentageCodeCoverage { get; }
     }
 }

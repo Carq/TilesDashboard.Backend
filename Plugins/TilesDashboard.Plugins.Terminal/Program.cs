@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using TilesDashboard.Plugin.Azure.CodeCoverage;
 using TilesDashboard.Plugin.OpenWeatherMap;
 using TilesDashboard.Plugins.Terminal.Helpers;
 
@@ -11,7 +12,8 @@ namespace TilesDashboard.Plugins.Terminal
         {
             Console.WriteLine("Hello World!");
 
-            var plugin = new OpenWeatherMapPlugin(new FakePluginConfigProvider());
+            var plugin = new AzureCodeCoveragePlugin(new FakePluginConfigProvider());
+            await plugin.InitializeAsync();
             var result = await plugin.GetDataAsync();
 
             Console.ReadKey();
