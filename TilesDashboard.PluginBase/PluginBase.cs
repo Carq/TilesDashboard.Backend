@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TilesDashboard.PluginBase
@@ -21,11 +22,16 @@ namespace TilesDashboard.PluginBase
         public abstract string TileName { get; }
 
         /// <summary>
+        /// Schedule execution of GetDataAsync(). https://crontab.cronhub.io/
+        /// </summary>
+        public abstract string CronSchedule { get; }
+
+        /// <summary>
         /// Give access to config entries. Config Provider will be injected by PluginSystem.
         /// </summary>
         public IPluginConfigProvider ConfigProvider { get; }
 
-        public abstract Task<TResult> GetDataAsync();
+        public abstract Task<TResult> GetDataAsync(CancellationToken cancellation = default);
 
         public virtual Task InitializeAsync()
         {

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.MetricPlugin;
 using TilesDashboard.PluginBase.WeatherPlugin;
 
 namespace TilesDashboard.WebApi.PluginSystem
@@ -61,11 +62,26 @@ namespace TilesDashboard.WebApi.PluginSystem
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Weather plugin: \"{plugin.TileName}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
+                    _logger.LogError($"Plugin: {plugin.GetType()} \"{plugin.TileName}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
                     break;
                 }
 
                 initializedPlugins.WeatherPlugins.Add(plugin);
+            }
+
+            foreach (var plugin in loadedPlugins.MetricPlugins)
+            {
+                try
+                {
+                    await plugin.InitializeAsync();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Plugin: {plugin.GetType()} \"{plugin.TileName}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
+                    break;
+                }
+
+                initializedPlugins.MetricPlugins.Add(plugin);
             }
 
             _logger.LogInformation("Plugins have been initialized.");
@@ -89,27 +105,52 @@ namespace TilesDashboard.WebApi.PluginSystem
 
         private Plugins LoadPluginsFromAssembly(Assembly assembly)
         {
-            var weatherPlugins = new List<BaseWeatherPlugin>();
+            var weatherPlugins = new List<WeatherPluginBase>();
+            var metricPlugins = new List<MetricPluginBase>();
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(BaseWeatherPlugin).IsAssignableFrom(type))
-                {
-                    BaseWeatherPlugin plugin;
-                    if (type.GetConstructor(new[] { typeof(IPluginConfigProvider) }).Exists())
-                    {
-                        plugin = Activator.CreateInstance(type, _pluginConfigProvider) as BaseWeatherPlugin;
-                    }
-                    else
-                    {
-                        plugin = Activator.CreateInstance(type) as BaseWeatherPlugin;
-                    }
-
-                    weatherPlugins.Add(plugin);
-                }
+                GetWeatherPlugins(type, weatherPlugins);
+                GetMetricsPlugins(type, metricPlugins);
             }
 
-            _logger.LogInformation($"Loaded: {weatherPlugins.Count} Weather plugins");
-            return new Plugins(weatherPlugins);
+            _logger.LogInformation($"Loaded: {weatherPlugins.Count} Weather plugins, {metricPlugins.Count} Metric plugins.");
+            return new Plugins(weatherPlugins, metricPlugins);
+        }
+
+        private void GetWeatherPlugins(Type type, List<WeatherPluginBase> weatherPlugins)
+        {
+            if (typeof(WeatherPluginBase).IsAssignableFrom(type))
+            {
+                WeatherPluginBase plugin;
+                if (type.GetConstructor(new[] { typeof(IPluginConfigProvider) }).Exists())
+                {
+                    plugin = Activator.CreateInstance(type, _pluginConfigProvider) as WeatherPluginBase;
+                }
+                else
+                {
+                    plugin = Activator.CreateInstance(type) as WeatherPluginBase;
+                }
+
+                weatherPlugins.Add(plugin);
+            }
+        }
+
+        private void GetMetricsPlugins(Type type, List<MetricPluginBase> metricPlugins)
+        {
+            if (typeof(MetricPluginBase).IsAssignableFrom(type))
+            {
+                MetricPluginBase plugin;
+                if (type.GetConstructor(new[] { typeof(IPluginConfigProvider) }).Exists())
+                {
+                    plugin = Activator.CreateInstance(type, _pluginConfigProvider) as MetricPluginBase;
+                }
+                else
+                {
+                    plugin = Activator.CreateInstance(type) as MetricPluginBase;
+                }
+
+                metricPlugins.Add(plugin);
+            }
         }
     }
 }
