@@ -8,7 +8,7 @@ namespace TilesDashboard.TestPlugins.Weather
     public class TestWeatherPlugin : BaseWeatherPlugin
     {
         public TestWeatherPlugin(IPluginConfigProvider pluginConfigProvider) 
-            :base (pluginConfigProvider)
+            : base(pluginConfigProvider)
         {
         }
 
