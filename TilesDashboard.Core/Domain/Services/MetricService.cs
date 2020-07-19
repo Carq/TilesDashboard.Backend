@@ -31,6 +31,11 @@ namespace TilesDashboard.Core.Domain.Services
             return await GetRecentDataAsync<MetricData>(tileName, TileType.Metric, amountOfData, token);
         }
 
+        public async Task<IList<MetricData>> GetMetricDataSinceAsync(string tileName, int sinceDays, CancellationToken token)
+        {
+            return await GetDataSinceAsync<MetricData>(tileName, TileType.Metric, DateTimeOffsetProvider.Now.AddDays(-sinceDays), token);
+        }
+
         public async Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken cancellationToken)
         {
             var metricData = new MetricData(currentValue, metricType, DateTimeOffsetProvider.Now);
