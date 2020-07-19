@@ -1,4 +1,5 @@
 ﻿using System;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.PluginBase.MetricPlugin
 {

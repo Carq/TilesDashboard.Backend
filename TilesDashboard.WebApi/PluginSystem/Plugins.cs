@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase.MetricPlugin;
-using TilesDashboard.PluginBase.WeatherPlugin;
+using TilesDashboard.PluginBase;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
-    public class Plugins
+    public class Plugins : IEnumerable<IPlugin>
     {
-        public Plugins(IList<WeatherPluginBase> weatherPlugins, IList<MetricPluginBase> metricPlugins)
+        public Plugins(IList<IPlugin> plugins)
         {
-            WeatherPlugins.AddRange(weatherPlugins);
-            MetricPlugins.AddRange(metricPlugins);
+            LoadedPlugins.AddRange(plugins);
         }
 
         public Plugins()
@@ -19,14 +18,20 @@ namespace TilesDashboard.WebApi.PluginSystem
 
         public static Plugins NoPluginsLoaded => new Plugins();
 
-        public IList<WeatherPluginBase> WeatherPlugins { get; } = new List<WeatherPluginBase>();
+        public IList<IPlugin> LoadedPlugins { get; } = new List<IPlugin>();
 
-        public IList<MetricPluginBase> MetricPlugins { get; } = new List<MetricPluginBase>();
+        public void Add(IPlugin plugin)
+        {
+            LoadedPlugins.Add(plugin);
+        }
 
         public void Merge(Plugins loadedPlugins)
         {
-            WeatherPlugins.AddRange(loadedPlugins.WeatherPlugins);
-            MetricPlugins.AddRange(loadedPlugins.MetricPlugins);
+            LoadedPlugins.AddRange(loadedPlugins.LoadedPlugins);
         }
+
+        public IEnumerator<IPlugin> GetEnumerator() => LoadedPlugins.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

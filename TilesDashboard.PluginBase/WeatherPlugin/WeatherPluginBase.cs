@@ -1,4 +1,6 @@
-﻿namespace TilesDashboard.PluginBase.WeatherPlugin
+﻿using TilesDashboard.Core.Type;
+
+namespace TilesDashboard.PluginBase.WeatherPlugin
 {
     public abstract class WeatherPluginBase : PluginBase<WeatherData>
     {
@@ -10,5 +12,7 @@
         protected WeatherPluginBase()
         {
         }
+
+        public override TileType TileType => TileType.Weather;
     }
 }

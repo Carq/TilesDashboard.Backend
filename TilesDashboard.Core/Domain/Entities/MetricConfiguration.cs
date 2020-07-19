@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TilesDashboard.Core.Domain.Enums;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.Core.Domain.Entities
 {

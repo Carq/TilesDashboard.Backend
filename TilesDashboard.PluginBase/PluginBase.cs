@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.PluginBase
 {
-    public abstract class PluginBase<TResult>
+    public abstract class PluginBase<TResult> : IPlugin
         where TResult : Result
     {
         public PluginBase(IPluginConfigProvider configProvider)
@@ -16,14 +17,13 @@ namespace TilesDashboard.PluginBase
         {
         }
 
-        /// <summary>
-        /// Tile Name which is used to update Tile in database and to display tile name on frontend.
-        /// </summary>
+        /// <inheritdoc/>
         public abstract string TileName { get; }
 
-        /// <summary>
-        /// Schedule execution of GetDataAsync(). https://crontab.cronhub.io/
-        /// </summary>
+        /// <inheritdoc/>
+        public abstract TileType TileType { get; }
+
+        /// <inheritdoc/>
         public abstract string CronSchedule { get; }
 
         /// <summary>

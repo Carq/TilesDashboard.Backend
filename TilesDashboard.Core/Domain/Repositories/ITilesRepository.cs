@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
-using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Storage.Entities;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.Core.Domain.Repositories
 {

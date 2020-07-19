@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using TilesDashboard.Contract.Enums;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
-using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 

@@ -17,20 +17,24 @@ namespace TilesDashboard.Plugin.OpenWeatherMap
 
         private string _cronSchedule;
 
+        private string _tileName;
+
         public OpenWeatherMapPlugin(IPluginConfigProvider pluginConfigProvider)
             : base(pluginConfigProvider)
         {
         }
 
-        public override string TileName => "Gliwice";
+        public override string TileName => _tileName;
 
-        public override string CronSchedule => "*/10 * * * * *";
+        public override string CronSchedule => _cronSchedule;
 
         public override Task InitializeAsync()
         {
             _apiKey = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:ApiKey");
             _cityId = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:CityId");
             _cronSchedule = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:CronSchedule");
+            _tileName = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:TileName");
+
             return Task.CompletedTask;
         }
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Plugin.Azure.CodeCoverage.Dtos;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.MetricPlugin;
