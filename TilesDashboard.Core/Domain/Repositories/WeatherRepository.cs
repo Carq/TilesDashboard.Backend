@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
-using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.Core.Domain.Repositories
 {

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.WeatherPlugin;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
@@ -30,7 +31,7 @@ namespace TilesDashboard.WebApi.PluginSystem
             var pluginsFolder = Path.Combine(rootPath, _pluginFolder);
             if (!Directory.Exists(pluginsFolder))
             {
-                _logger.LogInformation("Plugin folder does not exist, plugins will not be loaded.");
+                _logger.LogInformation("Plugin folder does not exist, plugins are not be loaded.");
                 return Plugins.NoPluginsLoaded;
             }
 
@@ -53,7 +54,7 @@ namespace TilesDashboard.WebApi.PluginSystem
             _logger.LogInformation("Initialazing plugins...");
 
             var initializedPlugins = new Plugins();
-            foreach (var plugin in loadedPlugins.WeatherPlugins)
+            foreach (var plugin in loadedPlugins)
             {
                 try
                 {
@@ -61,11 +62,11 @@ namespace TilesDashboard.WebApi.PluginSystem
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Weather plugin: \"{plugin.TileName}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
-                    break;
+                    _logger.LogError($"Plugin: {plugin.GetType()} \"{plugin.TileType}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
+                    continue;
                 }
 
-                initializedPlugins.WeatherPlugins.Add(plugin);
+                initializedPlugins.Add(plugin);
             }
 
             _logger.LogInformation("Plugins have been initialized.");
@@ -89,27 +90,27 @@ namespace TilesDashboard.WebApi.PluginSystem
 
         private Plugins LoadPluginsFromAssembly(Assembly assembly)
         {
-            var weatherPlugins = new List<BaseWeatherPlugin>();
+            var plugins = new List<IPlugin>();
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(BaseWeatherPlugin).IsAssignableFrom(type))
+                if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsAbstract)
                 {
-                    BaseWeatherPlugin plugin;
+                    IPlugin plugin;
                     if (type.GetConstructor(new[] { typeof(IPluginConfigProvider) }).Exists())
                     {
-                        plugin = Activator.CreateInstance(type, _pluginConfigProvider) as BaseWeatherPlugin;
+                        plugin = Activator.CreateInstance(type, _pluginConfigProvider) as IPlugin;
                     }
                     else
                     {
-                        plugin = Activator.CreateInstance(type) as BaseWeatherPlugin;
+                        plugin = Activator.CreateInstance(type) as IPlugin;
                     }
 
-                    weatherPlugins.Add(plugin);
+                    plugins.Add(plugin);
                 }
             }
 
-            _logger.LogInformation($"Loaded: {weatherPlugins.Count} Weather plugins");
-            return new Plugins(weatherPlugins);
+            _logger.LogInformation($"Loaded: {plugins.Count(x => x.TileType.Is(TileType.Weather))} Weather plugins, {plugins.Count(x => x.TileType.Is(TileType.Metric))} Metric plugins.");
+            return new Plugins(plugins);
         }
     }
 }

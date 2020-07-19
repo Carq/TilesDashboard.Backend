@@ -1,4 +1,5 @@
 ﻿using System;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.PluginBase.MetricPlugin
 {
@@ -8,13 +9,16 @@ namespace TilesDashboard.PluginBase.MetricPlugin
         {
         }
 
-        public MetricData(decimal percentageCodeCoverage, Status status) : base(status)
+        public MetricData(decimal percentageCodeCoverage, MetricType metric, Status status) : base(status)
         {
             PercentageCodeCoverage = percentageCodeCoverage;
+            MetricType = metric;
         }
 
         public static MetricData Error(string errorMessage) => new MetricData(Status.Error).WithErrorMessage(errorMessage) as MetricData;
 
         public decimal PercentageCodeCoverage { get; }
+
+        public MetricType MetricType { get; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.Core.Domain.Enums
+﻿namespace TilesDashboard.Core.Type
 {
     public enum MetricType
     {

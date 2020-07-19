@@ -4,6 +4,7 @@ using TilesDashboard.Core.Configuration;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
+using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Hubs;
 using TilesDashboard.WebApi.PluginSystem;
 
@@ -25,6 +26,8 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<PluginLoader>().As<IPluginLoader>();
             builder.RegisterType<PluginSystemConfig>().As<IPluginSystemConfig>();
             builder.RegisterType<PluginConfigProvider>().As<IPluginConfigProvider>();
+            builder.RegisterType<WeatherPluginHandler>();
+            builder.RegisterType<MetricPluginHandler>();
         }
     }
 }

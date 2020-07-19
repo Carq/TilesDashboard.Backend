@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using TilesDashboard.Core.Type;
 
 namespace TilesDashboard.PluginBase
 {
-    public abstract class PluginBase<TResult>
+    public abstract class PluginBase<TResult> : IPlugin
         where TResult : Result
     {
         public PluginBase(IPluginConfigProvider configProvider)
@@ -15,17 +17,21 @@ namespace TilesDashboard.PluginBase
         {
         }
 
-        /// <summary>
-        /// Tile Name which is used to update Tile in database and to display tile name on frontend.
-        /// </summary>
+        /// <inheritdoc/>
         public abstract string TileName { get; }
+
+        /// <inheritdoc/>
+        public abstract TileType TileType { get; }
+
+        /// <inheritdoc/>
+        public abstract string CronSchedule { get; }
 
         /// <summary>
         /// Give access to config entries. Config Provider will be injected by PluginSystem.
         /// </summary>
         public IPluginConfigProvider ConfigProvider { get; }
 
-        public abstract Task<TResult> GetDataAsync();
+        public abstract Task<TResult> GetDataAsync(CancellationToken cancellation = default);
 
         public virtual Task InitializeAsync()
         {

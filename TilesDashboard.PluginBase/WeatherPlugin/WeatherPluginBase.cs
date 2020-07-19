@@ -1,14 +1,18 @@
-﻿namespace TilesDashboard.PluginBase.WeatherPlugin
+﻿using TilesDashboard.Core.Type;
+
+namespace TilesDashboard.PluginBase.WeatherPlugin
 {
-    public abstract class BaseWeatherPlugin : PluginBase<WeatherData>
+    public abstract class WeatherPluginBase : PluginBase<WeatherData>
     {
-        protected BaseWeatherPlugin(IPluginConfigProvider pluginConfigProvider)
+        protected WeatherPluginBase(IPluginConfigProvider pluginConfigProvider)
             : base(pluginConfigProvider)
         {
         }
 
-        protected BaseWeatherPlugin()
+        protected WeatherPluginBase()
         {
         }
+
+        public override TileType TileType => TileType.Weather;
     }
 }

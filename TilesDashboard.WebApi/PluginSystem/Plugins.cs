@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase.WeatherPlugin;
+using TilesDashboard.PluginBase;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
-    public class Plugins
+    public class Plugins : IEnumerable<IPlugin>
     {
-        public Plugins(IList<BaseWeatherPlugin> weatherPlugins)
+        public Plugins(IList<IPlugin> plugins)
         {
-            WeatherPlugins.AddRange(weatherPlugins);
+            LoadedPlugins.AddRange(plugins);
         }
 
         public Plugins()
@@ -17,11 +18,20 @@ namespace TilesDashboard.WebApi.PluginSystem
 
         public static Plugins NoPluginsLoaded => new Plugins();
 
-        public IList<BaseWeatherPlugin> WeatherPlugins { get; } = new List<BaseWeatherPlugin>();
+        public IList<IPlugin> LoadedPlugins { get; } = new List<IPlugin>();
+
+        public void Add(IPlugin plugin)
+        {
+            LoadedPlugins.Add(plugin);
+        }
 
         public void Merge(Plugins loadedPlugins)
         {
-            WeatherPlugins.AddRange(loadedPlugins.WeatherPlugins);
+            LoadedPlugins.AddRange(loadedPlugins.LoadedPlugins);
         }
+
+        public IEnumerator<IPlugin> GetEnumerator() => LoadedPlugins.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }

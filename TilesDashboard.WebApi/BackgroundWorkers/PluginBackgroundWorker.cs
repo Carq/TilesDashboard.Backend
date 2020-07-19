@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.Core.Domain.Services;
-using TilesDashboard.Core.Domain.ValueObjects;
-using TilesDashboard.Handy.Extensions;
+using NCrontab;
+using TilesDashboard.Core.Type;
+using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
-using TilesDashboard.WebApi.Configuration;
+using TilesDashboard.PluginBase.MetricPlugin;
+using TilesDashboard.PluginBase.WeatherPlugin;
 using TilesDashboard.WebApi.PluginSystem;
 using TilesDashboard.WebApi.PluginSystem.Extensions;
 
@@ -19,54 +21,88 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
 
         private readonly IPluginLoader _pluginLoader;
 
-        private readonly IWeatherServices _weatherServices;
+        private readonly IDateTimeOffsetProvider _dateTimeProvider;
 
-        private readonly IPluginSystemConfig _pluginSystemConfig;
+        private readonly MetricPluginHandler _metricPluginHandler;
 
-        public PluginBackgroundWorker(IWeatherServices weatherServices, IPluginLoader pluginLoader, IPluginSystemConfig config, ILogger<PluginBackgroundWorker> logger)
+        private readonly WeatherPluginHandler _weatherPluginHandler;
+
+        public PluginBackgroundWorker(
+            IPluginLoader pluginLoader,
+            ILogger<PluginBackgroundWorker> logger,
+            IDateTimeOffsetProvider dateTimeProvider,
+            MetricPluginHandler metricPluginHandler,
+            WeatherPluginHandler weatherPluginHandler = null)
         {
-            _weatherServices = weatherServices ?? throw new ArgumentNullException(nameof(weatherServices));
             _pluginLoader = pluginLoader ?? throw new ArgumentNullException(nameof(pluginLoader));
-            _pluginSystemConfig = config ?? throw new ArgumentNullException(nameof(config));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
+            _metricPluginHandler = metricPluginHandler;
+            _weatherPluginHandler = weatherPluginHandler;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            _logger.LogDebug("Tiles background worker started.");
+            var loadedPlugins = await _pluginLoader.LoadPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
+            foreach (var plugin in loadedPlugins)
+            {
+                SchedulePlugin(plugin, stoppingToken);
+            }
+        }
+
+        private void SchedulePlugin(IPlugin plugin, CancellationToken cancellationToken)
+        {
+            var schedule = CrontabSchedule.Parse(plugin.CronSchedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
+            DateTimeOffset nextOccurrence = schedule.GetNextOccurrence(_dateTimeProvider.Now.DateTime);
+            _logger.LogDebug($"{plugin.TileType} plugin: \"{plugin.TileName}\" - Next schedule {nextOccurrence}");
+            Observable.Timer(nextOccurrence)
+                      .Select(x => HandlePlugin(plugin, cancellationToken))
+                      .Switch()
+                      .Subscribe(
+                        plugin => SchedulePlugin(plugin, cancellationToken),
+                        exception => _logger.LogError($"Error occurs during plugin processing. Plugin will be disabled. Error: {exception.Message}", exception));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        private IObservable<IPlugin> HandlePlugin(IPlugin plugin, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Tiles background worker started.");
-            var loadedPlugins = await _pluginLoader.LoadPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
-
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                foreach (var weatherPlugin in loadedPlugins.WeatherPlugins)
+            return Observable.Create<IPlugin>(
+                async observer =>
                 {
                     try
                     {
-                        var data = await weatherPlugin.GetDataAsync();
-                        _logger.LogDebug($"Weather plugin: \"{weatherPlugin.TileName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
-                        if (data.Status.Is(Status.OK))
+                        _logger.LogDebug($"Execute GetDataAsync() for plugin: \"{plugin.TileName}\" - \"{plugin.GetType()}\"...");
+
+                        Result result = null;
+
+                        switch (plugin.TileType)
                         {
-                            await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, data.DateOfChange, stoppingToken);
+                            case TileType.Metric:
+                                var metricPlugin = (MetricPluginBase)plugin;
+                                result = await _metricPluginHandler.HandlePlugin(metricPlugin, cancellationToken);
+                                break;
+                            case TileType.Weather:
+                                var weatherPlugin = (WeatherPluginBase)plugin;
+                                result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, cancellationToken);
+                                break;
+                            default:
+                                throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
                         }
 
-                        if (data.Status.IsError())
+                        if (result.Status.IsError())
                         {
-                            _logger.LogError($"Weather plugin: \"{weatherPlugin.TileName}\" return Status \"{data.Status}\" with message: \"{data.ErrorMessage}\". Plugin will be disabled");
-                            loadedPlugins.WeatherPlugins.Remove(weatherPlugin);
-                            break;
+                            observer.OnError(new InvalidOperationException($"{plugin.TileType} plugin: \"{plugin.TileName}\" return Status \"{result.Status}\" with message: \"{result.ErrorMessage}\""));
+                            return;
                         }
+
+                        observer.OnNext(plugin);
                     }
-                    catch (Exception ex)
+                    catch (Exception exception)
                     {
-                        _logger.LogError($"Weather plugin: \"{weatherPlugin.TileName}\" threw exception. Plugin will be disabled. Error: {ex.Message}", ex);
-                        loadedPlugins.WeatherPlugins.Remove(weatherPlugin);
-                        break;
+                        observer.OnError(exception);
                     }
-                }
-
-                await Task.Delay(_pluginSystemConfig.DataRefreshIntervalInSeconds * 1000);
-            }
+                });
         }
     }
 }

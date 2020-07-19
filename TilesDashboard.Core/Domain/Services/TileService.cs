@@ -8,11 +8,11 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Core.Domain.Entities;
-using TilesDashboard.Core.Domain.Enums;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.Core.Domain.Services
