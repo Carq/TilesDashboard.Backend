@@ -10,6 +10,8 @@ namespace TilesDashboard.Core.Domain.Services
     {
         Task RecordMetricDataAsync(string tileName, MetricType metricType, decimal currentValue, CancellationToken cancellationToken);
 
+        Task<IList<MetricData>> GetMetricDataSinceAsync(string tileName, int sinceDays, CancellationToken token);
+
         Task<IList<MetricData>> GetMetricRecentDataAsync(string tileName, int amountOfData, CancellationToken token);
     }
 }

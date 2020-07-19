@@ -85,5 +85,11 @@ namespace TilesDashboard.WebApi.Controllers
         {
             await _metricService.RecordMetricDataAsync(tileName, metricData.Type.Convert<MetricType>(), metricData.Value, cancellationToken);
         }
+
+        [HttpGet("metric/{tileName}/since")]
+        public async Task<IList<object>> GetMetricDataSince(string tileName, [FromQuery][Required][Range(1, 30)] int days, CancellationToken cancellationToken)
+        {
+            return TileDtoMapper.Map(await _metricService.GetMetricDataSinceAsync(tileName, days, cancellationToken));
+        }
     }
 }
