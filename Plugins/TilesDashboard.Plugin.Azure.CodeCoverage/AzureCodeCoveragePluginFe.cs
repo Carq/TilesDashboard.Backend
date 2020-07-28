@@ -13,7 +13,7 @@ using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public class AzureCodeCoveragePlugin : MetricPluginBase
+    public class AzureCodeCoveragePluginFe : MetricPluginBase
     {
         private string _tileName;
 
@@ -27,7 +27,9 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         private string _personalAccessToken;
 
-        public AzureCodeCoveragePlugin(IPluginConfigProvider configProvider)
+        private readonly string RootConfig = "AzureCodeCoveragePluginFe";
+
+        public AzureCodeCoveragePluginFe(IPluginConfigProvider configProvider)
             : base(configProvider)
         {
 
@@ -39,16 +41,12 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         public override Task InitializeAsync()
         {
-            _organization = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:Organization");
-            _project = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:Project");
-            _tileName = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:TileName");
-            _buildDefinition = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:BuildDefinition");
-            _personalAccessToken = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:PersonalAccessToken");
-            _cronSchedule = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:CronSchedule");
-            if (string.IsNullOrWhiteSpace(_cronSchedule))
-            {
-                _cronSchedule = "*/10 * * * * *";
-            }
+            _organization = ConfigProvider.GetConfigEntry($"{RootConfig}:Organization");
+            _project = ConfigProvider.GetConfigEntry($"{RootConfig}:Project");
+            _tileName = ConfigProvider.GetConfigEntry($"{RootConfig}:TileName");
+            _buildDefinition = ConfigProvider.GetConfigEntry($"{RootConfig}:BuildDefinition");
+            _personalAccessToken = ConfigProvider.GetConfigEntry($"{RootConfig}:PersonalAccessToken");
+            _cronSchedule = ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
 
             return Task.CompletedTask;
         }

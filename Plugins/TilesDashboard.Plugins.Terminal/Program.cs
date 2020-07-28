@@ -13,7 +13,7 @@ namespace TilesDashboard.Plugins.Terminal
         {
             Console.WriteLine("Hello World!");
 
-            var plugin = new AzureCodeCoveragePlugin(new FakePluginConfigProvider());
+            var plugin = new AzureCodeCoveragePluginBe(new FakePluginConfigProvider());
             await plugin.InitializeAsync();
             var result = await plugin.GetDataAsync(CancellationToken.None);
 

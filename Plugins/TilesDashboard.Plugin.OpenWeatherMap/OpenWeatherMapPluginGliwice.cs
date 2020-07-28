@@ -7,7 +7,7 @@ using TilesDashboard.PluginBase.WeatherPlugin;
 
 namespace TilesDashboard.Plugin.OpenWeatherMap
 {
-    public class OpenWeatherMapPlugin : WeatherPluginBase
+    public class OpenWeatherMapPluginGliwice : WeatherPluginBase
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
@@ -19,7 +19,9 @@ namespace TilesDashboard.Plugin.OpenWeatherMap
 
         private string _tileName;
 
-        public OpenWeatherMapPlugin(IPluginConfigProvider pluginConfigProvider)
+        private readonly string RootConfig = "OpenWeatherMapPluginGliwice";
+
+        public OpenWeatherMapPluginGliwice(IPluginConfigProvider pluginConfigProvider)
             : base(pluginConfigProvider)
         {
         }
@@ -30,10 +32,10 @@ namespace TilesDashboard.Plugin.OpenWeatherMap
 
         public override Task InitializeAsync()
         {
-            _apiKey = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:ApiKey");
-            _cityId = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:CityId");
-            _cronSchedule = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:CronSchedule");
-            _tileName = ConfigProvider.GetConfigEntry("OpenWeatherMapPlugin:TileName");
+            _apiKey = ConfigProvider.GetConfigEntry($"{RootConfig}:ApiKey");
+            _cityId = ConfigProvider.GetConfigEntry($"{RootConfig}:CityId");
+            _cronSchedule = ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
+            _tileName = ConfigProvider.GetConfigEntry($"{RootConfig}:TileName");
 
             return Task.CompletedTask;
         }
