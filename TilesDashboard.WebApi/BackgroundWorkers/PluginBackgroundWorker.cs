@@ -49,6 +49,11 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             {
                 SchedulePlugin(plugin, stoppingToken);
             }
+
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(2));
+            }
         }
 
         private void SchedulePlugin(IPlugin plugin, CancellationToken cancellationToken)

@@ -9,7 +9,7 @@ namespace TilesDashboard.Core.Domain.Entities
 {
     public class MetricData : TileData
     {
-        public MetricData(decimal value, MetricType type,  DateTimeOffset addedOn) : base(addedOn)
+        public MetricData(decimal value, MetricType type, DateTimeOffset addedOn) : base(addedOn)
         {
           switch (type)
           {

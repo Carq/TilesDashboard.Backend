@@ -41,6 +41,11 @@ namespace TilesDashboard.WebApi.Mappers
             return data.Select(MapMetricData).ToList();
         }
 
+        public static IList<object> Map(IList<IntegerData> data)
+        {
+            return data.Select(MapIntegerData).ToList();
+        }
+
         public static IList<object> Map(TileType type, IList<TileData> recentData)
         {
             switch (type)
@@ -49,6 +54,8 @@ namespace TilesDashboard.WebApi.Mappers
                     return recentData.Select(MapMetricData).ToList();
                 case TileType.Weather:
                     return recentData.Select(MapWeatherData).ToList();
+                case TileType.Integer:
+                    return recentData.Select(MapIntegerData).ToList();
                 default:
                     return null;
             }
@@ -57,6 +64,16 @@ namespace TilesDashboard.WebApi.Mappers
         private static object MapMetricData(TileData metricData)
         {
             var converted = metricData as MetricData;
+            return new
+            {
+                converted.Value,
+                converted.AddedOn,
+            };
+        }
+
+        private static object MapIntegerData(TileData metricData)
+        {
+            var converted = metricData as IntegerData;
             return new
             {
                 converted.Value,
