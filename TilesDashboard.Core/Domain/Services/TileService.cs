@@ -23,7 +23,7 @@ namespace TilesDashboard.Core.Domain.Services
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             TilesRepository = tilesRepository ?? throw new ArgumentNullException(nameof(tilesRepository));
-            DateTimeOffsetProvider = dateTimeOffsetProvider;
+            DateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
         }
 
         protected ITileContext Context { get; }
@@ -52,6 +52,11 @@ namespace TilesDashboard.Core.Domain.Services
                 else if (tile.Id.TileType == TileType.Weather)
                 {
                     data = DeserializeData<WeatherData>(rawData).Cast<TileData>().ToList();
+                }
+                else if (tile.Id.TileType == TileType.Integer)
+                {
+                    configuration = BsonSerializer.Deserialize<IntegerConfiguration>(tile.Configuration);
+                    data = DeserializeData<IntegerData>(rawData).Cast<TileData>().ToList();
                 }
 
                 tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, new Group(tile.Group), configuration));

@@ -17,6 +17,7 @@ namespace TilesDashboard.Core.Configuration
             builder.RegisterType<WeatherRepository>().As<IWeatherRepository>();
             builder.RegisterType<WeatherService>().As<IWeatherServices>();
             builder.RegisterType<MetricService>().As<IMetricService>();
+            builder.RegisterType<IntegerTileService>().As<IIntegerTileService>();
             builder.RegisterType<EventDispatcher>().As<IEventDispatcher>();
         }
     }
