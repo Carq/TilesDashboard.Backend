@@ -27,23 +27,27 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
 
         private readonly WeatherPluginHandler _weatherPluginHandler;
 
+        private readonly IntegerPluginHandler _integerPluginHandler;
+
         public PluginBackgroundWorker(
             IPluginLoader pluginLoader,
             ILogger<PluginBackgroundWorker> logger,
             IDateTimeOffsetProvider dateTimeProvider,
             MetricPluginHandler metricPluginHandler,
-            WeatherPluginHandler weatherPluginHandler = null)
+            WeatherPluginHandler weatherPluginHandler,
+            IntegerPluginHandler integerPluginHandler)
         {
             _pluginLoader = pluginLoader ?? throw new ArgumentNullException(nameof(pluginLoader));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
             _metricPluginHandler = metricPluginHandler;
             _weatherPluginHandler = weatherPluginHandler;
+            _integerPluginHandler = integerPluginHandler;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogDebug("Tiles background worker started.");
+            _logger.LogInformation("Tiles background worker started.");
             var loadedPlugins = await _pluginLoader.LoadPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
             foreach (var plugin in loadedPlugins)
             {
@@ -91,6 +95,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 var weatherPlugin = (WeatherPluginBase)plugin;
                                 result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, cancellationToken);
                                 break;
+                            case TileType.Integer:
+                                var integerPlugin = (IntegerPluginBase)plugin;
+                                result = await _integerPluginHandler.HandlePlugin(integerPlugin, cancellationToken);
+                                break;
                             default:
                                 throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
                         }
@@ -99,6 +107,11 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                         {
                             observer.OnError(new InvalidOperationException($"{plugin.TileType} plugin: \"{plugin.TileName}\" return Status \"{result.Status}\" with message: \"{result.ErrorMessage}\""));
                             return;
+                        }
+
+                        if (result.Status == Status.NoUpdate)
+                        {
+                            _logger.LogDebug($"No data to update for plugin: \"{plugin.TileName}\" - \"{plugin.GetType()}\".");
                         }
 
                         observer.OnNext(plugin);

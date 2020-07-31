@@ -61,9 +61,13 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
                 return MetricData.Error($"Code: {buildListResponse.StatusCode}");
             }
 
-            var lastBuildId = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync()).Value.First().Id;
+            var lastBuild = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync()).Value.FirstOrDefault();
+            if (lastBuild == null || lastBuild.StartTime.Date != DateTimeOffset.Now.Date)
+            {
+                return MetricData.NoUpdate();
+            }
 
-            var codeCoverageResponse = await GetCodeCoverageHttpResponse(lastBuildId, httpClient, autheticationHeader, cancellationToken);
+            var codeCoverageResponse = await GetCodeCoverageHttpResponse(lastBuild.Id, httpClient, autheticationHeader, cancellationToken);
             if (!codeCoverageResponse.IsSuccessStatusCode)
             {
                 return MetricData.Error($"Code: {codeCoverageResponse.StatusCode}");
@@ -86,7 +90,7 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         private async Task<HttpResponseMessage> GetCodeCoverageHttpResponse(int lastBuildId, HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
         {
-            using var codeCoverageHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/sporttecag/sporttec/_apis/test/codecoverage?api-version=5.1-preview.1&buildId={lastBuildId}");
+            using var codeCoverageHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/{_organization}/{_project}/_apis/test/codecoverage?api-version=5.1-preview.1&buildId={lastBuildId}");
             codeCoverageHttpRequest.Headers.Authorization = autheticationHeader;
 
             return await httpClient.SendAsync(codeCoverageHttpRequest, cancellationToken);

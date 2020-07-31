@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,11 +9,12 @@ using System.Threading.Tasks;
 using TilesDashboard.Core.Type;
 using TilesDashboard.Plugin.Azure.CodeCoverage.Dtos;
 using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.IntegerPlugin;
 using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public class AzureCodeCoveragePluginBe : MetricPluginBase
+    public class AzureCodeCoveragePluginBeLoC : IntegerPluginBase
     {
         private string _tileName;
 
@@ -28,9 +28,9 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         private string _personalAccessToken;
 
-        private readonly string RootConfig = "AzureCodeCoveragePluginBe";
+        private readonly string RootConfig = "AzureCodeCoveragePluginBeLoC";
 
-        public AzureCodeCoveragePluginBe(IPluginConfigProvider configProvider)
+        public AzureCodeCoveragePluginBeLoC(IPluginConfigProvider configProvider)
             : base(configProvider)
         {
         }
@@ -51,33 +51,31 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
             return Task.CompletedTask;
         }
 
-        public override async Task<MetricData> GetDataAsync(CancellationToken cancellationToken)
+        public override async Task<IntegerData> GetDataAsync(CancellationToken cancellationToken)
         {
             var httpClient = new HttpClient();
             var autheticationHeader = Basic(_personalAccessToken);
             var buildListResponse = await GetBuildListHttpResponse(httpClient, autheticationHeader, cancellationToken);
             if (!buildListResponse.IsSuccessStatusCode)
             {
-                return MetricData.Error($"Code: {buildListResponse.StatusCode}");
+                return IntegerData.Error($"Code: {buildListResponse.StatusCode}");
             }
 
             var lastBuild = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync()).Value.FirstOrDefault();
             if (lastBuild == null || lastBuild.StartTime.Date != DateTimeOffset.Now.Date)
             {
-                return MetricData.NoUpdate();
+                return IntegerData.NoUpdate();
             }
 
             var codeCoverageResponse = await GetCodeCoverageHttpResponse(lastBuild.Id, httpClient, autheticationHeader, cancellationToken);
             if (!codeCoverageResponse.IsSuccessStatusCode)
             {
-                return MetricData.Error($"Code: {codeCoverageResponse.StatusCode}");
+                return IntegerData.Error($"Code: {codeCoverageResponse.StatusCode}");
             }
 
             var codeCoverage = JsonSerializer.Deserialize<CodeCoverageDto>(await codeCoverageResponse.Content.ReadAsStringAsync());
             var linesCoverageData = codeCoverage.CoverageData.First().CoverageStats.Single(x => x.Label == "Lines");
-            var percentageCoverage = Math.Round(100m * linesCoverageData.Covered / linesCoverageData.Total, 1);
-
-            return new MetricData(percentageCoverage, MetricType.Percentage, Status.OK);
+            return new IntegerData(linesCoverageData.Total, Status.OK);
         }
 
         private async Task<HttpResponseMessage> GetBuildListHttpResponse(HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
