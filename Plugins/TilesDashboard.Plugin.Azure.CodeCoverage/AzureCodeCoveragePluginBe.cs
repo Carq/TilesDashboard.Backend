@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,7 +14,7 @@ using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public class AzureCodeCoveragePlugin : MetricPluginBase
+    public class AzureCodeCoveragePluginBe : MetricPluginBase
     {
         private string _tileName;
 
@@ -27,10 +28,11 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         private string _personalAccessToken;
 
-        public AzureCodeCoveragePlugin(IPluginConfigProvider configProvider)
+        private readonly string RootConfig = "AzureCodeCoveragePluginBe";
+
+        public AzureCodeCoveragePluginBe(IPluginConfigProvider configProvider)
             : base(configProvider)
         {
-
         }
 
         public override string TileName => _tileName;
@@ -39,16 +41,12 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         public override Task InitializeAsync()
         {
-            _organization = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:Organization");
-            _project = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:Project");
-            _tileName = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:TileName");
-            _buildDefinition = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:BuildDefinition");
-            _personalAccessToken = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:PersonalAccessToken");
-            _cronSchedule = ConfigProvider.GetConfigEntry("AzureCodeCoveragePlugin:CronSchedule");
-            if (string.IsNullOrWhiteSpace(_cronSchedule))
-            {
-                _cronSchedule = "*/10 * * * * *";
-            }
+            _organization = ConfigProvider.GetConfigEntry($"{RootConfig}:Organization");
+            _project = ConfigProvider.GetConfigEntry($"{RootConfig}:Project");
+            _tileName = ConfigProvider.GetConfigEntry($"{RootConfig}:TileName");
+            _buildDefinition = ConfigProvider.GetConfigEntry($"{RootConfig}:BuildDefinition");
+            _personalAccessToken = ConfigProvider.GetConfigEntry($"{RootConfig}:PersonalAccessToken");
+            _cronSchedule = ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
 
             return Task.CompletedTask;
         }
@@ -63,9 +61,13 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
                 return MetricData.Error($"Code: {buildListResponse.StatusCode}");
             }
 
-            var lastBuildId = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync()).Value.First().Id;
+            var lastBuild = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync()).Value.FirstOrDefault();
+            if (lastBuild == null || lastBuild.StartTime.Date != DateTimeOffset.Now.Date)
+            {
+                return MetricData.NoUpdate();
+            }
 
-            var codeCoverageResponse = await GetCodeCoverageHttpResponse(lastBuildId, httpClient, autheticationHeader, cancellationToken);
+            var codeCoverageResponse = await GetCodeCoverageHttpResponse(lastBuild.Id, httpClient, autheticationHeader, cancellationToken);
             if (!codeCoverageResponse.IsSuccessStatusCode)
             {
                 return MetricData.Error($"Code: {codeCoverageResponse.StatusCode}");
@@ -88,7 +90,7 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         private async Task<HttpResponseMessage> GetCodeCoverageHttpResponse(int lastBuildId, HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
         {
-            using var codeCoverageHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/sporttecag/sporttec/_apis/test/codecoverage?api-version=5.1-preview.1&buildId={lastBuildId}");
+            using var codeCoverageHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/{_organization}/{_project}/_apis/test/codecoverage?api-version=5.1-preview.1&buildId={lastBuildId}");
             codeCoverageHttpRequest.Headers.Authorization = autheticationHeader;
 
             return await httpClient.SendAsync(codeCoverageHttpRequest, cancellationToken);

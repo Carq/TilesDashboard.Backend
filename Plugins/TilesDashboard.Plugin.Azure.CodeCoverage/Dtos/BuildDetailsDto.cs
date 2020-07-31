@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage.Dtos
 {
@@ -6,5 +7,8 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage.Dtos
     {
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        [JsonPropertyName("startTime")]
+        public DateTimeOffset StartTime { get; set; }
     }
 }

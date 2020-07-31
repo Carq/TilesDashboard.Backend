@@ -38,7 +38,7 @@ namespace TilesDashboard.Core.Domain.Services
             var integerData = new IntegerData(value, DateTimeOffsetProvider.Now);
 
             await TilesRepository.InsertData(tileName, TileType.Integer, integerData.ToBsonDocument(), cancellationToken);
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Integer, new { Value = value }), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Integer, new { integerData.Value, integerData.AddedOn }), cancellationToken);
         }
     }
 }
