@@ -22,7 +22,7 @@ namespace TilesDashboard.TestPlugins.Weather
             var random = new Random();
             int maxTemperature = int.Parse(ConfigProvider.GetConfigEntry("TestWeatherPlugin:MaxTemp"));
 
-            return Task.FromResult(new WeatherData(random.Next(-8, maxTemperature), random.Next(1, 100), Status.OK, DateTimeOffset.Now));
+            return Task.FromResult(new WeatherData(random.Next(-8, maxTemperature), random.Next(1, 100), Status.OK));
         }
     }
 }
