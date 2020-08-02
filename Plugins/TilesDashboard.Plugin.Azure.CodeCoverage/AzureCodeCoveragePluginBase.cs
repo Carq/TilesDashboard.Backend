@@ -2,26 +2,31 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using TilesDashboard.Core.Type;
 using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.IntegerPlugin;
 using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public class AzureCodeCoveragePluginBeLoC : IntegerPluginBase
+    public abstract class AzureCodeCoveragePluginBase : MetricPluginBase
     {
-        public AzureCodeCoveragePluginBeLoC(IPluginConfigProvider configProvider)
+        public AzureCodeCoveragePluginBase(IPluginConfigProvider configProvider)
             : base(configProvider)
         {
         }
 
-        public string RootConfig { get; } = "AzureCodeCoveragePluginBeLoC";
+        public abstract string RootConfig { get; }
 
         public override string TileName => ConfigProvider.GetConfigEntry($"{RootConfig}:TileName");
 
         public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
 
-        public override async Task<IntegerData> GetDataAsync(CancellationToken cancellationToken)
+        public override Task InitializeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public override async Task<MetricData> GetDataAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -29,15 +34,17 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
                 var codeCoverageDetails = await azureDevOpsHelper.GetCodeCoverageResultForLastGreenBuildAsync(cancellationToken);
                 if (codeCoverageDetails == null)
                 {
-                    return IntegerData.NoUpdate();
+                    return MetricData.NoUpdate();
                 }
 
                 var linesCoverageData = codeCoverageDetails.CoverageData.First().CoverageStats.Single(x => x.Label == "Lines");
-                return new IntegerData(linesCoverageData.Total, Status.OK);
+                var percentageCoverage = Math.Round(100m * linesCoverageData.Covered / linesCoverageData.Total, 1);
+
+                return new MetricData(percentageCoverage, MetricType.Percentage, Status.OK);
             }
             catch (Exception ex)
             {
-                return IntegerData.Error(ex.Message);
+                return MetricData.Error(ex.Message);
             }
         }
     }

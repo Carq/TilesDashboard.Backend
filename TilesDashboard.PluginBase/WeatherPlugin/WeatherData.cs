@@ -1,16 +1,7 @@
-﻿using System;
-
-namespace TilesDashboard.PluginBase.WeatherPlugin
+﻿namespace TilesDashboard.PluginBase.WeatherPlugin
 {
     public class WeatherData : Result
     {
-        public WeatherData(decimal temperature, decimal huminidy, Status status, DateTimeOffset dateOfChange)
-            : base(status, dateOfChange)
-        {
-            Temperature = temperature;
-            Huminidy = huminidy;
-        }
-
         public WeatherData(decimal temperature, decimal huminidy, Status status)
             : base(status)
         {
@@ -18,8 +9,8 @@ namespace TilesDashboard.PluginBase.WeatherPlugin
             Huminidy = huminidy;
         }
 
-        public WeatherData(decimal temperature, Status status, DateTimeOffset dateOfChange)
-            : base(status, dateOfChange)
+        public WeatherData(decimal temperature, Status status)
+            : base(status)
         {
             Temperature = temperature;
         }
