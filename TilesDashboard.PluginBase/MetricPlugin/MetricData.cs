@@ -21,5 +21,10 @@ namespace TilesDashboard.PluginBase.MetricPlugin
         public decimal PercentageCodeCoverage { get; }
 
         public MetricType MetricType { get; }
+
+        public override string ToString()
+        {
+            return $"Value: {PercentageCodeCoverage} - MetricType - {MetricType} - Status: {Status}";
+        }
     }
 }

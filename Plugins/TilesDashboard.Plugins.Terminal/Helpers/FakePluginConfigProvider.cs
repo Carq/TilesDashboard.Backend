@@ -13,15 +13,15 @@ namespace TilesDashboard.Plugins.Terminal.Helpers
                     return "";
                 case "OpenWeatherMapPlugin:CityId":
                     return "";
-                case "AzureCodeCoveragePlugin:Organization":
-                    return "";
-                case "AzureCodeCoveragePlugin:Project":
-                    return "";
-                case "AzureCodeCoveragePlugin:BuildDefinition":
-                    return "";
-                case "AzureCodeCoveragePlugin:PersonalAccessToken":
-                    return "";
-                 case "AzureCodeCoveragePlugin:TileName":
+                case "AzureCodeCoveragePluginBe:Organization":
+                    return "sporttecag";
+                case "AzureCodeCoveragePluginBe:Project":
+                    return "sporttec";
+                case "AzureCodeCoveragePluginBe:BuildDefinition":
+                    return "12";
+                case "AzureCodeCoveragePluginBe:PersonalAccessToken":
+                    return "hseegbdb3ceshchzrviqoee5y4jpqxglfhiolglsjzkh2jbdb2ua";
+                 case "AzureCodeCoveragePluginBe:TileName":
                     return "";
                 default:
                     throw new ArgumentException();

@@ -27,5 +27,10 @@
         public decimal Temperature { get; private set; }
 
         public decimal? Huminidy { get; private set; }
+
+        public override string ToString()
+        {
+            return $"Temperature: {Temperature} - Huminidy - {Huminidy} - Status: {Status}";
+        }
     }
 }

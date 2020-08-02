@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Plugin.Azure.CodeCoverage;
-using TilesDashboard.Plugin.OpenWeatherMap;
+using TilesDashboard.Plugin.Crypto;
 using TilesDashboard.Plugins.Terminal.Helpers;
 
 namespace TilesDashboard.Plugins.Terminal
@@ -11,11 +10,13 @@ namespace TilesDashboard.Plugins.Terminal
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Testing plugin...");
 
-            var plugin = new AzureCodeCoveragePluginBe(new FakePluginConfigProvider());
+            var plugin = new LtcPlugin(new FakePluginConfigProvider());
             await plugin.InitializeAsync();
             var result = await plugin.GetDataAsync(CancellationToken.None);
+
+            Console.WriteLine(result);
 
             Console.ReadKey();
         }
