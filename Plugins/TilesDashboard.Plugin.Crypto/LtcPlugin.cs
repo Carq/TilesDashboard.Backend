@@ -3,13 +3,13 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using TilesDashboard.Core.Type;
 using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.IntegerPlugin;
 using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.Crypto
 {
-    public class LtcPlugin : IntegerPluginBase
+    public class LtcPlugin : MetricPluginBase
     {
         public override string TileName { get; } = "LTC PLN";
 
@@ -21,17 +21,17 @@ namespace TilesDashboard.Plugin.Crypto
         {
         }
 
-        public override async Task<IntegerData> GetDataAsync(CancellationToken cancellationToken = default)
+        public override async Task<MetricData> GetDataAsync(CancellationToken cancellationToken = default)
         {
             var httpClient = new HttpClient();
             var response = await httpClient.GetAsync($"https://api.bitbay.net/rest/trading/ticker", cancellationToken);
             if (response.IsSuccessStatusCode)
             {
                 var responseDto = JsonSerializer.Deserialize<CryptoTickerDto>(await response.Content.ReadAsStringAsync());
-                return new IntegerData((int)decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), Status.OK);
+                return new MetricData(decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), MetricType.Money, Status.OK);
             }
 
-            return IntegerData.Error($"Code: {response.StatusCode}");
+            return MetricData.Error($"Code: {response.StatusCode}");
         }
     }
 }

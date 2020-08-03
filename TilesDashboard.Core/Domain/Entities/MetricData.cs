@@ -16,11 +16,13 @@ namespace TilesDashboard.Core.Domain.Entities
                 case MetricType.Percentage:
                     Percentage.Validate(value);
                     break;
+                case MetricType.Money:
+                    break;
                 default:
                     throw new NotSupportedException($"Metric Type {type} is not supported");
           }
 
-          Value = value;
+          Value = Math.Round(value, 2);
         }
 
         [BsonRepresentation(BsonType.Decimal128)]

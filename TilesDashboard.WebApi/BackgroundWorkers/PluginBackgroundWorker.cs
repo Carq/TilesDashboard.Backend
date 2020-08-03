@@ -70,7 +70,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                       .Switch()
                       .Subscribe(
                         plugin => SchedulePlugin(plugin, cancellationToken),
-                        exception => _logger.LogError($"Error occurs during plugin processing. Plugin will be disabled. Error: {exception.Message}", exception));
+                        exception => _logger.LogError($"Error occurs during plugin processing. Plugin will be disabled. Error: {exception.Message}. Inner Exception: {exception.InnerException?.Message}", exception));
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]

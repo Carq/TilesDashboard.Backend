@@ -109,7 +109,7 @@ namespace TilesDashboard.WebApi.PluginSystem
                 }
             }
 
-            _logger.LogInformation($"Loaded: {plugins.Count(x => x.TileType.Is(TileType.Weather))} Weather plugins, {plugins.Count(x => x.TileType.Is(TileType.Metric))} Metric plugins.");
+            _logger.LogInformation($"Loaded: {plugins.Count(x => x.TileType.Is(TileType.Weather))} Weather plugins, {plugins.Count(x => x.TileType.Is(TileType.Metric))} Metric plugins, {plugins.Count(x => x.TileType.Is(TileType.Integer))} Integer plugins.");
             return new Plugins(plugins);
         }
     }

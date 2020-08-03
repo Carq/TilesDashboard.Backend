@@ -23,10 +23,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         public async Task<Result> HandlePlugin(MetricPluginBase plugin, CancellationToken cancellationToken)
         {
             var data = await plugin.GetDataAsync();
-            _logger.LogDebug($"Metric plugin: \"{plugin.TileName}\", Code Coverage: {data.PercentageCodeCoverage}%");
+            _logger.LogDebug($"Metric plugin: \"{plugin.TileName}\", Value: {data.Value}");
             if (data.Status.Is(Status.OK))
             {
-                await _metricService.RecordMetricDataAsync(plugin.TileName, data.MetricType, data.PercentageCodeCoverage, cancellationToken);
+                await _metricService.RecordMetricDataAsync(plugin.TileName, data.MetricType, data.Value, cancellationToken);
             }
 
             return data;

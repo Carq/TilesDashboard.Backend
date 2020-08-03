@@ -8,9 +8,9 @@ namespace TilesDashboard.PluginBase.MetricPlugin
         {
         }
 
-        public MetricData(decimal percentageCodeCoverage, MetricType metric, Status status) : base(status)
+        public MetricData(decimal value, MetricType metric, Status status) : base(status)
         {
-            PercentageCodeCoverage = percentageCodeCoverage;
+            Value = value;
             MetricType = metric;
         }
 
@@ -18,13 +18,13 @@ namespace TilesDashboard.PluginBase.MetricPlugin
 
         public static MetricData NoUpdate() => new MetricData(Status.NoUpdate);
 
-        public decimal PercentageCodeCoverage { get; }
+        public decimal Value { get; }
 
         public MetricType MetricType { get; }
 
         public override string ToString()
         {
-            return $"Value: {PercentageCodeCoverage} - MetricType - {MetricType} - Status: {Status}";
+            return $"Value: {Value} - MetricType - {MetricType} - Status: {Status}";
         }
     }
 }

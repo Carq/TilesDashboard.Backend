@@ -12,6 +12,10 @@ namespace TilesDashboard.Core.Domain.Entities
 
         public decimal? Goal { get; set; }
 
+        public string Unit { get; set; }
+
+        public bool LowerIsBetter { get; set; }
+
         [BsonRepresentation(BsonType.String)]
         public MetricType MetricType { get; set; }
     }
