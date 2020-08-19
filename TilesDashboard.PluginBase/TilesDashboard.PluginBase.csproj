@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
     <ProjectReference Include="..\TilesDashboard.Core.Type\TilesDashboard.Core.Type.csproj" />
   </ItemGroup>
 

@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using TilesDashboard.Core.Type;
+using TilesDashboard.Contract.Enums;
 
 namespace TilesDashboard.PluginBase
 {

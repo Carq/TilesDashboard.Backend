@@ -7,12 +7,12 @@ using Dawn;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Tools;
 
 namespace TilesDashboard.Core.Domain.Services
@@ -58,6 +58,11 @@ namespace TilesDashboard.Core.Domain.Services
                     configuration = BsonSerializer.Deserialize<IntegerConfiguration>(tile.Configuration);
                     data = DeserializeData<IntegerData>(rawData).Cast<TileData>().ToList();
                 }
+                else if (tile.Id.TileType == TileType.HeartBeat)
+                {
+                    configuration = BsonSerializer.Deserialize<HeartBeatConfiguration>(tile.Configuration);
+                    data = DeserializeData<HeartBeatData>(rawData).Cast<TileData>().ToList();
+                }
 
                 tilesWithCurrentData.Add(new GenericTileWithCurrentData(tile.Id.Name, tile.Id.TileType, data, new Group(tile.Group), configuration));
             }
@@ -78,8 +83,8 @@ namespace TilesDashboard.Core.Domain.Services
             where TData : TileData
         {
             var tileDbEntity = await TilesRepository.GetTileWithLimitedRecentData(tileName, type, amountOfData, cancellationToken);
-            var rawWeatherData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).TakeLast(amountOfData);
-            return DeserializeData<TData>(rawWeatherData);
+            var rawData = tileDbEntity.Data.OrderBy(x => x[nameof(TileData.AddedOn)]).TakeLast(amountOfData);
+            return DeserializeData<TData>(rawData);
         }
 
         public async Task<IList<TData>> GetDataSinceAsync<TData>(string tileName, TileType type, DateTimeOffset sinceDate, CancellationToken cancellationToken)

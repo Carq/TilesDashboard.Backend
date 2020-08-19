@@ -4,7 +4,6 @@ using TilesDashboard.Contract;
 using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.WebApi.Mappers
@@ -19,7 +18,7 @@ namespace TilesDashboard.WebApi.Mappers
                 var tileWithDataDto = new TileWithCurrentDataDto
                 {
                     Name = item.Name,
-                    Type = item.Type.Convert<TileTypeDto>(),
+                    Type = item.Type,
                     Configuration = item.Configuration,
                     Group = item.Group != null ? new GroupDto(item.Group.Name, item.Group.Order) : null,
                 };
@@ -46,6 +45,11 @@ namespace TilesDashboard.WebApi.Mappers
             return data.Select(MapIntegerData).ToList();
         }
 
+        public static IList<object> Map(IList<HeartBeatData> data)
+        {
+            return data.Select(MapHeartBeatData).ToList();
+        }
+
         public static IList<object> Map(TileType type, IList<TileData> recentData)
         {
             switch (type)
@@ -56,6 +60,8 @@ namespace TilesDashboard.WebApi.Mappers
                     return recentData.Select(MapWeatherData).ToList();
                 case TileType.Integer:
                     return recentData.Select(MapIntegerData).ToList();
+                case TileType.HeartBeat:
+                    return recentData.Select(MapHeartBeatData).ToList();
                 default:
                     return null;
             }
@@ -89,6 +95,18 @@ namespace TilesDashboard.WebApi.Mappers
             {
                 Temperature = converted.Temperature.GetRoundedValue(),
                 Humidity = converted.Humidity.GetRoundedValue(),
+                converted.AddedOn,
+            };
+        }
+
+        private static object MapHeartBeatData(TileData heartbeat)
+        {
+            var converted = heartbeat as HeartBeatData;
+
+            return new
+            {
+                converted.ResponseTimeInMs,
+                converted.AppVersion,
                 converted.AddedOn,
             };
         }

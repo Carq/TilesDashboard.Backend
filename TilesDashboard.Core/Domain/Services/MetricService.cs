@@ -48,7 +48,7 @@ namespace TilesDashboard.Core.Domain.Services
             }
 
             await TilesRepository.InsertData(tileName, TileType.Metric, metricData.ToBsonDocument(), cancellationToken);
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileTypeDto.Metric, new { metricData.Value, metricData.AddedOn }), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileType.Metric, new { metricData.Value, metricData.AddedOn }), cancellationToken);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.ValueObjects;

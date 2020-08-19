@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.Core.Type;
+using TilesDashboard.Contract.Enums;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 

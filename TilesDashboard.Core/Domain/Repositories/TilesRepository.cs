@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;

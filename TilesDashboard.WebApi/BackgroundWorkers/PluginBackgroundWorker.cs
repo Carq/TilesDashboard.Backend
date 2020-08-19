@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NCrontab;
-using TilesDashboard.Core.Type;
+using TilesDashboard.Contract.Enums;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.MetricPlugin;
@@ -96,7 +96,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, cancellationToken);
                                 break;
                             case TileType.Integer:
-                                var integerPlugin = (IntegerPluginBase)plugin;
+                                var integerPlugin = (HeartBeatPluginBase)plugin;
                                 result = await _integerPluginHandler.HandlePlugin(integerPlugin, cancellationToken);
                                 break;
                             default:

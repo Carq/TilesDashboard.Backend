@@ -1,4 +1,4 @@
-﻿using TilesDashboard.Core.Type;
+﻿using TilesDashboard.Contract.Enums;
 using TilesDashboard.PluginBase.IntegerPlugin;
 
 namespace TilesDashboard.PluginBase.MetricPlugin

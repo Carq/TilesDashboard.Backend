@@ -5,7 +5,7 @@ namespace TilesDashboard.Contract.Events
 {
     public class NewDataEvent : IEvent
     {
-        public NewDataEvent(string tileName, TileTypeDto tileType, object newValue)
+        public NewDataEvent(string tileName, TileType tileType, object newValue)
         {
             TileName = tileName;
             TileType = tileType;
@@ -14,7 +14,7 @@ namespace TilesDashboard.Contract.Events
 
         public string TileName { get; }
 
-        public TileTypeDto TileType { get; }
+        public TileType TileType { get; }
 
         public object NewValue { get; }
     }

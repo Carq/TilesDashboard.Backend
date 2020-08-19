@@ -1,4 +1,4 @@
-﻿using TilesDashboard.Core.Type;
+﻿using TilesDashboard.Contract.Enums;
 
 namespace TilesDashboard.PluginBase.WeatherPlugin
 {
