@@ -29,13 +29,16 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
 
         private readonly IntegerPluginHandler _integerPluginHandler;
 
+        private readonly HeartBeatPluginHandler _heartBeatPluginHandler;
+
         public PluginBackgroundWorker(
             IPluginLoader pluginLoader,
             ILogger<PluginBackgroundWorker> logger,
             IDateTimeOffsetProvider dateTimeProvider,
             MetricPluginHandler metricPluginHandler,
             WeatherPluginHandler weatherPluginHandler,
-            IntegerPluginHandler integerPluginHandler)
+            IntegerPluginHandler integerPluginHandler,
+            HeartBeatPluginHandler heartBeatPluginHandler)
         {
             _pluginLoader = pluginLoader ?? throw new ArgumentNullException(nameof(pluginLoader));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -43,6 +46,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _metricPluginHandler = metricPluginHandler;
             _weatherPluginHandler = weatherPluginHandler;
             _integerPluginHandler = integerPluginHandler;
+            _heartBeatPluginHandler = heartBeatPluginHandler;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -96,8 +100,12 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, cancellationToken);
                                 break;
                             case TileType.Integer:
-                                var integerPlugin = (HeartBeatPluginBase)plugin;
+                                var integerPlugin = (IntegerPluginBase)plugin;
                                 result = await _integerPluginHandler.HandlePlugin(integerPlugin, cancellationToken);
+                                break;
+                            case TileType.HeartBeat:
+                                var heartBeatPlugin = (HeartBeatPluginBase)plugin;
+                                result = await _heartBeatPluginHandler.HandlePlugin(heartBeatPlugin, cancellationToken);
                                 break;
                             default:
                                 throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");

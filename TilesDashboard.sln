@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.Azure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Core.Type", "TilesDashboard.Core.Type\TilesDashboard.Core.Type.csproj", "{B980DF29-BD28-427B-BD33-35489ACC7B0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.Plugin.Crypto", "Plugins\TilesDashboard.Plugin.Crypto\TilesDashboard.Plugin.Crypto.csproj", "{194D011E-90AA-45CE-9908-61DD0F67FFE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.Crypto", "Plugins\TilesDashboard.Plugin.Crypto\TilesDashboard.Plugin.Crypto.csproj", "{194D011E-90AA-45CE-9908-61DD0F67FFE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.Plugin.HeartBeatGeneral", "Plugins\TilesDashboard.Plugin.HeartBeatGeneral\TilesDashboard.Plugin.HeartBeatGeneral.csproj", "{E10DC50B-AC15-4CEA-8152-ACAF198A85DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{194D011E-90AA-45CE-9908-61DD0F67FFE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{194D011E-90AA-45CE-9908-61DD0F67FFE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{194D011E-90AA-45CE-9908-61DD0F67FFE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E10DC50B-AC15-4CEA-8152-ACAF198A85DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E10DC50B-AC15-4CEA-8152-ACAF198A85DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E10DC50B-AC15-4CEA-8152-ACAF198A85DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E10DC50B-AC15-4CEA-8152-ACAF198A85DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{F5DE5C07-108A-4FED-9365-58141B4D0B06} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 		{BCE40E04-34BC-4A34-89F1-1BCFE87CF632} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 		{194D011E-90AA-45CE-9908-61DD0F67FFE5} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
+		{E10DC50B-AC15-4CEA-8152-ACAF198A85DD} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5F2A81D-3D93-48C4-A41D-F37B94675B12}

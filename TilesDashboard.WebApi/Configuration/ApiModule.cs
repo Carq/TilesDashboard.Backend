@@ -29,6 +29,7 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<WeatherPluginHandler>();
             builder.RegisterType<MetricPluginHandler>();
             builder.RegisterType<IntegerPluginHandler>();
+            builder.RegisterType<HeartBeatPluginHandler>();
         }
     }
 }
