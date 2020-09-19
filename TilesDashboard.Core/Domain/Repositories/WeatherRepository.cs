@@ -3,13 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
 using TilesDashboard.Core.Type;
+using TilesDashboard.Core.Type.Enums;
 
 namespace TilesDashboard.Core.Domain.Repositories
 {

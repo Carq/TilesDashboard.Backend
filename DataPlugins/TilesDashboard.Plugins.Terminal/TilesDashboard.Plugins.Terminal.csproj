@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TilesDashboard.Plugin.Azure.CodeCoverage\TilesDashboard.Plugin.Azure.CodeCoverage.csproj" />
+    <ProjectReference Include="..\TilesDashboard.Plugin.Crypto\TilesDashboard.Plugin.Crypto.csproj" />
+    <ProjectReference Include="..\TilesDashboard.Plugin.HeartBeatGeneral\TilesDashboard.Plugin.HeartBeatGeneral.csproj" />
+    <ProjectReference Include="..\TilesDashboard.Plugin.OpenWeatherMap\TilesDashboard.Plugin.OpenWeatherMap.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TilesDashboard.PluginBase">
+      <HintPath>..\..\..\TilesDashboard.Backend\TilesDashboard.PluginBase\bin\Debug\netstandard2.1\TilesDashboard.PluginBase.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

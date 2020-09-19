@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Contract.Enums;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Type;
+using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 

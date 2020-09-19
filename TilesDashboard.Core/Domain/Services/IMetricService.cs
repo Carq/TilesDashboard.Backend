@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.Core.Domain.Entities;
-using TilesDashboard.Core.Type;
+using TilesDashboard.Core.Type.Enums;
 
 namespace TilesDashboard.Core.Domain.Services
 {
