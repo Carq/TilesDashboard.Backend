@@ -8,7 +8,7 @@ using TilesDashboard.WebApi.PluginSystem.Loaders;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
-    public class DataPluginLoader : PluginLoaderBase, IPluginLoader
+    public class DataPluginLoader : PluginLoaderBase, IDataPluginLoader
     {
         private readonly ILogger<DataPluginLoader> _logger;
 

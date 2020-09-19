@@ -64,6 +64,8 @@ namespace TilesDashboard.WebApi
                 endpoints.MapControllers();
                 endpoints.MapHub<TilesNotificationHub>("/notifications");
             });
+
+            app.LoadNotificationPlugins();
         }
     }
 }

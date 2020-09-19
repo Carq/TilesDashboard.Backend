@@ -6,6 +6,7 @@ using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
@@ -37,7 +38,7 @@ namespace TilesDashboard.Core.Domain.Services
             var integerData = new IntegerData(value, DateTimeOffsetProvider.Now);
 
             await TilesRepository.InsertData(tileName, TileType.Integer, integerData.ToBsonDocument(), cancellationToken);
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileType.Integer, new { integerData.Value, integerData.AddedOn }), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(new TileId(tileName, TileType.Integer), new { integerData.Value, integerData.AddedOn }), cancellationToken);
         }
     }
 }

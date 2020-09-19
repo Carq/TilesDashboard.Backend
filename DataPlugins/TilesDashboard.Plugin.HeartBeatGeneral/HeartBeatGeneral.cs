@@ -29,7 +29,7 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
             stopwatcher.Start();
             try
             {
-                var response = await httpClient.GetAsync($"https://sporttec-backend-test.azurewebsites.net/api/swagger/index.html", cancellationToken);
+                var response = await httpClient.GetAsync($"{ConfigProvider.GetConfigEntry($"{RootConfig}:HeartBeatAddress")}", cancellationToken);
                 stopwatcher.Stop();
                 if (response.IsSuccessStatusCode)
                 {
