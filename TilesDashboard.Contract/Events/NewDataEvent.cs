@@ -1,4 +1,4 @@
-﻿using TilesDashboard.Contract.Enums;
+﻿using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 
 namespace TilesDashboard.Contract.Events

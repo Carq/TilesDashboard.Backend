@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TilesDashboard.Contract.Enums;
+using TilesDashboard.Core.Type.Enums;
 
 namespace TilesDashboard.Contract
 {

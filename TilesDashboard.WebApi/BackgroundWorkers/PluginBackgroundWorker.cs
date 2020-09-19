@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NCrontab;
-using TilesDashboard.Contract.Enums;
+using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
+using TilesDashboard.PluginBase.Data.IntegerPlugin;
+using TilesDashboard.PluginBase.Data.MetricPlugin;
+using TilesDashboard.PluginBase.Data.WeatherPlugin;
 using TilesDashboard.PluginBase.MetricPlugin;
-using TilesDashboard.PluginBase.WeatherPlugin;
 using TilesDashboard.WebApi.PluginSystem;
 using TilesDashboard.WebApi.PluginSystem.Extensions;
 
@@ -43,16 +46,16 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _pluginLoader = pluginLoader ?? throw new ArgumentNullException(nameof(pluginLoader));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
-            _metricPluginHandler = metricPluginHandler;
-            _weatherPluginHandler = weatherPluginHandler;
-            _integerPluginHandler = integerPluginHandler;
-            _heartBeatPluginHandler = heartBeatPluginHandler;
+            _metricPluginHandler = metricPluginHandler ?? throw new ArgumentNullException(nameof(metricPluginHandler));
+            _weatherPluginHandler = weatherPluginHandler ?? throw new ArgumentNullException(nameof(weatherPluginHandler));
+            _integerPluginHandler = integerPluginHandler ?? throw new ArgumentNullException(nameof(integerPluginHandler));
+            _heartBeatPluginHandler = heartBeatPluginHandler ?? throw new ArgumentNullException(nameof(heartBeatPluginHandler));
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Tiles background worker started.");
-            var loadedPlugins = await _pluginLoader.LoadPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
+            var loadedPlugins = await _pluginLoader.LoadDataProviderPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
             foreach (var plugin in loadedPlugins)
             {
                 SchedulePlugin(plugin, stoppingToken);
@@ -64,11 +67,11 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             }
         }
 
-        private void SchedulePlugin(IPlugin plugin, CancellationToken cancellationToken)
+        private void SchedulePlugin(IDataPlugin plugin, CancellationToken cancellationToken)
         {
             var schedule = CrontabSchedule.Parse(plugin.CronSchedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             DateTimeOffset nextOccurrence = schedule.GetNextOccurrence(_dateTimeProvider.Now.DateTime);
-            _logger.LogDebug($"{plugin.TileType} plugin: \"{plugin.TileName}\" - Next schedule {nextOccurrence}");
+            _logger.LogDebug($"{plugin.TileId.TileType} plugin: \"{plugin.TileId.TileName}\" - Next schedule {nextOccurrence}");
             Observable.Timer(nextOccurrence)
                       .Select(x => HandlePlugin(plugin, cancellationToken))
                       .Switch()
@@ -78,18 +81,18 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
-        private IObservable<IPlugin> HandlePlugin(IPlugin plugin, CancellationToken cancellationToken)
+        private IObservable<IDataPlugin> HandlePlugin(IDataPlugin plugin, CancellationToken cancellationToken)
         {
-            return Observable.Create<IPlugin>(
+            return Observable.Create<IDataPlugin>(
                 async observer =>
                 {
                     try
                     {
-                        _logger.LogDebug($"Execute GetDataAsync() for plugin: \"{plugin.TileName}\" - \"{plugin.GetType()}\"...");
+                        _logger.LogDebug($"Execute GetDataAsync() for plugin: \"{plugin.TileId.TileName}\" - \"{plugin.GetType()}\"...");
 
                         Result result = null;
 
-                        switch (plugin.TileType)
+                        switch (plugin.TileId.TileType)
                         {
                             case TileType.Metric:
                                 var metricPlugin = (MetricPluginBase)plugin;
@@ -108,18 +111,18 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 result = await _heartBeatPluginHandler.HandlePlugin(heartBeatPlugin, cancellationToken);
                                 break;
                             default:
-                                throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
+                                throw new NotSupportedException($"Plugin type {plugin.TileId.TileType} is not yet supported");
                         }
 
                         if (result.Status.IsError())
                         {
-                            observer.OnError(new InvalidOperationException($"{plugin.TileType} plugin: \"{plugin.TileName}\" return Status \"{result.Status}\" with message: \"{result.ErrorMessage}\""));
+                            observer.OnError(new InvalidOperationException($"{plugin.TileId.TileType} plugin: \"{plugin.TileId.TileName}\" return Status \"{result.Status}\" with message: \"{result.ErrorMessage}\""));
                             return;
                         }
 
                         if (result.Status == Status.NoUpdate)
                         {
-                            _logger.LogDebug($"No data to update for plugin: \"{plugin.TileName}\" - \"{plugin.GetType()}\".");
+                            _logger.LogDebug($"No data to update for plugin: \"{plugin.TileId.TileName}\" - \"{plugin.GetType()}\".");
                         }
 
                         observer.OnNext(plugin);

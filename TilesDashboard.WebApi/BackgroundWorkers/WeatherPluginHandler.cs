@@ -5,7 +5,8 @@ using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.WeatherPlugin;
+using TilesDashboard.PluginBase.Data;
+using TilesDashboard.PluginBase.Data.WeatherPlugin;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {

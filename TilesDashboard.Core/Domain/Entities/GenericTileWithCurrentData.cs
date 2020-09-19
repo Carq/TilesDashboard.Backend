@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dawn;
-using TilesDashboard.Contract.Enums;
 using TilesDashboard.Core.Storage.Entities;
+using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.Core.Domain.Entities

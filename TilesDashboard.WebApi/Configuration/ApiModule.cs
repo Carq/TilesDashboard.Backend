@@ -23,7 +23,7 @@ namespace TilesDashboard.WebApi.Configuration
 
         private void PluginInfrastructure(ContainerBuilder builder)
         {
-            builder.RegisterType<PluginLoader>().As<IPluginLoader>();
+            builder.RegisterType<DataPluginLoader>().As<IPluginLoader>();
             builder.RegisterType<PluginSystemConfig>().As<IPluginSystemConfig>();
             builder.RegisterType<PluginConfigProvider>().As<IPluginConfigProvider>();
             builder.RegisterType<WeatherPluginHandler>();

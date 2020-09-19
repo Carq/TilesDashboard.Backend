@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
