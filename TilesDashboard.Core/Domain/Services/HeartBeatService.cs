@@ -5,6 +5,7 @@ using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
@@ -26,7 +27,7 @@ namespace TilesDashboard.Core.Domain.Services
             var heartBeatData = new HeartBeatData(responseInMs, appVersion, DateTimeOffsetProvider.Now);
 
             await TilesRepository.InsertData(tileName, TileType.HeartBeat, heartBeatData.ToBsonDocument(), cancellationToken);
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileType.HeartBeat, new { heartBeatData.ResponseTimeInMs, heartBeatData.AppVersion, heartBeatData.AddedOn }), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(new TileId(tileName, TileType.HeartBeat), new { heartBeatData.ResponseTimeInMs, heartBeatData.AppVersion, heartBeatData.AddedOn }), cancellationToken);
         }
     }
 }

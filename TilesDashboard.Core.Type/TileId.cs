@@ -16,6 +16,11 @@ namespace TilesDashboard.Core.Type
 
         public TileType TileType { get; }
 
+        public override string ToString()
+        {
+            return $"{TileName} {TileType}";
+        }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return TileName;

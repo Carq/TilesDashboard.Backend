@@ -4,8 +4,8 @@ using TilesDashboard.PluginBase.Data;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
-    public interface IPluginLoader
+    public interface IDataPluginLoader
     {
-        public Task<IList<IDataPlugin>> LoadDataProviderPluginsAsync(string rootPath);
+        Task<IList<IDataPlugin>> LoadDataProviderPluginsAsync(string rootPath);
     }
 }

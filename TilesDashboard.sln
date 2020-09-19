@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationPlugis", "Notif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TileDashboard.TestNotificationPlugins", "NotificationPlugins\TileDashboard.TestNotificationPlugins\TileDashboard.TestNotificationPlugins.csproj", "{32A41934-04AB-4AFC-AA4E-9BC1943441C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileDashboard.Plugin.CodeCoverageSlackNotification", "NotificationPlugins\TileDashboard.Plugin.CodeCoverageSlackNotification\TileDashboard.Plugin.CodeCoverageSlackNotification.csproj", "{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{32A41934-04AB-4AFC-AA4E-9BC1943441C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32A41934-04AB-4AFC-AA4E-9BC1943441C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32A41934-04AB-4AFC-AA4E-9BC1943441C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +109,7 @@ Global
 		{E10DC50B-AC15-4CEA-8152-ACAF198A85DD} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 		{178A4899-A9E5-4D2A-80D4-45ABE1261C81} = {C8675024-DB81-4F4B-8BEB-1CBA0645AD61}
 		{32A41934-04AB-4AFC-AA4E-9BC1943441C9} = {91713885-FD19-409C-A9F3-918DBB48829D}
+		{D81B8EA3-2046-422B-9F27-9CABC5B87BC3} = {91713885-FD19-409C-A9F3-918DBB48829D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5F2A81D-3D93-48C4-A41D-F37B94675B12}

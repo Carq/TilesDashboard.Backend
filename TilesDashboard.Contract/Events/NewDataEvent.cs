@@ -1,20 +1,17 @@
-﻿using TilesDashboard.Core.Type.Enums;
+﻿using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Events;
 
 namespace TilesDashboard.Contract.Events
 {
     public class NewDataEvent : IEvent
     {
-        public NewDataEvent(string tileName, TileType tileType, object newValue)
+        public NewDataEvent(TileId tileId, object newValue)
         {
-            TileName = tileName;
-            TileType = tileType;
+            TileId = tileId;
             NewValue = newValue;
         }
 
-        public string TileName { get; }
-
-        public TileType TileType { get; }
+        public TileId TileId { get; }
 
         public object NewValue { get; }
     }

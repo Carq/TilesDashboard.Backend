@@ -42,7 +42,7 @@ namespace TilesDashboard.Core.Domain.Services
             var weatherData = new WeatherData(temperature, humidity, dateOfChange ?? DateTimeOffsetProvider.Now);
             if (await _weatherRepository.AddDataAsync(tileName, weatherData, token))
             {
-                await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileType.Weather, new { Temperature = weatherData.Temperature.GetRoundedValue(), Humidity = weatherData.Humidity.GetRoundedValue(), weatherData.AddedOn }), token);
+                await _eventDispatcher.PublishAsync(new NewDataEvent(new TileId(tileName, TileType.Weather), new { Temperature = weatherData.Temperature.GetRoundedValue(), Humidity = weatherData.Humidity.GetRoundedValue(), weatherData.AddedOn }), token);
             }
         }
 

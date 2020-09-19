@@ -9,9 +9,11 @@ using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
+using TilesDashboard.Core.Type;
 using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
+using MetricData = TilesDashboard.Core.Domain.Entities.MetricData;
 
 namespace TilesDashboard.Core.Domain.Services
 {
@@ -47,7 +49,7 @@ namespace TilesDashboard.Core.Domain.Services
             }
 
             await TilesRepository.InsertData(tileName, TileType.Metric, metricData.ToBsonDocument(), cancellationToken);
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileName, TileType.Metric, new { metricData.Value, metricData.AddedOn }), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(new TileId(tileName, TileType.Metric), new Type.MetricData(metricData.Value, metricData.AddedOn)), cancellationToken);
         }
     }
 }

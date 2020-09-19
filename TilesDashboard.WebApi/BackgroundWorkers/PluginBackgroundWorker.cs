@@ -22,7 +22,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
     {
         private readonly ILogger<PluginBackgroundWorker> _logger;
 
-        private readonly IPluginLoader _pluginLoader;
+        private readonly IDataPluginLoader _pluginLoader;
 
         private readonly IDateTimeOffsetProvider _dateTimeProvider;
 
@@ -35,7 +35,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         private readonly HeartBeatPluginHandler _heartBeatPluginHandler;
 
         public PluginBackgroundWorker(
-            IPluginLoader pluginLoader,
+            IDataPluginLoader pluginLoader,
             ILogger<PluginBackgroundWorker> logger,
             IDateTimeOffsetProvider dateTimeProvider,
             MetricPluginHandler metricPluginHandler,
