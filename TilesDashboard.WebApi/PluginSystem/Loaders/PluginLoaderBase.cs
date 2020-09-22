@@ -54,7 +54,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
             if (!Directory.Exists(pluginsFolder))
             {
                 _logger.LogInformation("Plugin folder does not exist, plugins are not be loaded.");
-                return null;
+                return Array.Empty<string>();
             }
 
             var pluginPaths = Directory.GetFiles(pluginsFolder);

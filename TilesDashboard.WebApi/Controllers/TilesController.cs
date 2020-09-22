@@ -52,9 +52,9 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpGet("metric/{tileName}/recent")]
-        public async Task<IList<object>> GetMetricRecentData(string tileName, CancellationToken cancellationToken)
+        public async Task<IList<object>> GetMetricRecentData(string tileName, [FromQuery][Range(1, 30)] int? amountOfData, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _metricService.GetMetricRecentDataAsync(tileName, AmountOfDate, cancellationToken));
+            return TileDtoMapper.Map(await _metricService.GetMetricRecentDataAsync(tileName, amountOfData ?? AmountOfDate, cancellationToken));
         }
 
         [HttpPost("metric/{tileName}/record")]
@@ -71,9 +71,9 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpGet("integer/{tileName}/recent")]
-        public async Task<IList<object>> GetIntegerRecentData(string tileName, CancellationToken cancellationToken)
+        public async Task<IList<object>> GetIntegerRecentData(string tileName, [FromQuery][Range(1, 30)] int? amountOfData, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _integerTileService.GetIntegerRecentDataAsync(tileName, AmountOfDate, cancellationToken));
+            return TileDtoMapper.Map(await _integerTileService.GetIntegerRecentDataAsync(tileName, amountOfData ?? AmountOfDate, cancellationToken));
         }
 
         [HttpPost("integer/{tileName}/record")]
@@ -90,9 +90,9 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpGet("heartbeat/{tileName}/recent")]
-        public async Task<IList<object>> GetHeartbeatRecentData(string tileName, CancellationToken cancellationToken)
+        public async Task<IList<object>> GetHeartbeatRecentData(string tileName, [FromQuery][Range(1, 30)] int? amountOfData, CancellationToken cancellationToken)
         {
-            return TileDtoMapper.Map(await _tileService.GetRecentDataAsync<HeartBeatData>(tileName, TileType.HeartBeat, AmountOfDate, cancellationToken));
+            return TileDtoMapper.Map(await _tileService.GetRecentDataAsync<HeartBeatData>(tileName, TileType.HeartBeat, amountOfData ?? AmountOfDate, cancellationToken));
         }
 
         [HttpGet("heartbeat/{tileName}/since")]
