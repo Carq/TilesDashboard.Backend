@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using TilesDashboard.Plugin.AzureWebJobHeartBeat.Dto;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
@@ -39,7 +39,11 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var webJobResponse = JsonConvert.DeserializeObject<AzureWebJobStatusResponseDto>(responseContent);
+                    var webJobResponse = JsonSerializer.Deserialize<AzureWebJobStatusResponseDto>(responseContent,
+                        new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
 
                     if (webJobResponse.Status == "Running")
                     {
