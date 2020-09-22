@@ -11,11 +11,11 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
 {
     public class HeartBeatGeneral : HeartBeatPluginBase
     {
-        public override string TileName { get; } = "TRIQ API";
+        public override string TileName { get; } = "API";
 
         public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
 
-        private readonly string RootConfig = "HeartBeatTriqApi";
+        private readonly string RootConfig = "Api";
 
         public HeartBeatGeneral(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
         {
@@ -33,10 +33,10 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
                 stopwatcher.Stop();
                 if (response.IsSuccessStatusCode)
                 {
-                    return new HeartBeatData((int)stopwatcher.ElapsedMilliseconds, Status.OK);
+                    return new HeartBeatData((int)stopwatcher.ElapsedMilliseconds, null, null, Status.OK);
                 }
 
-                return new HeartBeatData(0, Status.OK);
+                return HeartBeatData.NoResponse();
             }
             catch (Exception ex)
             {

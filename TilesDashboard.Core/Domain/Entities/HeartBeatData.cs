@@ -5,6 +5,12 @@ namespace TilesDashboard.Core.Domain.Entities
 {
     public class HeartBeatData : TileData
     {
+        public HeartBeatData(int responseTime, string appVersion, string additionalInfo, DateTimeOffset addedOn)
+           : this(responseTime, appVersion, addedOn)
+        {
+            AdditionalInfo = additionalInfo;
+        }
+
         public HeartBeatData(int responseTime, string appVersion, DateTimeOffset addedOn)
             : this(responseTime, addedOn)
         {
@@ -23,6 +29,8 @@ namespace TilesDashboard.Core.Domain.Entities
         public int ResponseTimeInMs { get; private set; }
 
         public string AppVersion { get; private set; }
+
+        public string AdditionalInfo { get; private set; }
 
         public static HeartBeatData Unavailable(DateTimeOffset addedOn) => new HeartBeatData(-1, addedOn);
     }

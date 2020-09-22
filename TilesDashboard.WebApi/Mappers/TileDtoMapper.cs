@@ -108,6 +108,7 @@ namespace TilesDashboard.WebApi.Mappers
                 converted.ResponseTimeInMs,
                 converted.AppVersion,
                 converted.AddedOn,
+                converted.AdditionalInfo,
             };
         }
     }

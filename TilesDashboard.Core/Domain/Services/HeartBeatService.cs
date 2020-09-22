@@ -22,12 +22,12 @@ namespace TilesDashboard.Core.Domain.Services
             _eventDispatcher = eventDispatcher ?? throw new System.ArgumentNullException(nameof(eventDispatcher));
         }
 
-        public async Task RecordDataAsync(string tileName, int responseInMs, string appVersion, CancellationToken cancellationToken)
+        public async Task RecordDataAsync(string tileName, int responseInMs, string appVersion, string additionalInfo, CancellationToken cancellationToken)
         {
-            var heartBeatData = new HeartBeatData(responseInMs, appVersion, DateTimeOffsetProvider.Now);
+            var heartBeatData = new HeartBeatData(responseInMs, appVersion, additionalInfo, DateTimeOffsetProvider.Now);
 
             await TilesRepository.InsertData(tileName, TileType.HeartBeat, heartBeatData.ToBsonDocument(), cancellationToken);
-            await _eventDispatcher.PublishAsync(new NewDataEvent(new TileId(tileName, TileType.HeartBeat), new { heartBeatData.ResponseTimeInMs, heartBeatData.AppVersion, heartBeatData.AddedOn }), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(new TileId(tileName, TileType.HeartBeat), new { heartBeatData.ResponseTimeInMs, heartBeatData.AppVersion, heartBeatData.AdditionalInfo, heartBeatData.AddedOn }), cancellationToken);
         }
     }
 }

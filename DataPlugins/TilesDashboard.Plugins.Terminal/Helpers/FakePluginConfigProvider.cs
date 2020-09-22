@@ -20,7 +20,7 @@ namespace TilesDashboard.Plugins.Terminal.Helpers
                 case "AzureCodeCoveragePluginBe:BuildDefinition":
                     return "12";
                 case "AzureCodeCoveragePluginBe:PersonalAccessToken":
-                    return "hseegbdb3ceshchzrviqoee5y4jpqxglfhiolglsjzkh2jbdb2ua";
+                    return "";
                  case "AzureCodeCoveragePluginBe:TileName":
                     return "";
                 default:

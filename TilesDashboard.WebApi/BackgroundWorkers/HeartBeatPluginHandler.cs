@@ -24,10 +24,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         public async Task<Result> HandlePlugin(HeartBeatPluginBase plugin, CancellationToken cancellationToken)
         {
             var data = await plugin.GetDataAsync();
-            _logger.LogDebug($"Heartbeat plugin: \"{plugin.TileName}\", ResponseInMs: {data.Value}, AppVersion: -");
+            _logger.LogDebug($"Heartbeat plugin: \"{plugin}\"");
             if (data.Status.Is(Status.OK))
             {
-                await _heartBeatService.RecordDataAsync(plugin.TileName, data.Value, null, cancellationToken);
+                await _heartBeatService.RecordDataAsync(plugin.TileName, data.Value, data.AppVersion, data.AdditionalInfo, cancellationToken);
             }
 
             return data;
