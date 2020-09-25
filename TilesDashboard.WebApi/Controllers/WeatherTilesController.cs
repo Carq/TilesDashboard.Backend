@@ -26,12 +26,14 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpGet("{tileName}/recent")]
+        [BearerReadAuthorization]
         public async Task<IList<object>> GetWeatherRecentData(string tileName, CancellationToken cancellationToken)
         {
             return TileDtoMapper.Map(await _weatherService.GetWeatherRecentDataAsync(tileName, AmountOfDate, cancellationToken));
         }
 
         [HttpGet("{tileName}/since")]
+        [BearerReadAuthorization]
         public async Task<IList<object>> GetWeatherDataSince(string tileName, [FromQuery][Required][Range(1, 24)] int hours, CancellationToken cancellationToken)
         {
             return TileDtoMapper.Map(await _weatherService.GetWeatherDataSinceAsync(tileName, hours, cancellationToken));

@@ -15,5 +15,9 @@ namespace TilesDashboard.WebApi.Configuration
         public string DatabaseName => GetValue<string>("Application:DatabaseName");
 
         public string SecurityToken => GetValue<string>("Application:SecurityToken");
+
+        public string SecretReadEndpoints => GetValueOrDefault<string>("Application:SecretReadEndpoints");
+
+        public bool ProtectReadEndpoints => GetValueOrDefault<bool>("Application:ProtectReadEndpoints");
     }
 }

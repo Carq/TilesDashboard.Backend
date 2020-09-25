@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Plugin.Crypto;
 using TilesDashboard.Plugin.HeartBeatGeneral;
 using TilesDashboard.Plugins.Terminal.Helpers;
 

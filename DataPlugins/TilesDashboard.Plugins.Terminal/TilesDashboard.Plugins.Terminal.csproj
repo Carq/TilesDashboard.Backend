@@ -12,10 +12,4 @@
     <ProjectReference Include="..\TilesDashboard.Plugin.OpenWeatherMap\TilesDashboard.Plugin.OpenWeatherMap.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="TilesDashboard.PluginBase">
-      <HintPath>..\..\..\TilesDashboard.Backend\TilesDashboard.PluginBase\bin\Debug\netstandard2.1\TilesDashboard.PluginBase.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

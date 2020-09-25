@@ -11,15 +11,15 @@ using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.HeartBeatGeneral
 {
-    public class HeartBeatGeneral : HeartBeatPluginBase
+    public class GarminConnectorHeartBeatGeneral : HeartBeatPluginBase
     {
-        public override string TileName { get; } = "Triq API";
+        public override string TileName { get; } = "Garmin Connector";
 
         public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
 
-        private readonly string RootConfig = "TriqAPIHeartbeat";
+        private readonly string RootConfig = "GarminConnectorHeartBeat";
 
-        public HeartBeatGeneral(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
+        public GarminConnectorHeartBeatGeneral(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
         {
         }
 

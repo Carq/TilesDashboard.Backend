@@ -14,7 +14,7 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
 {
     public class AzureWebJobHeartBeat : HeartBeatPluginBase
     {
-        private readonly string RootConfig = "HeartBeatTelemetryJob";
+        private readonly string RootConfig = "TelemetryJobHeartBeat";
 
         public AzureWebJobHeartBeat(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
         {
