@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,8 +13,9 @@ using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Tools;
+using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Metric;
 
 namespace TilesDashboard.Core.Domain.Services
 {
@@ -94,7 +96,7 @@ namespace TilesDashboard.Core.Domain.Services
             return DeserializeData<TData>(tileDbEntity?.Data ?? Array.Empty<BsonDocument>());
         }
 
-        protected static List<TData> DeserializeData<TData>(IEnumerable<BsonDocument> rawData)
+        protected static IList<TData> DeserializeData<TData>(IEnumerable<BsonDocument> rawData)
             where TData : TileData
         {
             var result = new List<TData>();

@@ -5,10 +5,10 @@ using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
-using TilesDashboard.Core.Type;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Core.Domain.Services
 {

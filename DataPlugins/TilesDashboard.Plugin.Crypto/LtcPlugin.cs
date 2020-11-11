@@ -3,9 +3,9 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Plugin.Crypto
 {

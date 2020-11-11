@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Core.Type;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Notification;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TileDashboard.TestNotificationPlugins
 {

@@ -36,12 +36,12 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError($"Data Plugin: {plugin.GetType()} \"{plugin.TileId.TileType}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
+                    _logger.LogError($"Data Plugin: {plugin.GetType()} \"{plugin.TileId.Type}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
                     continue;
                 }
 
                 initializedPlugins.Add(plugin);
-                _logger.LogInformation($"Data Plugin \"{plugin.TileId.TileType}\" with name \"{plugin.TileId.TileName} \" have been initialized.");
+                _logger.LogInformation($"Data Plugin \"{plugin.TileId.Type}\" with name \"{plugin.TileId.Name} \" have been initialized.");
             }
 
             _logger.LogInformation("Data Plugins initialization completed.");

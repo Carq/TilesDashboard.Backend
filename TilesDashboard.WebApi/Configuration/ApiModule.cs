@@ -1,10 +1,11 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Http;
 using TilesDashboard.Contract.Events;
-using TilesDashboard.Core.Configuration;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Notification;
+using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Hubs;
 using TilesDashboard.WebApi.PluginSystem;
@@ -17,8 +18,11 @@ namespace TilesDashboard.WebApi.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
+            builder.RegisterType<CancellationTokenProvider>().As<ICancellationTokenProvider>().InstancePerLifetimeScope();
             builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>().As<ISecurityConfig>().SingleInstance();
             builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeOffsetProvider>().SingleInstance();
+            builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
 
             PluginInfrastructure(builder);

@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.Core.Type;
+using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.PluginBase.Notification
 {
