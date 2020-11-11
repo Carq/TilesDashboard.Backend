@@ -6,6 +6,12 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
+  <PropertyGroup Label="FineCodeCoverage">
+    <Enabled>
+      True
+    </Enabled>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.0.0" />
     <PackageReference Include="Dawn.Guard" Version="1.12.0" />
