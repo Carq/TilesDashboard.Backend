@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
-using TilesDashboard.Core.Configuration;
 using TilesDashboard.Core.Storage.Entities;
+using TilesDashboard.V2.Core.Configuration;
 
 namespace TilesDashboard.Core.Storage
 {

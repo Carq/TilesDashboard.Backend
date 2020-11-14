@@ -8,9 +8,9 @@ using TilesDashboard.Contract;
 using TilesDashboard.Contract.RecordData;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Services;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
+using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.WebApi.Authorization;
 using TilesDashboard.WebApi.Mappers;
 

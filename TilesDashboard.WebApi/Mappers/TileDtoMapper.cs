@@ -3,8 +3,8 @@ using System.Linq;
 using TilesDashboard.Contract;
 using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Extensions;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.WebApi.Mappers
 {

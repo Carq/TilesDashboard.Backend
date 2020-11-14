@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TilesDashboard.Core.Exceptions
+namespace TilesDashboard.V2.Core.Entities.Exceptions
 {
     public class AuthorizationException : Exception
     {

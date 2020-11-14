@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TilesDashboard.Core.Type
+namespace TilesDashboard.V2.Core.Entities
 {
     public abstract class ValueObject
     {
@@ -49,7 +49,7 @@ namespace TilesDashboard.Core.Type
                 {
                     unchecked
                     {
-                        return (current * 23) + (obj?.GetHashCode() ?? 0);
+                        return current * 23 + (obj?.GetHashCode() ?? 0);
                     }
                 });
         }

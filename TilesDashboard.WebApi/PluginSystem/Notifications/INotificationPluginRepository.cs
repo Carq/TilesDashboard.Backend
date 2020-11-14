@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using TilesDashboard.Core.Type;
 using TilesDashboard.PluginBase.Notification;
+using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.WebApi.PluginSystem.Notifications
 {

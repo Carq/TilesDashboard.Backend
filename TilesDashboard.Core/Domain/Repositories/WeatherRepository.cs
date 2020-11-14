@@ -8,8 +8,7 @@ using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type;
-using TilesDashboard.Core.Type.Enums;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Core.Domain.Repositories
 {

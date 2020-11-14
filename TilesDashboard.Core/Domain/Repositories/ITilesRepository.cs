@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MongoDB.Bson;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type.Enums;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Core.Domain.Repositories
 {

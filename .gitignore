@@ -63,3 +63,5 @@ _[Ss]cripts
 _ReSharper.Caches
 /azureDeploy
 /TilesDashboard.WebApi/Properties/PublishProfiles
+tests/CodeCoverageReport*/*
+coverage.cobertura.xml

@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using TilesDashboard.Contract.Events;
-using TilesDashboard.Core.Domain.Entities;
 using TilesDashboard.Core.Domain.Repositories;
-using TilesDashboard.Core.Exceptions;
 using TilesDashboard.Core.Storage;
 using TilesDashboard.Core.Type;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Exceptions;
+using TilesDashboard.V2.Core.Entities.Metric;
 using MetricData = TilesDashboard.Core.Domain.Entities.MetricData;
 
 namespace TilesDashboard.Core.Domain.Services

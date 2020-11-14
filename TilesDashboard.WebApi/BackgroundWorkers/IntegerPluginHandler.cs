@@ -21,13 +21,13 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _integerTileService = integerTileService;
         }
 
-        public async Task<Result> HandlePlugin(IntegerPluginBase integerPlugin, CancellationToken stoppingToken)
+        public async Task<Result> HandlePlugin(IntegerPluginBase integerPlugin, CancellationToken cancellationToken)
         {
-            var data = await integerPlugin.GetDataAsync();
+            var data = await integerPlugin.GetDataAsync(cancellationToken);
             _logger.LogDebug($"Integer plugin: \"{integerPlugin.TileName}\", Value: {data.Value}");
             if (data.Status.Is(Status.OK))
             {
-                await _integerTileService.RecordIntegerDataAsync(integerPlugin.TileName, data.Value, stoppingToken);
+                await _integerTileService.RecordIntegerDataAsync(integerPlugin.TileName, data.Value, cancellationToken);
             }
 
             return data;

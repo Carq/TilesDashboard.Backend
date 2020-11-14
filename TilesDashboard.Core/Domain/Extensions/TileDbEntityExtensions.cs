@@ -1,7 +1,6 @@
 ﻿using MongoDB.Driver;
 using TilesDashboard.Core.Storage.Entities;
-using TilesDashboard.Core.Type;
-using TilesDashboard.Core.Type.Enums;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Core.Domain.Extensions
 {

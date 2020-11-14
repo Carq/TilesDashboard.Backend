@@ -22,13 +22,13 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _weatherServices = weatherServices;
         }
 
-        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, CancellationToken stoppingToken)
+        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, CancellationToken cancellationToken)
         {
-            var data = await weatherPlugin.GetDataAsync();
+            var data = await weatherPlugin.GetDataAsync(cancellationToken);
             _logger.LogDebug($"Weather plugin: \"{weatherPlugin.TileName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
             if (data.Status.Is(Status.OK))
             {
-                await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, null, stoppingToken);
+                await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, null, cancellationToken);
             }
 
             return data;

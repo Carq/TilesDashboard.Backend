@@ -1,5 +1,5 @@
-﻿using TilesDashboard.Core.Type;
-using TilesDashboard.Handy.Events;
+﻿using TilesDashboard.Handy.Events;
+using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.Contract.Events
 {

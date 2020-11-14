@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TilesDashboard.Core.Type;
 using TilesDashboard.PluginBase.Notification;
+using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.WebApi.PluginSystem.Notifications
 {
@@ -17,7 +17,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Notifications
 
         public IList<INotificationPlugin> FindNotificationPlugins(TileId tileId)
         {
-            return _notificationPluginContext.NotificationPlugins.Where(x => x.TileId == tileId).ToList();
+            return _notificationPluginContext.NotificationPlugins.Where(x => x.TileId == new TilesDashboard.V2.Core.Entities.TileId(tileId.Name, tileId.Type)).ToList();
         }
     }
 }
