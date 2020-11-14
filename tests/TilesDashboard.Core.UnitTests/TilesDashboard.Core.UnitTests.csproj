@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
+    <ProjectReference Include="..\TilesDashboard.TestUtils\TilesDashboard.TestUtils.csproj" />
   </ItemGroup>
 
 </Project>

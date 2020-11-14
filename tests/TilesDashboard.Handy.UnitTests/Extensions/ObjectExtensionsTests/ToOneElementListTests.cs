@@ -4,7 +4,7 @@ using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.Handy.UnitTests.Extensions.ObjectExtensionsTests
 {
-    public class ToOneElementListTests
+    internal class ToOneElementListTests
     {
         [Test]
         public void ShouldCreateOneElementList()

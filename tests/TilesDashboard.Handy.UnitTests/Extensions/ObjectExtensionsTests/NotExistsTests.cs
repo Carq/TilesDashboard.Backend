@@ -5,7 +5,7 @@ using TilesDashboard.TestUtils.TestClass;
 
 namespace TilesDashboard.Handy.UnitTests.Extensions.ObjectExtensionsTests
 {
-    public class NotExistsTests
+    internal class NotExistsTests
     {
         [Test]
         public void ShouldReturnFalse_WhenObjectIsReferenceTypeAndItIsNotNull()

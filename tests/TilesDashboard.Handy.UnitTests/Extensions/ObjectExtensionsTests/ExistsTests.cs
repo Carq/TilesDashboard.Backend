@@ -5,7 +5,7 @@ using TilesDashboard.TestUtils.TestClass;
 
 namespace TilesDashboard.Handy.UnitTests.Extensions.ObjectExtensionsTests
 {
-    public class ExistsTests
+    internal class ExistsTests
     {
         [Test]
         public void ShouldReturnTrue_WhenObjectIsValueType()

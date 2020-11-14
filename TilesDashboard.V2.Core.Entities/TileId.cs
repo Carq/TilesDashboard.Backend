@@ -8,7 +8,7 @@ namespace TilesDashboard.V2.Core.Entities
     {
         public TileId(string tileName, TileType tileType)
         {
-            Name = tileName ?? throw new ArgumentNullException(nameof(tileName));
+            Name = string.IsNullOrWhiteSpace(tileName) ? throw new ArgumentException("Tile name cannot be empty", nameof(tileName)) : tileName;
             Type = tileType != TileType.Undefined ? tileType : throw new ArgumentException("TileType cannot be Undefined", nameof(tileType));
         }
 
@@ -23,7 +23,7 @@ namespace TilesDashboard.V2.Core.Entities
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Name;
+            yield return Name.ToUpperInvariant();
             yield return Type;
         }
     }
