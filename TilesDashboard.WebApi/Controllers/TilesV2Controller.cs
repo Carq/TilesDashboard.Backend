@@ -8,7 +8,7 @@ using TilesDashboard.WebApi.Authorization;
 
 namespace TilesDashboard.WebApi.Controllers
 {
-    [Route("[controller]/v2")]
+    [Route("tiles/v2")]
     [ApiController]
     public class TilesV2Controller
     {

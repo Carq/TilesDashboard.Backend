@@ -8,6 +8,7 @@ using TilesDashboard.PluginBase.Notification;
 using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Hubs;
+using TilesDashboard.WebApi.Middlewares;
 using TilesDashboard.WebApi.PluginSystem;
 using TilesDashboard.WebApi.PluginSystem.Loaders;
 using TilesDashboard.WebApi.PluginSystem.Notifications;
@@ -18,6 +19,7 @@ namespace TilesDashboard.WebApi.Configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<GlobalExceptionHandlingMiddleware>();
             builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
             builder.RegisterType<CancellationTokenProvider>().As<ICancellationTokenProvider>().InstancePerLifetimeScope();
             builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>().As<ISecurityConfig>().SingleInstance();

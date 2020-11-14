@@ -13,6 +13,7 @@ using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Configuration;
 using TilesDashboard.WebApi.Hubs;
+using TilesDashboard.WebApi.Middlewares;
 using TilesDashboard.WebApi.StartupConfig;
 
 namespace TilesDashboard.WebApi
@@ -58,6 +59,7 @@ namespace TilesDashboard.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseRouting();
             app.UseCors(Configuration);
             app.UseAuthorization();

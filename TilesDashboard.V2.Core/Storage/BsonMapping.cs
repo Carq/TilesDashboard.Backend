@@ -18,13 +18,13 @@ namespace TilesDashboard.V2.Core.Storage
                 cm.MapProperty(c => c.Type).SetSerializer(new EnumSerializer<TileType>(BsonType.String));
             });
 
-               BsonClassMap.RegisterClassMap<TileEntity>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapIdMember(x => x.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                cm.MapProperty("TileConfiguration")
-                                    .SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<string, object>>(DictionaryRepresentation.Document));
-            });
+            BsonClassMap.RegisterClassMap<TileEntity>(cm =>
+             {
+                 cm.AutoMap();
+                 cm.MapIdMember(x => x.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                 cm.MapProperty("TileConfiguration")
+                                     .SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<string, object>>(DictionaryRepresentation.Document));
+             });
         }
     }
 }
