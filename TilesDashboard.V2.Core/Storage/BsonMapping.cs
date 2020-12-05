@@ -1,8 +1,8 @@
-﻿using MongoDB.Bson;
+﻿using System.Collections.Generic;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
-using System.Collections.Generic;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.V2.Core.Entities.Metric;
@@ -32,7 +32,6 @@ namespace TilesDashboard.V2.Core.Storage
             BsonSerializer.RegisterDiscriminatorConvention(typeof(TileEntity), new TileDiscriminatorConvention());
             BsonClassMap.RegisterClassMap<MetricTile>();
             BsonClassMap.RegisterClassMap<WeatherTile>();
-
         }
     }
 }

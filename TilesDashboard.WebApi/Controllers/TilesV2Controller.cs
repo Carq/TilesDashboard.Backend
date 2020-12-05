@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TilesDashboard.Contract;
-using TilesDashboard.Handy.Extensions;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
-using TilesDashboard.V2.Core.Entities.Exceptions;
-using TilesDashboard.V2.Core.Entities.Metric;
-using TilesDashboard.V2.Core.Entities.Weather;
 using TilesDashboard.V2.Core.Services;
 using TilesDashboard.WebApi.Authorization;
 using TilesDashboard.WebApi.Mappers;
@@ -33,7 +29,7 @@ namespace TilesDashboard.WebApi.Controllers
             return (await _tileService.GetAllTiles()).MapToContract();
         }
 
-        [HttpGet("{tileType}/{tileName}/basic-data")]
+        [HttpGet("{tileType}/{tileName}")]
         [BearerReadAuthorization]
         public async Task<TileWithCurrentDataDto> GetTileBasicData(TileType tileType, string tileName)
         {

@@ -10,7 +10,7 @@ namespace TilesDashboard.V2.Core.Repositories
 
         Task<IList<TileEntity>> GetAll();
 
-        Task<TEntity> GetTile<TEntity>(TileId tileId) 
+        Task<TEntity> GetTile<TEntity>(TileId tileId)
             where TEntity : TileEntity;
 
         void RecordValue(TileId tileId, ITileValue tileValue);

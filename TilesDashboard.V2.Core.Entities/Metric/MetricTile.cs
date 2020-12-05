@@ -7,9 +7,9 @@ namespace TilesDashboard.V2.Core.Entities.Metric
     {
         private MetricConfiguration _metricConfiguration;
 
-        public override object GetConfigurationAsObject() => GetMetricConfiguration();
-
         public MetricType MetricType => GetMetricConfiguration().MetricType;
+
+        public override object GetConfigurationAsObject() => GetMetricConfiguration();
 
         public MetricConfiguration GetMetricConfiguration()
         {

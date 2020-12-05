@@ -11,6 +11,6 @@ namespace TilesDashboard.V2.Core.Services
         Task<TTile> GetTile<TTile>(TileId tileId)
             where TTile : TileEntity;
 
-         Task<TileEntity> GetTile(TileId tileId);
+        Task<TileEntity> GetTile(TileId tileId);
     }
 }
