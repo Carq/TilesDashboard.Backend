@@ -7,7 +7,7 @@ namespace TilesDashboard.V2.Core.Services
 {
     public interface IMetricService
     {
-        Task<MetricTile> GetTile(TileId tileId);
+        Task<MetricTile> GetMetricTile(TileId tileId);
 
         Task RecordValue(TileId tileId, MetricType metricType, decimal newValue);
     }

@@ -34,5 +34,31 @@ namespace TilesDashboard.Handy.UnitTests.Extensions.EnumExtensionsTests
             // then
             action.Should().Throw<ArgumentException>();
         }
+
+        [Test]
+        public void ShouldConvertStringToEnum()
+        {
+            // given
+            var enumAsString = DummyTestEnum.DummyOne.ToString();
+
+            // when
+            var result = enumAsString.Convert<DummyTestEnum>();
+
+            // then
+            result.Should().Be(DummyTestEnum.DummyOne);
+        }
+
+        [Test]
+        public void ShouldThrowException_WhenStringIsNotInDestinationEnum()
+        {
+            // given
+            var enumAsString = "NotExistingEnum";
+
+            // given & when
+            Action action = () => enumAsString.Convert<DummySecondTestEnum>();
+
+            // then
+            action.Should().Throw<ArgumentException>();
+        }
     }
 }

@@ -46,6 +46,10 @@ namespace TilesDashboard.WebApi.Middlewares
             {
                 await CreateHttpResponse(context, HttpStatusCode.BadRequest, e);
             }
+            catch (ValidationException e)
+            {
+                await CreateHttpResponse(context, HttpStatusCode.BadRequest, e);
+            }
             catch (NotFoundException e)
             {
                 await CreateHttpResponse(context, HttpStatusCode.NotFound, e);

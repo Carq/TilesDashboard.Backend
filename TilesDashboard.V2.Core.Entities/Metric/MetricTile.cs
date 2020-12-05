@@ -7,11 +7,11 @@ namespace TilesDashboard.V2.Core.Entities.Metric
     {
         private MetricConfiguration _metricConfiguration;
 
-        public MetricConfiguration Configuration => GetMetricConfiguration();
+        public override object GetConfigurationAsObject() => GetMetricConfiguration();
 
-        public MetricType MetricType => Configuration.MetricType;
+        public MetricType MetricType => GetMetricConfiguration().MetricType;
 
-        private MetricConfiguration GetMetricConfiguration()
+        public MetricConfiguration GetMetricConfiguration()
         {
             if (_metricConfiguration.NotExists())
             {

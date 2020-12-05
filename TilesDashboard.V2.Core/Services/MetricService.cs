@@ -8,27 +8,21 @@ using TilesDashboard.V2.Core.Repositories;
 
 namespace TilesDashboard.V2.Core.Services
 {
-    public class MetricService : IMetricService
+    public class MetricService : TileBaseService, IMetricService
     {
-        private readonly ITileRepository _metricRepository;
-
         private readonly IDateTimeOffsetProvider _dateTimeProvider;
 
-        public MetricService(ITileRepository metricRepository, IDateTimeOffsetProvider dateTimeProvider)
+        public MetricService(IDateTimeOffsetProvider dateTimeProvider, ITileRepository tileRepository)
+            : base(tileRepository)
         {
-            _metricRepository = metricRepository ?? throw new ArgumentNullException(nameof(metricRepository));
-            _dateTimeProvider = dateTimeProvider;
+            _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
 
-        public async Task<MetricTile> GetTile(TileId tileId)
-        {
-            var test = await _metricRepository.GetTile<MetricTile>(tileId);
-            return test;
-        }
+        public async Task<MetricTile> GetMetricTile(TileId tileId) => await GetTile<MetricTile>(tileId);
 
         public async Task RecordValue(TileId tileId, MetricType metricType, decimal newValue)
         {
-            var metric = await _metricRepository.GetTile<MetricTile>(tileId);
+            var metric = await GetTile<MetricTile>(tileId);
             MetricValue newMetricValue = metric.MetricType switch
             {
                 MetricType.Percentage => new PercentageMetricValue(newValue, _dateTimeProvider.Now),
@@ -38,7 +32,7 @@ namespace TilesDashboard.V2.Core.Services
                 _ => throw new NotSupportedException()
             };
 
-            _metricRepository.RecordValue(tileId, newMetricValue);
+            TileRepository.RecordValue(tileId, newMetricValue);
         }
     }
 }

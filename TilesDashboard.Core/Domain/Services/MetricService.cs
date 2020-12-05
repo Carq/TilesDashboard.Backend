@@ -7,7 +7,6 @@ using MongoDB.Bson.Serialization;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Repositories;
 using TilesDashboard.Core.Storage;
-using TilesDashboard.Core.Type;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;

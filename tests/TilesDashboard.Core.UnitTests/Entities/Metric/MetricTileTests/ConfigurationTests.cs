@@ -19,7 +19,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
                 .Build();
 
             // when
-            var configuration = metricTile.Configuration;
+            var configuration = metricTile.GetMetricConfiguration();
 
             // then
             configuration.Limit.Should().Be(limit);
@@ -50,7 +50,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
                 .Build();
 
             // when
-            var configuration = metricTile.Configuration;
+            var configuration = metricTile.GetMetricConfiguration();
 
             // then
             configuration.Limit.Should().Be(limit);

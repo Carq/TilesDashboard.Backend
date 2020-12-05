@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TilesDashboard.Contract;
+using TilesDashboard.Handy.Extensions;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Exceptions;
+using TilesDashboard.V2.Core.Entities.Metric;
+using TilesDashboard.V2.Core.Entities.Weather;
 using TilesDashboard.V2.Core.Services;
 using TilesDashboard.WebApi.Authorization;
+using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
 {
@@ -12,18 +19,25 @@ namespace TilesDashboard.WebApi.Controllers
     [ApiController]
     public class TilesV2Controller
     {
-        private readonly IMetricService _metricService;
+        private readonly ITileBaseService _tileService;
 
-        public TilesV2Controller(IMetricService metricService)
+        public TilesV2Controller(ITileBaseService tileService)
         {
-            _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
+            _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));
+        }
+
+        [HttpGet("all")]
+        [BearerReadAuthorization]
+        public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData()
+        {
+            return (await _tileService.GetAllTiles()).MapToContract();
         }
 
         [HttpGet("{tileType}/{tileName}/basic-data")]
         [BearerReadAuthorization]
-        public async Task<object> GetMetricBasicData(TileType tileType, string tileName)
+        public async Task<TileWithCurrentDataDto> GetTileBasicData(TileType tileType, string tileName)
         {
-            return await _metricService.GetTile(new TileId(tileName, tileType));
+            return (await _tileService.GetTile(new TileId(tileName, tileType))).MapToContract();
         }
     }
 }

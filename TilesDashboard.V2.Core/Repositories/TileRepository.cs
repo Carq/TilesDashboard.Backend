@@ -1,16 +1,11 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Driver;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
+﻿using MongoDB.Driver;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
-using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.V2.Core.Entities.Exceptions;
-using TilesDashboard.V2.Core.Entities.Metric;
 using TilesDashboard.V2.Core.Storage;
 
 namespace TilesDashboard.V2.Core.Repositories
@@ -25,6 +20,24 @@ namespace TilesDashboard.V2.Core.Repositories
         {
             _tileStorage = tileStorage;
             _cancellationTokenProvider = cancellationTokenProvider;
+        }
+
+        public async Task CheckIfExist(TileId tileId)
+        {
+            var filter = TileMongoEntityExtensions.TileMongoEntityFilter(tileId);
+            var exists = await _tileStorage.Tiles
+                                          .Find(filter)
+                                          .AnyAsync(_cancellationTokenProvider.GetToken());
+
+            if (!exists)
+            {
+                throw new NotFoundException($"Tile {tileId} does not exist.");
+            }
+        }
+
+        public async Task<IList<TileEntity>> GetAll()
+        {
+            return await _tileStorage.Tiles.Find(_ => true).ToListAsync(_cancellationTokenProvider.GetToken());
         }
 
         public async Task<TEntity> GetTile<TEntity>(TileId tileId)
@@ -44,7 +57,7 @@ namespace TilesDashboard.V2.Core.Repositories
             return tileMongo;
         }
 
-        public void RecordValue(TileId tileId, MetricValue newMetricValue)
+        public void RecordValue(TileId tileId, ITileValue tileValue)
         {
             throw new System.NotImplementedException();
         }

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Exceptions;
 
 namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
 {
@@ -33,7 +34,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
             Action action = () => new TileId(tileName, TileType.Metric);
 
             // then
-            action.Should().ThrowExactly<ArgumentException>();
+            action.Should().ThrowExactly<ValidationException>();
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
             Action action = () => new TileId("Just tile", TileType.Undefined);
 
             // then
-            action.Should().ThrowExactly<ArgumentException>();
+            action.Should().ThrowExactly<ValidationException>();
         }
     }
 }

@@ -5,6 +5,8 @@ using MongoDB.Bson.Serialization.Serializers;
 using System.Collections.Generic;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Metric;
+using TilesDashboard.V2.Core.Entities.Weather;
 
 namespace TilesDashboard.V2.Core.Storage
 {
@@ -21,10 +23,16 @@ namespace TilesDashboard.V2.Core.Storage
             BsonClassMap.RegisterClassMap<TileEntity>(cm =>
              {
                  cm.AutoMap();
+                 cm.SetIsRootClass(true);
                  cm.MapIdMember(x => x.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
                  cm.MapProperty("TileConfiguration")
                                      .SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<string, object>>(DictionaryRepresentation.Document));
              });
+
+            BsonSerializer.RegisterDiscriminatorConvention(typeof(TileEntity), new TileDiscriminatorConvention());
+            BsonClassMap.RegisterClassMap<MetricTile>();
+            BsonClassMap.RegisterClassMap<WeatherTile>();
+
         }
     }
 }

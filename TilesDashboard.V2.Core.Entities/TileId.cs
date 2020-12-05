@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TilesDashboard.Handy.Extensions;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Exceptions;
 
 namespace TilesDashboard.V2.Core.Entities
 {
@@ -8,8 +9,8 @@ namespace TilesDashboard.V2.Core.Entities
     {
         public TileId(string tileName, TileType tileType)
         {
-            Name = string.IsNullOrWhiteSpace(tileName) ? throw new ArgumentException("Tile name cannot be empty", nameof(tileName)) : tileName;
-            Type = tileType != TileType.Undefined ? tileType : throw new ArgumentException("TileType cannot be Undefined", nameof(tileType));
+            Name = string.IsNullOrWhiteSpace(tileName) ? throw new ValidationException("Tile name cannot be empty") : tileName;
+            Type = tileType.IsUndefined() ? throw new ValidationException("TileType cannot be Undefined") : tileType;
         }
 
         public string Name { get; private set; }
