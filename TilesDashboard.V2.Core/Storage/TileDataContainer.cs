@@ -5,7 +5,7 @@ using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.V2.Core.Entities
 {
-    public class TileData
+    public class TileDataContainer
     {
         public string TileStorageId { get; private set; }
 

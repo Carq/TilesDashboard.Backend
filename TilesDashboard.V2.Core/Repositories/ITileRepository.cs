@@ -15,5 +15,7 @@ namespace TilesDashboard.V2.Core.Repositories
             where TEntity : TileEntity;
 
         Task RecordValue(TileId tileId, TileValue tileValue);
+
+        Task<IList<TileValue>> GetRecentData(TileId tileId, int amountOfRecentData);
     }
 }

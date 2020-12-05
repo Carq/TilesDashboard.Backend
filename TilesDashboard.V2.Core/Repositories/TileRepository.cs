@@ -7,6 +7,7 @@ using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Exceptions;
 using TilesDashboard.V2.Core.Storage;
+using TilesDashboard.V2.Core.Storage.Extensions;
 
 namespace TilesDashboard.V2.Core.Repositories
 {
@@ -24,7 +25,7 @@ namespace TilesDashboard.V2.Core.Repositories
 
         public async Task<TileStorageId> CheckIfExist(TileId tileId)
         {
-            var filter = TileMongoEntityExtensions.TileMongoEntityFilter(tileId);
+            var filter = TileEntityExtensions.TileEntityFilter(tileId);
             var projection = Builders<TileEntity>.Projection.Expression<string>(x => x.Id);
 
             var storageId = await _tileStorage.TilesInformation
@@ -45,10 +46,24 @@ namespace TilesDashboard.V2.Core.Repositories
             return await _tileStorage.TilesInformation.Find(_ => true).ToListAsync(_cancellationTokenProvider.GetToken());
         }
 
+        public async Task<IList<TileValue>> GetRecentData(TileId tileId, int amountOfRecentData)
+        {
+            var tileStorageId = await CheckIfExist(tileId);
+
+            var filter = TileDataContainerExtensions.TileEntityFilter(tileStorageId, tileId.Type);
+            var projection = Builders<TileDataContainer>.Projection.FetchRecentData(amountOfRecentData);
+
+            return (await _tileStorage
+                    .TilesData
+                    .Find(filter)
+                    .Project<TileDataContainer>(projection)
+                    .SingleOrDefaultAsync(_cancellationTokenProvider.GetToken()))?.Data;
+        }
+
         public async Task<TEntity> GetTile<TEntity>(TileId tileId)
             where TEntity : TileEntity
         {
-            var filter = TileMongoEntityExtensions.TileMongoEntityFilter(tileId);
+            var filter = TileEntityExtensions.TileEntityFilter(tileId);
             var tileMongo = await _tileStorage.TilesInformation
                                           .Find(filter)
                                           .As<TEntity>()
@@ -66,15 +81,15 @@ namespace TilesDashboard.V2.Core.Repositories
         {
             var tileStorageId = await CheckIfExist(tileId);
 
-            var filter = Builders<TileData>.Filter.And(
-                Builders<TileData>.Filter.Eq(x => x.TileStorageId, tileStorageId.Value),
-                Builders<TileData>.Filter.Eq(x => x.GroupDate, TileData.GenerateGroupDate(tileValue.AddedOn)),
-                Builders<TileData>.Filter.Eq(x => x.Type, tileId.Type));
+            var filter = Builders<TileDataContainer>.Filter.And(
+                Builders<TileDataContainer>.Filter.Eq(x => x.TileStorageId, tileStorageId.Value),
+                Builders<TileDataContainer>.Filter.Eq(x => x.GroupDate, TileDataContainer.GenerateGroupDate(tileValue.AddedOn)),
+                Builders<TileDataContainer>.Filter.Eq(x => x.Type, tileId.Type));
 
             await _tileStorage.TilesData.UpdateOneAsync(
                 filter,
-                Builders<TileData>.Update.Push(x => x.Data, tileValue),
-                new UpdateOptions() { IsUpsert = true },
+                Builders<TileDataContainer>.Update.Push(x => x.Data, tileValue),
+                new UpdateOptions() { IsUpsert = true, },
                 _cancellationTokenProvider.GetToken());
         }
     }

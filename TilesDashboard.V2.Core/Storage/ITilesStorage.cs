@@ -7,6 +7,6 @@ namespace TilesDashboard.V2.Core.Storage
     {
         IMongoCollection<TileEntity> TilesInformation { get; }
 
-        IMongoCollection<TileData> TilesData { get; }
+        IMongoCollection<TileDataContainer> TilesData { get; }
     }
 }

@@ -8,6 +8,8 @@ namespace TilesDashboard.V2.Core.Services
     {
         Task<IList<TileEntity>> GetAllTiles();
 
+        Task<IList<TileEntityWithData>> GetAllTilesWithRecentData();
+
         Task<TTile> GetTile<TTile>(TileId tileId)
             where TTile : TileEntity;
 

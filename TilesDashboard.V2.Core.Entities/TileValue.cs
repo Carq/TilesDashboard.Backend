@@ -12,6 +12,6 @@ namespace TilesDashboard.V2.Core.Entities
         /// <summary>
         /// Date when specif tile value has been added.
         /// </summary>
-        public DateTimeOffset AddedOn { get; }
+        public DateTimeOffset AddedOn { get; private set; }
     }
 }

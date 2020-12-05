@@ -3,9 +3,9 @@ using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.Core.Domain.Extensions
 {
-    public static class TileMongoEntityExtensions
+    public static class TileEntityExtensions
     {
-        public static FilterDefinition<TileEntity> TileMongoEntityFilter(TileId tileId)
+        public static FilterDefinition<TileEntity> TileEntityFilter(TileId tileId)
         {
             return Builders<TileEntity>.Filter.And(
                 Builders<TileEntity>.Filter.Eq(x => x.TileId.Name, tileId.Name),

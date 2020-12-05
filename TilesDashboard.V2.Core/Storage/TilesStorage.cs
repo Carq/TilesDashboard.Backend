@@ -16,6 +16,6 @@ namespace TilesDashboard.V2.Core.Storage
 
         public IMongoCollection<TileEntity> TilesInformation => _database.GetCollection<TileEntity>(CollectionNames.TilesInformation);
 
-        public IMongoCollection<TileData> TilesData => _database.GetCollection<TileData>(CollectionNames.TilesData);
+        public IMongoCollection<TileDataContainer> TilesData => _database.GetCollection<TileDataContainer>(CollectionNames.TilesData);
     }
 }

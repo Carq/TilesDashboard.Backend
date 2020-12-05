@@ -45,30 +45,37 @@ namespace TilesDashboard.V2.Core.Storage
 
         private static void TileDataMapping()
         {
-            BsonClassMap.RegisterClassMap<TileData>(cm =>
+            BsonClassMap.RegisterClassMap<TileDataContainer>(cm =>
             {
                 cm.AutoMap();
+                cm.SetIsRootClass(true);
+                cm.SetIgnoreExtraElements(true);
                 cm.MapProperty(c => c.Type).SetSerializer(new EnumSerializer<TileType>(BsonType.String));
             });
 
             BsonClassMap.RegisterClassMap<TileValue>(cm =>
             {
                 cm.AutoMap();
-                cm.SetDiscriminatorIsRequired(false);
                 cm.MapProperty(x => x.AddedOn).SetSerializer(new DateTimeOffsetSerializer(BsonType.String));
             });
 
-            BsonSerializer.RegisterDiscriminatorConvention(typeof(TileValue), new TileValueDiscriminatorConvention());
             BsonClassMap.RegisterClassMap<WeatherValue>(cm =>
             {
+                cm.AutoMap();
                 cm.MapProperty(x => x.Temperature).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
                 cm.MapProperty(x => x.Humidity).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
             });
 
             BsonClassMap.RegisterClassMap<MetricValue>(cm =>
-           {
-               cm.MapProperty(x => x.Value).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
-           });
+            {
+                cm.AutoMap();
+                cm.SetIsRootClass(true);
+                cm.MapProperty(x => x.Value).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
+            });
+
+            BsonClassMap.RegisterClassMap<PercentageMetricValue>();
+            BsonClassMap.RegisterClassMap<TimeMetricValue>();
+            BsonClassMap.RegisterClassMap<MoneyMetricValue>();
         }
     }
 }

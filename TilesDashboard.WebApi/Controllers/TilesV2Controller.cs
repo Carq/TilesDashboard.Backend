@@ -34,7 +34,7 @@ namespace TilesDashboard.WebApi.Controllers
         [BearerReadAuthorization]
         public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData()
         {
-            return (await _tileService.GetAllTiles()).MapToContract();
+            return (await _tileService.GetAllTilesWithRecentData()).MapToContract();
         }
 
         [HttpGet("{tileType}/{tileName}")]
