@@ -9,8 +9,6 @@ using Autofac;
 using FakeItEasy;
 using Autofac.Core;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.Handy.Events
 {

@@ -55,7 +55,7 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
         }
 
 
-         private async Task<HttpResponseMessage> GetBuildListHttpResponse(HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> GetBuildListHttpResponse(HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
         {
             var buildListHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/{_organization}/{_project}/_apis/build/builds?$top=1&definitions={_buildDefinition}&api-version=5.1&resultFilter=succeeded");
             buildListHttpRequest.Headers.Authorization = autheticationHeader;

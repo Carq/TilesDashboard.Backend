@@ -51,7 +51,7 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
                     }
                 }
 
-                return HeartBeatData.NoResponse();;
+                return HeartBeatData.NoResponse(); ;
             }
             catch (Exception ex)
             {

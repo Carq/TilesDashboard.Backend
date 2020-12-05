@@ -2,7 +2,7 @@
 {
     public class HeartBeatData : Result
     {
-        public HeartBeatData(Status status) 
+        public HeartBeatData(Status status)
             : base(status)
         {
         }

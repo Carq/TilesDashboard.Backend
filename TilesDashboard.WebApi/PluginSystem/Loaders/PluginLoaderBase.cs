@@ -15,7 +15,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
 
         private readonly IPluginConfigProvider _pluginConfigProvider;
 
-        protected PluginLoaderBase(IPluginConfigProvider pluginConfigProvider,  ILogger logger)
+        protected PluginLoaderBase(IPluginConfigProvider pluginConfigProvider, ILogger logger)
         {
             _pluginConfigProvider = pluginConfigProvider ?? throw new ArgumentNullException(nameof(pluginConfigProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

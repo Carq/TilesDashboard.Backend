@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TilesDashboard.Core.Type;
 using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.Core.Domain.ValueObjects

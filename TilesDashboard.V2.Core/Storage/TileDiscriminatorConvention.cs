@@ -39,7 +39,7 @@ namespace TilesDashboard.V2.Core.Storage
         private static Type GetTileType(TileType tileType)
         {
             return tileType switch
-                {
+            {
                 TileType.Metric => typeof(MetricTile),
                 TileType.Weather => typeof(WeatherTile),
                 TileType.Integer => throw new NotSupportedException(),

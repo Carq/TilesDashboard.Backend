@@ -11,8 +11,8 @@ namespace TilesDashboard.Core.Domain.Entities
     {
         public MetricData(decimal value, MetricType type, DateTimeOffset addedOn) : base(addedOn)
         {
-          switch (type)
-          {
+            switch (type)
+            {
                 case MetricType.Percentage:
                     Percentage.Validate(value);
                     break;
@@ -20,9 +20,9 @@ namespace TilesDashboard.Core.Domain.Entities
                     break;
                 default:
                     throw new NotSupportedException($"Metric Type {type} is not supported");
-          }
+            }
 
-          Value = Math.Round(value, 2);
+            Value = Math.Round(value, 2);
         }
 
         [BsonRepresentation(BsonType.Decimal128)]

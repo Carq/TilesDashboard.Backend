@@ -21,7 +21,7 @@ namespace TilesDashboard.Plugins.Terminal.Helpers
                     return "12";
                 case "AzureCodeCoveragePluginBe:PersonalAccessToken":
                     return "";
-                 case "AzureCodeCoveragePluginBe:TileName":
+                case "AzureCodeCoveragePluginBe:TileName":
                     return "";
                 default:
                     throw new ArgumentException();

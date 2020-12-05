@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading;
@@ -30,7 +29,7 @@ namespace TileDashboard.Plugin.CodeCoverageSlackNotification
             var converted = newData as MetricData;
             if (converted != null)
             {
-                await SendMessage($"New value for {TileId}: {converted.Value}%", cancellationToken); 
+                await SendMessage($"New value for {TileId}: {converted.Value}%", cancellationToken);
             }
         }
 

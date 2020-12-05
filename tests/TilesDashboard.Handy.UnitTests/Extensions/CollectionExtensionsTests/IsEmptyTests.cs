@@ -68,7 +68,7 @@ namespace TilesDashboard.Handy.UnitTests.Extensions.CollectionExtensionsTests
             result.Should().BeFalse();
         }
 
-         [Test]
+        [Test]
         public void ShouldReturnTrue_WhenArrayIsEmpty()
         {
             // given

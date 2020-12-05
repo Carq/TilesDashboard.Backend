@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using TilesDashboard.V2.Core.Entities.Exceptions;
 using TilesDashboard.WebApi.Configuration;
