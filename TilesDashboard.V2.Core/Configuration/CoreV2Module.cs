@@ -13,6 +13,7 @@ namespace TilesDashboard.V2.Core.Configuration
             builder.RegisterType<TilesStorage>().As<ITilesStorage>().InstancePerLifetimeScope();
             builder.RegisterType<TileRepository>().As<ITileRepository>().InstancePerLifetimeScope();
             builder.RegisterType<MetricService>().As<IMetricService>().InstancePerLifetimeScope();
+            builder.RegisterType<WeatherService>().As<IWeatherService>().InstancePerLifetimeScope();
             builder.RegisterType<TileBaseService>().As<ITileBaseService>().InstancePerLifetimeScope();
         }
     }

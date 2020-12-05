@@ -2,6 +2,8 @@
 {
     internal static class CollectionNames
     {
-        public const string TilesBaseData = nameof(TilesBaseData);
+        public const string TilesInformation = nameof(TilesInformation);
+
+        public const string TilesData = nameof(TilesData);
     }
 }

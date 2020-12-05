@@ -2,15 +2,12 @@
 
 namespace TilesDashboard.V2.Core.Entities.Metric
 {
-    public abstract class MetricValue : ITileValue
+    public abstract class MetricValue : TileValue
     {
-        protected MetricValue(DateTimeOffset addedOn)
+        protected MetricValue(DateTimeOffset addedOn) : base(addedOn)
         {
-            AddedOn = addedOn;
         }
 
         public decimal Value { get; protected set; }
-
-        public DateTimeOffset AddedOn { get; }
     }
 }

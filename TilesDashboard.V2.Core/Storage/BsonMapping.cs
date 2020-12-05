@@ -12,7 +12,16 @@ namespace TilesDashboard.V2.Core.Storage
 {
     public static class BsonMapping
     {
+        /// <summary>
+        /// https://mongodb.github.io/mongo-csharp-driver/2.11/reference/bson/mapping/.
+        /// </summary>
         public static void RegisterMappings()
+        {
+            TileEntityMapping();
+            TileDataMapping();
+        }
+
+        private static void TileEntityMapping()
         {
             BsonClassMap.RegisterClassMap<TileId>(cm =>
             {
@@ -21,17 +30,45 @@ namespace TilesDashboard.V2.Core.Storage
             });
 
             BsonClassMap.RegisterClassMap<TileEntity>(cm =>
-             {
-                 cm.AutoMap();
-                 cm.SetIsRootClass(true);
-                 cm.MapIdMember(x => x.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
-                 cm.MapProperty("TileConfiguration")
-                                     .SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<string, object>>(DictionaryRepresentation.Document));
-             });
+            {
+                cm.AutoMap();
+                cm.SetIsRootClass(true);
+                cm.MapIdMember(x => x.Id).SetSerializer(new StringSerializer(BsonType.ObjectId));
+                cm.MapProperty("TileConfiguration")
+                                    .SetSerializer(new DictionaryInterfaceImplementerSerializer<Dictionary<string, object>>(DictionaryRepresentation.Document));
+            });
 
             BsonSerializer.RegisterDiscriminatorConvention(typeof(TileEntity), new TileDiscriminatorConvention());
             BsonClassMap.RegisterClassMap<MetricTile>();
             BsonClassMap.RegisterClassMap<WeatherTile>();
+        }
+
+        private static void TileDataMapping()
+        {
+            BsonClassMap.RegisterClassMap<TileData>(cm =>
+            {
+                cm.AutoMap();
+                cm.MapProperty(c => c.Type).SetSerializer(new EnumSerializer<TileType>(BsonType.String));
+            });
+
+            BsonClassMap.RegisterClassMap<TileValue>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetDiscriminatorIsRequired(false);
+                cm.MapProperty(x => x.AddedOn).SetSerializer(new DateTimeOffsetSerializer(BsonType.String));
+            });
+
+            BsonSerializer.RegisterDiscriminatorConvention(typeof(TileValue), new TileValueDiscriminatorConvention());
+            BsonClassMap.RegisterClassMap<WeatherValue>(cm =>
+            {
+                cm.MapProperty(x => x.Temperature).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
+                cm.MapProperty(x => x.Humidity).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
+            });
+
+            BsonClassMap.RegisterClassMap<MetricValue>(cm =>
+           {
+               cm.MapProperty(x => x.Value).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
+           });
         }
     }
 }

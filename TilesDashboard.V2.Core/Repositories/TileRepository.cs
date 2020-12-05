@@ -22,29 +22,34 @@ namespace TilesDashboard.V2.Core.Repositories
             _cancellationTokenProvider = cancellationTokenProvider;
         }
 
-        public async Task CheckIfExist(TileId tileId)
+        public async Task<TileStorageId> CheckIfExist(TileId tileId)
         {
             var filter = TileMongoEntityExtensions.TileMongoEntityFilter(tileId);
-            var exists = await _tileStorage.Tiles
-                                          .Find(filter)
-                                          .AnyAsync(_cancellationTokenProvider.GetToken());
+            var projection = Builders<TileEntity>.Projection.Expression<string>(x => x.Id);
 
-            if (!exists)
+            var storageId = await _tileStorage.TilesInformation
+                                          .Find(filter)
+                                          .Project(projection)
+                                          .SingleOrDefaultAsync(_cancellationTokenProvider.GetToken());
+
+            if (string.IsNullOrWhiteSpace(storageId))
             {
                 throw new NotFoundException($"Tile {tileId} does not exist.");
             }
+
+            return new TileStorageId(storageId);
         }
 
         public async Task<IList<TileEntity>> GetAll()
         {
-            return await _tileStorage.Tiles.Find(_ => true).ToListAsync(_cancellationTokenProvider.GetToken());
+            return await _tileStorage.TilesInformation.Find(_ => true).ToListAsync(_cancellationTokenProvider.GetToken());
         }
 
         public async Task<TEntity> GetTile<TEntity>(TileId tileId)
             where TEntity : TileEntity
         {
             var filter = TileMongoEntityExtensions.TileMongoEntityFilter(tileId);
-            var tileMongo = await _tileStorage.Tiles
+            var tileMongo = await _tileStorage.TilesInformation
                                           .Find(filter)
                                           .As<TEntity>()
                                           .SingleOrDefaultAsync(_cancellationTokenProvider.GetToken());
@@ -57,9 +62,20 @@ namespace TilesDashboard.V2.Core.Repositories
             return tileMongo;
         }
 
-        public void RecordValue(TileId tileId, ITileValue tileValue)
+        public async Task RecordValue(TileId tileId, TileValue tileValue)
         {
-            throw new System.NotImplementedException();
+            var tileStorageId = await CheckIfExist(tileId);
+
+            var filter = Builders<TileData>.Filter.And(
+                Builders<TileData>.Filter.Eq(x => x.TileStorageId, tileStorageId.Value),
+                Builders<TileData>.Filter.Eq(x => x.GroupDate, TileData.GenerateGroupDate(tileValue.AddedOn)),
+                Builders<TileData>.Filter.Eq(x => x.Type, tileId.Type));
+
+            await _tileStorage.TilesData.UpdateOneAsync(
+                filter,
+                Builders<TileData>.Update.Push(x => x.Data, tileValue),
+                new UpdateOptions() { IsUpsert = true },
+                _cancellationTokenProvider.GetToken());
         }
     }
 }

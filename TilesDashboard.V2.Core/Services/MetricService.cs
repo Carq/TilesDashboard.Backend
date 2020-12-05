@@ -32,7 +32,7 @@ namespace TilesDashboard.V2.Core.Services
                 _ => throw new NotSupportedException()
             };
 
-            TileRepository.RecordValue(tileId, newMetricValue);
+            await TileRepository.RecordValue(tileId, newMetricValue);
         }
     }
 }

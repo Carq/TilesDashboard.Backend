@@ -7,7 +7,7 @@ using TilesDashboard.V2.Core.Repositories;
 
 namespace TilesDashboard.V2.Core.Services
 {
-    public class WeatherService : TileBaseService
+    public class WeatherService : TileBaseService, IWeatherService
     {
         private readonly IDateTimeOffsetProvider _dateTimeProvider;
 
@@ -21,10 +21,8 @@ namespace TilesDashboard.V2.Core.Services
 
         public async Task RecordValue(TileId tileId, decimal temperature, decimal humidity)
         {
-            await TileRepository.CheckIfExist(tileId);
             var weatherValue = new WeatherValue(temperature, humidity, _dateTimeProvider.Now);
-
-            TileRepository.RecordValue(tileId, weatherValue);
+            await TileRepository.RecordValue(tileId, weatherValue);
         }
     }
 }

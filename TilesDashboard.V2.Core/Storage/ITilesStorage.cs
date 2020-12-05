@@ -5,6 +5,8 @@ namespace TilesDashboard.V2.Core.Storage
 {
     public interface ITilesStorage
     {
-        IMongoCollection<TileEntity> Tiles { get; }
+        IMongoCollection<TileEntity> TilesInformation { get; }
+
+        IMongoCollection<TileData> TilesData { get; }
     }
 }

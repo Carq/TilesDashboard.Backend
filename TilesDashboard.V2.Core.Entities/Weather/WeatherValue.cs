@@ -2,24 +2,22 @@
 
 namespace TilesDashboard.V2.Core.Entities.Weather
 {
-    public class WeatherValue : ITileValue
+    public class WeatherValue : TileValue
     {
         public const decimal MinHumidity = 0;
 
         public const decimal MaxHumidity = 100;
 
         public WeatherValue(decimal temperature, decimal humidity, DateTimeOffset addedOn)
+            : base(addedOn)
         {
             Temperature = ParseAndValidateTemperature(temperature);
             Humidity = ParseAndValidateHumidity(humidity);
-            AddedOn = addedOn;
         }
 
         public decimal Temperature { get; private set; }
 
         public decimal Humidity { get; private set; }
-
-        public DateTimeOffset AddedOn { get; }
 
         protected static decimal ParseAndValidateTemperature(decimal temperature)
         {
