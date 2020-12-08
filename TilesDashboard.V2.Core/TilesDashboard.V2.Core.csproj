@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
     <ProjectReference Include="..\TilesDashboard.Handy\TilesDashboard.Handy.csproj" />
     <ProjectReference Include="..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
   </ItemGroup>

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Extensions;
+using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
@@ -15,12 +17,15 @@ namespace TilesDashboard.V2.Core.Repositories
     {
         private readonly ITilesStorage _tileStorage;
 
+        private readonly IEventDispatcher _eventDispatcher;
+
         private readonly ICancellationTokenProvider _cancellationTokenProvider;
 
-        public TileRepository(ITilesStorage tileStorage, ICancellationTokenProvider cancellationTokenProvider)
+        public TileRepository(ITilesStorage tileStorage, ICancellationTokenProvider cancellationTokenProvider, IEventDispatcher eventDispatcher)
         {
             _tileStorage = tileStorage;
             _cancellationTokenProvider = cancellationTokenProvider;
+            _eventDispatcher = eventDispatcher;
         }
 
         public async Task<TileStorageId> CheckIfExist(TileId tileId)
@@ -80,6 +85,7 @@ namespace TilesDashboard.V2.Core.Repositories
         public async Task RecordValue(TileId tileId, TileValue tileValue)
         {
             var tileStorageId = await CheckIfExist(tileId);
+            var cancellationToken = _cancellationTokenProvider.GetToken();
 
             var filter = Builders<TileDataContainer>.Filter.And(
                 Builders<TileDataContainer>.Filter.Eq(x => x.TileStorageId, tileStorageId.Value),
@@ -90,7 +96,9 @@ namespace TilesDashboard.V2.Core.Repositories
                 filter,
                 Builders<TileDataContainer>.Update.Push(x => x.Data, tileValue),
                 new UpdateOptions() { IsUpsert = true, },
-                _cancellationTokenProvider.GetToken());
+                cancellationToken);
+
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileId, tileValue), cancellationToken);
         }
     }
 }

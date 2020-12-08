@@ -17,13 +17,13 @@ namespace TilesDashboard.Handy.Events
         [Test]
         public void ShouldThrowArgumentNullException_WhenEventIsNull()
         {
-            // Act
+            // given & when
             Func<Task> action = async () =>
                                 {
                                     await TestCandidate.PublishAsync<TestDomainEvent>(null, CancellationToken.None);
                                 };
 
-            // Assert
+            // then
             action.Should().Throw<ArgumentNullException>();
         }
 
