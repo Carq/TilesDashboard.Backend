@@ -25,7 +25,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
 
         private readonly IDataPluginLoader _pluginLoader;
 
-        private readonly IDateTimeOffsetProvider _dateTimeProvider;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
         private readonly MetricPluginHandler _metricPluginHandler;
 
@@ -38,7 +38,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         public PluginBackgroundWorker(
             IDataPluginLoader pluginLoader,
             ILogger<PluginBackgroundWorker> logger,
-            IDateTimeOffsetProvider dateTimeProvider,
+            IDateTimeProvider dateTimeProvider,
             MetricPluginHandler metricPluginHandler,
             WeatherPluginHandler weatherPluginHandler,
             IntegerPluginHandler integerPluginHandler,

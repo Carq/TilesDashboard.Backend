@@ -20,7 +20,7 @@ namespace TilesDashboard.Core.Domain.Services
 
         private readonly IEventDispatcher _eventDispatcher;
 
-        public WeatherService(ITileContext context, ITilesRepository tilesRepository, IWeatherRepository weatherRepository, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
+        public WeatherService(ITileContext context, ITilesRepository tilesRepository, IWeatherRepository weatherRepository, IDateTimeProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
             : base(context, tilesRepository, dateTimeOffsetProvider)
         {
             _weatherRepository = weatherRepository;

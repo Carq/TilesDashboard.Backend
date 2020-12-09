@@ -3,7 +3,7 @@ using TilesDashboard.Handy.Extensions;
 
 namespace TilesDashboard.V2.Core.Entities
 {
-    public class TileEntityWithData : TileEntity
+    public class TileEntityWithData
     {
         public TileEntityWithData(TileEntity tileEntity)
         {

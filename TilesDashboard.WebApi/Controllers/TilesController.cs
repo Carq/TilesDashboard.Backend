@@ -28,9 +28,9 @@ namespace TilesDashboard.WebApi.Controllers
 
         private readonly ITileService _tileService;
 
-        private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
+        private readonly IDateTimeProvider _dateTimeOffsetProvider;
 
-        public TilesController(IMetricService metricService, ITileService tileService, IIntegerTileService integerTileService, IDateTimeOffsetProvider dateTimeOffsetProvider)
+        public TilesController(IMetricService metricService, ITileService tileService, IIntegerTileService integerTileService, IDateTimeProvider dateTimeOffsetProvider)
         {
             _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
             _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));

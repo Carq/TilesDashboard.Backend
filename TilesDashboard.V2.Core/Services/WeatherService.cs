@@ -9,9 +9,9 @@ namespace TilesDashboard.V2.Core.Services
 {
     public class WeatherService : TileBaseService, IWeatherService
     {
-        private readonly IDateTimeOffsetProvider _dateTimeProvider;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public WeatherService(IDateTimeOffsetProvider dateTimeProvider, ITileRepository tileRepository)
+        public WeatherService(IDateTimeProvider dateTimeProvider, ITileRepository tileRepository)
             : base(tileRepository)
         {
             _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));

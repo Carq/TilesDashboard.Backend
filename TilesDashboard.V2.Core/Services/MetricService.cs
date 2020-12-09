@@ -10,9 +10,9 @@ namespace TilesDashboard.V2.Core.Services
 {
     public class MetricService : TileBaseService, IMetricService
     {
-        private readonly IDateTimeOffsetProvider _dateTimeProvider;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        public MetricService(IDateTimeOffsetProvider dateTimeProvider, ITileRepository tileRepository)
+        public MetricService(IDateTimeProvider dateTimeProvider, ITileRepository tileRepository)
             : base(tileRepository)
         {
             _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));

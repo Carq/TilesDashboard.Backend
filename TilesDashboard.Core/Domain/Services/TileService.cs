@@ -20,7 +20,7 @@ namespace TilesDashboard.Core.Domain.Services
 {
     public class TileService : ITileService
     {
-        public TileService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider)
+        public TileService(ITileContext context, ITilesRepository tilesRepository, IDateTimeProvider dateTimeOffsetProvider)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
             TilesRepository = tilesRepository ?? throw new ArgumentNullException(nameof(tilesRepository));
@@ -29,7 +29,7 @@ namespace TilesDashboard.Core.Domain.Services
 
         protected ITileContext Context { get; }
 
-        protected IDateTimeOffsetProvider DateTimeOffsetProvider { get; }
+        protected IDateTimeProvider DateTimeOffsetProvider { get; }
 
         protected ITilesRepository TilesRepository { get; }
 

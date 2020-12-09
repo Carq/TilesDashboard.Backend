@@ -21,7 +21,7 @@ namespace TilesDashboard.Core.Domain.Services
     {
         private readonly IEventDispatcher _eventDispatcher;
 
-        public MetricService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
+        public MetricService(ITileContext context, ITilesRepository tilesRepository, IDateTimeProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
             : base(context, tilesRepository, dateTimeOffsetProvider)
         {
             _eventDispatcher = eventDispatcher ?? throw new ArgumentNullException(nameof(eventDispatcher));

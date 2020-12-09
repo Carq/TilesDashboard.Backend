@@ -16,7 +16,7 @@ namespace TilesDashboard.Core.Domain.Services
     {
         private readonly IEventDispatcher _eventDispatcher;
 
-        public HeartBeatService(ITileContext context, ITilesRepository tilesRepository, IDateTimeOffsetProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
+        public HeartBeatService(ITileContext context, ITilesRepository tilesRepository, IDateTimeProvider dateTimeOffsetProvider, IEventDispatcher eventDispatcher)
             : base(context, tilesRepository, dateTimeOffsetProvider)
         {
             _eventDispatcher = eventDispatcher ?? throw new System.ArgumentNullException(nameof(eventDispatcher));
