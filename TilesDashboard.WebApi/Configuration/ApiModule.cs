@@ -23,7 +23,7 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
             builder.RegisterType<CancellationTokenProvider>().As<ICancellationTokenProvider>().InstancePerLifetimeScope();
             builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>().As<ISecurityConfig>().SingleInstance();
-            builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeOffsetProvider>().SingleInstance();
+            builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeProvider>().SingleInstance();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
 

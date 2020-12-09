@@ -13,7 +13,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
         {
             // given 
             var limit = 50m;
-            var metricTile = MetricTileTestBuilder.New
+            var metricTile = MetricTileTestBuilder.New()
                 .WithConfigEntry(nameof(MetricConfiguration.Limit), limit)
                 .WithConfigEntry(nameof(MetricConfiguration.MetricType), MetricType.Percentage)
                 .Build();
@@ -40,7 +40,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
             var lowerIsBetter = true;
             var unit = "PLN";
 
-            var metricTile = MetricTileTestBuilder.New
+            var metricTile = MetricTileTestBuilder.New()
                 .WithConfigEntry(nameof(MetricConfiguration.Limit), limit)
                 .WithConfigEntry(nameof(MetricConfiguration.Goal), goal)
                 .WithConfigEntry(nameof(MetricConfiguration.Wish), wish)

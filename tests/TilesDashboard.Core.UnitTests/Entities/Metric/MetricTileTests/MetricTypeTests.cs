@@ -15,7 +15,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
         {
             // given 
             var limit = 50m;
-            var metricTile = MetricTileTestBuilder.New
+            var metricTile = MetricTileTestBuilder.New()
                 .WithConfigEntry(nameof(MetricConfiguration.Limit), limit)
                 .WithConfigEntry(nameof(MetricConfiguration.MetricType), meticType)
                 .Build();

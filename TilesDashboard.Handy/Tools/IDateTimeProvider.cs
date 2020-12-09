@@ -2,7 +2,7 @@
 
 namespace TilesDashboard.Handy.Tools
 {
-    public interface IDateTimeOffsetProvider
+    public interface IDateTimeProvider
     {
         DateTimeOffset Now { get; }
     }
