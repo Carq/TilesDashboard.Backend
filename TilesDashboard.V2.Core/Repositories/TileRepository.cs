@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using TilesDashboard.Contract.Events;
@@ -62,7 +63,9 @@ namespace TilesDashboard.V2.Core.Repositories
                     .TilesData
                     .Find(filter)
                     .Project<TileDataContainer>(projection)
-                    .SingleOrDefaultAsync(_cancellationTokenProvider.GetToken()))?.Data;
+                    .ToListAsync(_cancellationTokenProvider.GetToken()))
+                    ?.SelectMany(x => x.Data)
+                    .ToList();
         }
 
         public async Task<TEntity> GetTile<TEntity>(TileId tileId)

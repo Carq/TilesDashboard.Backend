@@ -8,6 +8,11 @@ namespace TilesDashboard.WebApi.Mappers
 {
     public static class ContractMapper
     {
+        public static IList<object> MapToContract(this IList<TileValue> tileValues)
+        {
+            return tileValues.Cast<object>().ToList();
+        }
+
         public static IList<TileWithCurrentDataDto> MapToContract(this IList<TileEntity> tileEntities)
         {
             return tileEntities.Select(MapToContract).ToList();

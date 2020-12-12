@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TilesDashboard.Contract;
@@ -42,6 +43,13 @@ namespace TilesDashboard.WebApi.Controllers
         public async Task<TileWithCurrentDataDto> GetTileBasicData(TileType tileType, string tileName)
         {
             return (await _tileService.GetTile(new TileId(tileName, tileType))).MapToContract();
+        }
+
+        [HttpGet("{tileType}/{tileName}/recent")]
+        [BearerReadAuthorization]
+        public async Task<IList<object>> GetTileRecentData(TileType tileType, string tileName, [FromQuery][Range(1, 120)] int amountOfData = 30)
+        {
+            return (await _tileService.GetTileRecentData(new TileId(tileName, tileType), amountOfData)).MapToContract();
         }
 
         [HttpPost("weather/{tileName}/record")]

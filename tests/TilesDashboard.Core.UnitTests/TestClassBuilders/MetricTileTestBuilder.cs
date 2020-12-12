@@ -13,16 +13,19 @@ namespace TilesDashboard.Core.UnitTests.TestClassBuilders
 
         public static MetricTileTestBuilder New(string tileName = "metricName")  => new MetricTileTestBuilder(tileName);
 
-        private MetricTileTestBuilder(string tileName)
+        public static MetricTileTestBuilder NewPercentageMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName, MetricType.Percentage);
+
+        private MetricTileTestBuilder(string tileName, MetricType metricType = MetricType.Percentage)
         {
             Item = new MetricTile();
             PrivatePropertySetter.SetPropertyWithNoSetter(Item, nameof(MetricTile.TileId), new TileId(tileName, TileType.Metric));
             PrivatePropertySetter.SetPropertyWithNoSetter(Item, "TileConfiguration", _configuration);
+            _configuration[nameof(MetricConfiguration.MetricType)] = metricType;
         }
 
         public MetricTileTestBuilder WithConfigEntry(string key, object value)
         {
-            _configuration.Add(key, value);
+            _configuration[key] = value;
             return this;
         }
     }
