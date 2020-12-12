@@ -67,14 +67,21 @@ namespace TilesDashboard.WebApi.Controllers
 
         [HttpPost("weather/{tileName}/record")]
         [BearerAuthorization]
-        public async Task RecordWeatherData(string tileName, [FromBody] RecordWeatherDataDto weatherDataDto)
+        public async Task RecordWeatherValue(string tileName, [FromBody] RecordWeatherDataDto weatherDataDto)
         {
             await _weatherService.RecordValue(new TileId(tileName, TileType.Weather), weatherDataDto.Temperature, weatherDataDto.Humidity);
         }
 
+        [HttpPost("weather/id/{id}/record")]
+        [BearerAuthorization]
+        public async Task RecordWeatherValueById([MaxLength(TileStorageId.Length)] string id, [FromBody] RecordWeatherDataDto weatherDataDto)
+        {
+            await _weatherService.RecordValue(new TileStorageId(id), weatherDataDto.Temperature, weatherDataDto.Humidity);
+        }
+
         [HttpPost("metric/{tileName}/record")]
         [BearerAuthorization]
-        public async Task RecordMetricData(string tileName, [FromBody] RecordMetricData<decimal> metricData)
+        public async Task RecordMetricValue(string tileName, [FromBody] RecordMetricData<decimal> metricData)
         {
             await _metricService.RecordValue(new TileId(tileName, TileType.Metric), metricData.Type.Convert<MetricType>(), metricData.Value);
         }

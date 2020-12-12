@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.V2.Core.Entities.Weather;
 using TilesDashboard.V2.Core.Repositories;
 
@@ -19,6 +20,12 @@ namespace TilesDashboard.V2.Core.Services
         {
             var weatherValue = new WeatherValue(temperature, humidity, DateTimeProvider.Now);
             await TileRepository.RecordValue(tileId, weatherValue);
+        }
+
+        public async Task RecordValue(TileStorageId tileStorageId, decimal temperature, decimal humidity)
+        {
+            var weatherValue = new WeatherValue(temperature, humidity, DateTimeProvider.Now);
+            await TileRepository.RecordValue(tileStorageId, weatherValue, TileType.Weather);
         }
     }
 }
