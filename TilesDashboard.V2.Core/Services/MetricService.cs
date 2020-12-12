@@ -23,14 +23,22 @@ namespace TilesDashboard.V2.Core.Services
         public async Task RecordValue(TileId tileId, MetricType metricType, decimal newValue)
         {
             var metric = await GetTile<MetricTile>(tileId);
-            MetricValue newMetricValue = metric.MetricType switch
+
+            MetricValue newMetricValue;
+            switch (metric.MetricType)
             {
-                MetricType.Percentage => new PercentageMetricValue(newValue, _dateTimeProvider.Now),
-                MetricType.Time => new TimeMetricValue(newValue, _dateTimeProvider.Now),
-                MetricType.Money => new MoneyMetricValue(newValue, _dateTimeProvider.Now),
-                MetricType.Unspecified => throw new NotSupportedException(),
-                _ => throw new NotSupportedException()
-            };
+                case MetricType.Percentage:
+                    newMetricValue = new PercentageMetricValue(newValue, _dateTimeProvider.Now);
+                    break;
+                case MetricType.Money:
+                    newMetricValue = new MoneyMetricValue(newValue, _dateTimeProvider.Now);
+                    break;
+                case MetricType.Time:
+                    newMetricValue = new TimeMetricValue(newValue, _dateTimeProvider.Now);
+                    break;
+                default:
+                    throw new NotSupportedException();
+            }
 
             await TileRepository.RecordValue(tileId, newMetricValue);
         }

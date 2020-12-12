@@ -15,12 +15,17 @@ namespace TilesDashboard.Core.UnitTests.TestClassBuilders
 
         public static MetricTileTestBuilder NewPercentageMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName, MetricType.Percentage);
 
+        public static MetricTileTestBuilder NewMoneyMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName, MetricType.Money);
+
+        public static MetricTileTestBuilder NewTimeMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName, MetricType.Time);
+
         private MetricTileTestBuilder(string tileName, MetricType metricType = MetricType.Percentage)
         {
             Item = new MetricTile();
             PrivatePropertySetter.SetPropertyWithNoSetter(Item, nameof(MetricTile.TileId), new TileId(tileName, TileType.Metric));
             PrivatePropertySetter.SetPropertyWithNoSetter(Item, "TileConfiguration", _configuration);
             _configuration[nameof(MetricConfiguration.MetricType)] = metricType;
+            _configuration[nameof(MetricConfiguration.Limit)] = 50m;
         }
 
         public MetricTileTestBuilder WithConfigEntry(string key, object value)
