@@ -14,7 +14,7 @@ using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
 {
-    [Route("tiles/v2")]
+    [Route("tiles")]
     [ApiController]
     public class TilesV2Controller
     {
@@ -50,6 +50,19 @@ namespace TilesDashboard.WebApi.Controllers
         public async Task<IList<object>> GetTileRecentData(TileType tileType, string tileName, [FromQuery][Range(1, 120)] int amountOfData = 30)
         {
             return (await _tileService.GetTileRecentData(new TileId(tileName, tileType), amountOfData)).MapToContract();
+        }
+
+        [HttpGet("{tileType}/{tileName}/since")]
+        [BearerReadAuthorization]
+        public async Task<IList<object>> GetTileSinceDate(TileType tileType, string tileName, [FromQuery][Range(1, 120)] int? days, [Range(1, 48)] int? hours)
+        {
+            int sinceHours = (days ?? 30) * 24;
+            if (hours.HasValue)
+            {
+                sinceHours = hours.Value;
+            }
+
+            return (await _tileService.GetTileSinceData(new TileId(tileName, tileType), sinceHours)).MapToContract();
         }
 
         [HttpPost("weather/{tileName}/record")]

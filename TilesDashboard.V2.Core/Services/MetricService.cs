@@ -10,12 +10,9 @@ namespace TilesDashboard.V2.Core.Services
 {
     public class MetricService : TileBaseService, IMetricService
     {
-        private readonly IDateTimeProvider _dateTimeProvider;
-
         public MetricService(IDateTimeProvider dateTimeProvider, ITileRepository tileRepository)
-            : base(tileRepository)
+            : base(tileRepository, dateTimeProvider)
         {
-            _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
 
         public async Task<MetricTile> GetMetricTile(TileId tileId) => await GetTile<MetricTile>(tileId);
@@ -28,13 +25,13 @@ namespace TilesDashboard.V2.Core.Services
             switch (metric.MetricType)
             {
                 case MetricType.Percentage:
-                    newMetricValue = new PercentageMetricValue(newValue, _dateTimeProvider.Now);
+                    newMetricValue = new PercentageMetricValue(newValue, DateTimeProvider.Now);
                     break;
                 case MetricType.Money:
-                    newMetricValue = new MoneyMetricValue(newValue, _dateTimeProvider.Now);
+                    newMetricValue = new MoneyMetricValue(newValue, DateTimeProvider.Now);
                     break;
                 case MetricType.Time:
-                    newMetricValue = new TimeMetricValue(newValue, _dateTimeProvider.Now);
+                    newMetricValue = new TimeMetricValue(newValue, DateTimeProvider.Now);
                     break;
                 default:
                     throw new NotSupportedException();

@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Core.Domain.Extensions;
@@ -52,22 +56,6 @@ namespace TilesDashboard.V2.Core.Repositories
             return await _tileStorage.TilesInformation.Find(_ => true).ToListAsync(_cancellationTokenProvider.GetToken());
         }
 
-        public async Task<IList<TileValue>> GetRecentData(TileId tileId, int amountOfRecentData)
-        {
-            var tileStorageId = await CheckIfExist(tileId);
-
-            var filter = TileDataContainerExtensions.TileEntityFilter(tileStorageId, tileId.Type);
-            var projection = Builders<TileDataContainer>.Projection.FetchRecentData(amountOfRecentData);
-
-            return (await _tileStorage
-                    .TilesData
-                    .Find(filter)
-                    .Project<TileDataContainer>(projection)
-                    .ToListAsync(_cancellationTokenProvider.GetToken()))
-                    ?.SelectMany(x => x.Data)
-                    .ToList();
-        }
-
         public async Task<TEntity> GetTile<TEntity>(TileId tileId)
             where TEntity : TileEntity
         {
@@ -83,6 +71,43 @@ namespace TilesDashboard.V2.Core.Repositories
             }
 
             return tileMongo;
+        }
+
+        public async Task<IList<TileValue>> GetRecentTileValues(TileId tileId, int amountOfRecentData)
+        {
+            var tileStorageId = await CheckIfExist(tileId);
+
+            var filter = TileDataContainerExtensions.TileEntityFilter(tileStorageId, tileId.Type);
+            var projection = Builders<TileDataContainer>.Projection.FetchRecentData(amountOfRecentData);
+
+            return (await _tileStorage
+                    .TilesData
+                    .Find(filter)
+                    .Project<TileDataContainer>(projection)
+                    .ToListAsync(_cancellationTokenProvider.GetToken()))
+                    ?.SelectMany(x => x.Data)
+                    .ToList();
+        }
+
+        public async Task<IList<TileValue>> GetTileValuesSince(TileId tileId, DateTimeOffset dateTimeSince)
+        {
+            var tileStorageId = await CheckIfExist(tileId);
+
+            var filter = TileDataContainerExtensions.TileEntityFilter(tileStorageId, tileId.Type);
+            var onlyToday = Builders<BsonDocument>.Filter.Gte($"{nameof(TileDataContainer.Data)}.{nameof(TileValue.AddedOn)}", dateTimeSince.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture));
+            var group = BsonSerializer.Deserialize<BsonDocument>($"{{ _id: \"$_id\", Data: {{ $push: \"$Data\" }} }}");
+
+            return (await _tileStorage
+                    .TilesData
+                    .Aggregate()
+                    .Match(filter)
+                    .Unwind(x => x.Data)
+                    .Match(onlyToday)
+                    .Group(group)
+                    .As<TileDataContainer>()
+                    .ToListAsync(_cancellationTokenProvider.GetToken()))
+                    ?.SelectMany(x => x.Data)
+                    .ToList();
         }
 
         public async Task RecordValue(TileId tileId, TileValue tileValue)

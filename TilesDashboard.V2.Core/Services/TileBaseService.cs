@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Repositories;
 
@@ -11,10 +11,13 @@ namespace TilesDashboard.V2.Core.Services
     {
         private readonly int _amountOfRecentData = 5;
 
-        public TileBaseService(ITileRepository tileRepository)
+        public TileBaseService(ITileRepository tileRepository, IDateTimeProvider dateTimeProvider)
         {
             TileRepository = tileRepository ?? throw new ArgumentNullException(nameof(tileRepository));
+            DateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         }
+
+        protected IDateTimeProvider DateTimeProvider { get; }
 
         protected ITileRepository TileRepository { get; }
 
@@ -30,7 +33,7 @@ namespace TilesDashboard.V2.Core.Services
             foreach (var tile in allTiles)
             {
                 var tileWithData = new TileEntityWithData(tile);
-                tileWithData.AddData(await TileRepository.GetRecentData(tile.TileId, _amountOfRecentData));
+                tileWithData.AddData(await TileRepository.GetRecentTileValues(tile.TileId, _amountOfRecentData));
                 tilesWithRecentData.Add(tileWithData);
             }
 
@@ -50,7 +53,12 @@ namespace TilesDashboard.V2.Core.Services
 
         public async Task<IList<TileValue>> GetTileRecentData(TileId tileId, int amountOfRecentData)
         {
-            return await TileRepository.GetRecentData(tileId, amountOfRecentData);
+            return await TileRepository.GetRecentTileValues(tileId, amountOfRecentData);
+        }
+
+        public async Task<IList<TileValue>> GetTileSinceData(TileId tileId, int hours)
+        {
+            return await TileRepository.GetTileValuesSince(tileId, DateTimeProvider.Now.AddHours(-hours));
         }
     }
 }

@@ -28,7 +28,7 @@ namespace TilesDashboard.Core.UnitTests.Services.TileBaseServiceTests
             var metricTile = MetricTileTestBuilder.New(tileName).Build();
 
             A.CallTo(() => M<ITileRepository>().GetAll()).Returns(Task.FromResult((metricTile as TileEntity).ToOneElementList()));
-            A.CallTo(() => M<ITileRepository>().GetRecentData(metricTile.TileId, A<int>._)).Returns(Task.FromResult<IList<TileValue>>(null));
+            A.CallTo(() => M<ITileRepository>().GetRecentTileValues(metricTile.TileId, A<int>._)).Returns(Task.FromResult<IList<TileValue>>(null));
 
             // when
             var result = await TestCandidate.GetAllTilesWithRecentData();
@@ -60,7 +60,7 @@ namespace TilesDashboard.Core.UnitTests.Services.TileBaseServiceTests
                         metricTile,
                         weatherTile}));
 
-            A.CallTo(() => M<ITileRepository>().GetRecentData(metricTile.TileId, A<int>._)).Returns(
+            A.CallTo(() => M<ITileRepository>().GetRecentTileValues(metricTile.TileId, A<int>._)).Returns(
                 Task.FromResult<IList<TileValue>>
                 (
                     new TileValue[]
@@ -70,7 +70,7 @@ namespace TilesDashboard.Core.UnitTests.Services.TileBaseServiceTests
                     }
                 ));
 
-            A.CallTo(() => M<ITileRepository>().GetRecentData(weatherTile.TileId, A<int>._)).Returns(
+            A.CallTo(() => M<ITileRepository>().GetRecentTileValues(weatherTile.TileId, A<int>._)).Returns(
               Task.FromResult<IList<TileValue>>
               (
                   new TileValue[]

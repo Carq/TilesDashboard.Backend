@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Storage;
@@ -16,6 +17,8 @@ namespace TilesDashboard.V2.Core.Repositories
 
         Task RecordValue(TileId tileId, TileValue tileValue);
 
-        Task<IList<TileValue>> GetRecentData(TileId tileId, int amountOfRecentData);
+        Task<IList<TileValue>> GetRecentTileValues(TileId tileId, int amountOfRecentData);
+
+        Task<IList<TileValue>> GetTileValuesSince(TileId tileId, DateTimeOffset dateTimeSince);
     }
 }

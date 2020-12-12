@@ -16,5 +16,7 @@ namespace TilesDashboard.V2.Core.Services
         Task<TileEntity> GetTile(TileId tileId);
 
         Task<IList<TileValue>> GetTileRecentData(TileId tileId, int amountOfRecentData);
+
+        Task<IList<TileValue>> GetTileSinceData(TileId tileId, int hours);
     }
 }

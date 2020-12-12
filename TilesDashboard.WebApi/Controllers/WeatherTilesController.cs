@@ -12,7 +12,7 @@ using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
 {
-    [Route("tiles/weather")]
+    [Route("tiles/weather/obsolete")]
     [ApiController]
     public class WeatherTilesController : ControllerBase
     {

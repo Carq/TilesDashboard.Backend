@@ -16,7 +16,7 @@ using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/obsolete")]
     [ApiController]
     public class TilesController : ControllerBase
     {
