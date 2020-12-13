@@ -114,14 +114,16 @@ namespace TilesDashboard.V2.Core.Repositories
             var tileStorageId = await CheckIfExist(tileId);
 
             var filter = TileDataContainerExtensions.TileEntityFilter(tileStorageId, tileId.Type);
-            var projection = Builders<TileDataContainer>.Projection.FetchRecentData(amountOfRecentData);
+            var group = BsonSerializer.Deserialize<BsonDocument>($"{{ _id: \"${nameof(TileDataContainer.TileStorageId)}\", Data: {{ $push: \"$Data\" }} }}");
+            var project = BsonSerializer.Deserialize<BsonDocument>($"{{ Data: {{ $slice: [\"$Data\", {-amountOfRecentData}] }} }}");
 
             return (await _tileStorage
                     .TilesData
-                    .Find(filter)
-                    .Project<TileDataContainer>(projection)
-                    .SortByDescending(x => x.GroupDate)
-                    .Limit(1)
+                    .Aggregate()
+                    .Match(filter)
+                    .Unwind(x => x.Data)
+                    .Group(group)
+                    .Project<TileDataContainer>(project)
                     .ToListAsync(_cancellationTokenProvider.GetToken()))
                     ?.SelectMany(x => x.Data)
                     .OrderByDescending(x => x.AddedOn)
@@ -134,7 +136,7 @@ namespace TilesDashboard.V2.Core.Repositories
 
             var filter = TileDataContainerExtensions.TileEntityFilter(tileStorageId, tileId.Type);
             var onlyToday = Builders<BsonDocument>.Filter.Gte($"{nameof(TileDataContainer.Data)}.{nameof(TileValue.AddedOn)}", dateTimeSince.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture));
-            var group = BsonSerializer.Deserialize<BsonDocument>($"{{ _id: \"$_id\", Data: {{ $push: \"$Data\" }} }}");
+            var group = BsonSerializer.Deserialize<BsonDocument>($"{{ _id: \"${nameof(TileDataContainer.TileStorageId)}\", Data: {{ $push: \"$Data\" }} }}");
 
             return (await _tileStorage
                     .TilesData
