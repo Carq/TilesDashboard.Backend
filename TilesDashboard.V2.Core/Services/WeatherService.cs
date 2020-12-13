@@ -14,7 +14,7 @@ namespace TilesDashboard.V2.Core.Services
         {
         }
 
-        public async Task<WeatherTile> GetWeatherTile(TileId tileId) => await GetTile<WeatherTile>(tileId);
+        public async Task<WeatherTile> GetWeatherTile(TileId tileId) => await TileRepository.GetTile<WeatherTile>(tileId);
 
         public async Task RecordValue(TileId tileId, decimal temperature, decimal humidity)
         {
@@ -22,7 +22,7 @@ namespace TilesDashboard.V2.Core.Services
             await TileRepository.RecordValue(tileId, weatherValue);
         }
 
-        public async Task RecordValue(TileStorageId tileStorageId, decimal temperature, decimal humidity)
+        public async Task RecordValue(StorageId tileStorageId, decimal temperature, decimal humidity)
         {
             var weatherValue = new WeatherValue(temperature, humidity, DateTimeProvider.Now);
             await TileRepository.RecordValue(tileStorageId, weatherValue, TileType.Weather);

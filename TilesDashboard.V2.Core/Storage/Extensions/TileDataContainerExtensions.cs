@@ -12,7 +12,7 @@ namespace TilesDashboard.V2.Core.Storage.Extensions
             return source.Slice(x => x.Data, -amountOfData);
         }
 
-        public static FilterDefinition<TileDataContainer> TileEntityFilter(TileStorageId tileStorageId, TileType tileType)
+        public static FilterDefinition<TileDataContainer> TileEntityFilter(StorageId tileStorageId, TileType tileType)
         {
             return Builders<TileDataContainer>.Filter.And(
                   Builders<TileDataContainer>.Filter.Eq(x => x.TileStorageId, tileStorageId.Value),

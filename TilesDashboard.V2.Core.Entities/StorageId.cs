@@ -3,11 +3,11 @@ using TilesDashboard.V2.Core.Entities.Exceptions;
 
 namespace TilesDashboard.V2.Core.Entities
 {
-    public class TileStorageId : ValueObject
+    public class StorageId : ValueObject
     {
         public const int Length = 24;
 
-        public TileStorageId(string value)
+        public StorageId(string value)
         {
             Value = Validate(value);
         }

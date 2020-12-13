@@ -34,7 +34,7 @@ namespace TilesDashboard.V2.Core.Repositories
             _eventDispatcher = eventDispatcher;
         }
 
-        public async Task<TileStorageId> CheckIfExist(TileId tileId)
+        public async Task<StorageId> CheckIfExist(TileId tileId)
         {
             var filter = TileEntityExtensions.TileEntityFilter(tileId);
             var projection = Builders<TileEntity>.Projection.Expression<string>(x => x.Id);
@@ -49,10 +49,10 @@ namespace TilesDashboard.V2.Core.Repositories
                 throw new NotFoundException($"Tile {tileId} does not exist.");
             }
 
-            return new TileStorageId(storageId);
+            return new StorageId(storageId);
         }
 
-        public async Task<TileId> CheckIfExist(TileStorageId id, TileType tileType)
+        public async Task<TileId> CheckIfExist(StorageId id, TileType tileType)
         {
             var filter = TileEntityExtensions.TileEntityFilter(id, tileType);
             var projection = Builders<TileEntity>.Projection.Expression<TileId>(x => x.TileId);
@@ -92,6 +92,23 @@ namespace TilesDashboard.V2.Core.Repositories
             return tileMongo;
         }
 
+        public async Task<TEntity> GetTile<TEntity>(StorageId storageId, TileType tileType)
+            where TEntity : TileEntity
+        {
+            var filter = TileEntityExtensions.TileEntityFilter(storageId, tileType);
+            var tileMongo = await _tileStorage.TilesInformation
+                                          .Find(filter)
+                                          .As<TEntity>()
+                                          .SingleOrDefaultAsync(_cancellationTokenProvider.GetToken());
+
+            if (tileMongo.NotExists())
+            {
+                throw new NotFoundException($"Tile {tileType} with Id {storageId} does not exist.");
+            }
+
+            return tileMongo;
+        }
+
         public async Task<IList<TileValue>> GetRecentTileValues(TileId tileId, int amountOfRecentData)
         {
             var tileStorageId = await CheckIfExist(tileId);
@@ -103,6 +120,8 @@ namespace TilesDashboard.V2.Core.Repositories
                     .TilesData
                     .Find(filter)
                     .Project<TileDataContainer>(projection)
+                    .SortByDescending(x => x.GroupDate)
+                    .Limit(1)
                     .ToListAsync(_cancellationTokenProvider.GetToken()))
                     ?.SelectMany(x => x.Data)
                     .OrderByDescending(x => x.AddedOn)
@@ -136,13 +155,13 @@ namespace TilesDashboard.V2.Core.Repositories
             await RecordValueById(tileStorageId, tileValue, tileId);
         }
 
-        public async Task RecordValue(TileStorageId id, TileValue tileValue, TileType tileType)
+        public async Task RecordValue(StorageId id, TileValue tileValue, TileType tileType)
         {
             var tileId = await CheckIfExist(id, tileType);
             await RecordValueById(id, tileValue, tileId);
         }
 
-        private async Task RecordValueById(TileStorageId tileStorageId, TileValue tileValue, TileId tileId)
+        private async Task RecordValueById(StorageId tileStorageId, TileValue tileValue, TileId tileId)
         {
             var cancellationToken = _cancellationTokenProvider.GetToken();
             var filter = Builders<TileDataContainer>.Filter.And(

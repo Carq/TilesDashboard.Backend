@@ -8,16 +8,19 @@ namespace TilesDashboard.V2.Core.Repositories
 {
     public interface ITileRepository
     {
-        Task<TileStorageId> CheckIfExist(TileId tileId);
+        Task<StorageId> CheckIfExist(TileId tileId);
 
         Task<IList<TileEntity>> GetAll();
 
         Task<TEntity> GetTile<TEntity>(TileId tileId)
             where TEntity : TileEntity;
 
+        Task<TEntity> GetTile<TEntity>(StorageId storageId, TileType tileType)
+            where TEntity : TileEntity;
+
         Task RecordValue(TileId tileId, TileValue tileValue);
 
-        Task RecordValue(TileStorageId id, TileValue tileValue, TileType tileType);
+        Task RecordValue(StorageId id, TileValue tileValue, TileType tileType);
 
         Task<IList<TileValue>> GetRecentTileValues(TileId tileId, int amountOfRecentData);
 

@@ -13,7 +13,7 @@ namespace TilesDashboard.Core.Domain.Extensions
                 Builders<TileEntity>.Filter.Eq(x => x.TileId.Type, tileId.Type));
         }
 
-        public static FilterDefinition<TileEntity> TileEntityFilter(TileStorageId tileStorageId, TileType tileType)
+        public static FilterDefinition<TileEntity> TileEntityFilter(StorageId tileStorageId, TileType tileType)
         {
             return Builders<TileEntity>.Filter.And(
                 Builders<TileEntity>.Filter.Eq(x => x.Id, tileStorageId.Value),

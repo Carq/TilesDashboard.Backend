@@ -10,9 +10,6 @@ namespace TilesDashboard.V2.Core.Services
 
         Task<IList<TileEntityWithData>> GetAllTilesWithRecentData();
 
-        Task<TTile> GetTile<TTile>(TileId tileId)
-            where TTile : TileEntity;
-
         Task<TileEntity> GetTile(TileId tileId);
 
         Task<IList<TileValue>> GetTileRecentData(TileId tileId, int amountOfRecentData);

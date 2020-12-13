@@ -10,5 +10,7 @@ namespace TilesDashboard.V2.Core.Services
         Task<MetricTile> GetMetricTile(TileId tileId);
 
         Task RecordValue(TileId tileId, MetricType metricType, decimal newValue);
+
+        Task RecordValue(StorageId storageId, MetricType metricType, decimal newValue);
     }
 }

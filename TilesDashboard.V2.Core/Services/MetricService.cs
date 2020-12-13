@@ -15,12 +15,26 @@ namespace TilesDashboard.V2.Core.Services
         {
         }
 
-        public async Task<MetricTile> GetMetricTile(TileId tileId) => await GetTile<MetricTile>(tileId);
+        public async Task<MetricTile> GetMetricTile(TileId tileId) => await TileRepository.GetTile<MetricTile>(tileId);
 
         public async Task RecordValue(TileId tileId, MetricType metricType, decimal newValue)
         {
-            var metric = await GetTile<MetricTile>(tileId);
+            var metric = await TileRepository.GetTile<MetricTile>(tileId);
+            MetricValue newMetricValue = CreateMericValue(metric, newValue);
 
+            await TileRepository.RecordValue(tileId, newMetricValue);
+        }
+
+        public async Task RecordValue(StorageId storageId, MetricType metricType, decimal newValue)
+        {
+            var metric = await TileRepository.GetTile<MetricTile>(storageId, TileType.Metric);
+            MetricValue newMetricValue = CreateMericValue(metric, newValue);
+
+            await TileRepository.RecordValue(storageId, newMetricValue, TileType.Metric);
+        }
+
+        private MetricValue CreateMericValue(MetricTile metric, decimal newValue)
+        {
             MetricValue newMetricValue;
             switch (metric.MetricType)
             {
@@ -37,7 +51,7 @@ namespace TilesDashboard.V2.Core.Services
                     throw new NotSupportedException();
             }
 
-            await TileRepository.RecordValue(tileId, newMetricValue);
+            return newMetricValue;
         }
     }
 }

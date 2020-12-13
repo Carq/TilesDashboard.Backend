@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
@@ -37,13 +38,7 @@ namespace TilesDashboard.V2.Core.Services
                 tilesWithRecentData.Add(tileWithData);
             }
 
-            return tilesWithRecentData;
-        }
-
-        public async Task<TTile> GetTile<TTile>(TileId tileId)
-            where TTile : TileEntity
-        {
-            return await TileRepository.GetTile<TTile>(tileId);
+            return tilesWithRecentData.OrderBy(x => x.TileEntity.TileId.Name).ToList();
         }
 
         public async Task<TileEntity> GetTile(TileId tileId)
