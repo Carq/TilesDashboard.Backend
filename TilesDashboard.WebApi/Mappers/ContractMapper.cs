@@ -41,7 +41,7 @@ namespace TilesDashboard.WebApi.Mappers
                 Name = tileEntityWithData.TileEntity.TileId.Name,
                 Type = tileEntityWithData.TileEntity.TileId.Type,
                 Configuration = tileEntityWithData.TileEntity?.GetConfigurationAsObject(),
-                Group = new GroupDto(string.Empty, 0),
+                Group = tileEntityWithData.Group != null ? new GroupDto(tileEntityWithData.Group.Name, tileEntityWithData.Group.Order) : new GroupDto(string.Empty, 0),
             };
 
             mappedTileWithData.Data.AddRange(tileEntityWithData.Data.Cast<object>().ToList());

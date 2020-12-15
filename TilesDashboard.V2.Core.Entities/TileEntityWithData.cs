@@ -14,6 +14,8 @@ namespace TilesDashboard.V2.Core.Entities
 
         public IList<TileValue> Data { get; } = new List<TileValue>();
 
+        public Group Group => TileEntity.Group;
+
         public void AddData(IList<TileValue> data)
         {
             Data.AddRange(data);
