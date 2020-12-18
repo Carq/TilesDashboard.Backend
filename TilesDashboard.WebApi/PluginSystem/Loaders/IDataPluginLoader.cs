@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase.Data;
+using TilesDashboard.PluginBase.V2;
 
 namespace TilesDashboard.WebApi.PluginSystem
 {
     public interface IDataPluginLoader
     {
-        Task<IList<IDataPlugin>> LoadDataProviderPluginsAsync(string rootPath);
+        Task<IList<IDataPlugin>> LoadDataPluginsAsync(string rootPath);
     }
 }

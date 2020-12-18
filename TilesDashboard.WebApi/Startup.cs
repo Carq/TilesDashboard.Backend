@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using TilesDashboard.Core.Configuration;
+using TilesDashboard.PluginSystem.Configuration;
 using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Configuration;
@@ -49,6 +50,7 @@ namespace TilesDashboard.WebApi
             builder.RegisterModule<ApiModule>();
             builder.RegisterModule<CoreModule>();
             builder.RegisterModule<CoreV2Module>();
+            builder.RegisterModule<PluginSystemModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

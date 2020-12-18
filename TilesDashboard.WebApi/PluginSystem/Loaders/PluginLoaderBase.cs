@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.V2;
 
 namespace TilesDashboard.WebApi.PluginSystem.Loaders
 {
@@ -13,39 +13,9 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
     {
         private readonly ILogger _logger;
 
-        private readonly IPluginConfigProvider _pluginConfigProvider;
-
-        protected PluginLoaderBase(IPluginConfigProvider pluginConfigProvider, ILogger logger)
+        protected PluginLoaderBase(ILogger logger)
         {
-            _pluginConfigProvider = pluginConfigProvider ?? throw new ArgumentNullException(nameof(pluginConfigProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
-        protected async Task<IList<TPluginType>> InitializePlugins<TPluginType>(IList<TPluginType> loadedPlugins)
-               where TPluginType : class, IBasePlugin
-        {
-            _logger.LogInformation("Initialazing plugins...");
-
-            var initializedPlugins = new List<TPluginType>();
-            foreach (var plugin in loadedPlugins)
-            {
-                try
-                {
-                    await plugin.InitializeAsync();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError($"Data Plugin: {plugin.GetType()} \"{plugin.TileId.Type}\" threw exception during initialization. Plugin will be disabled. Error: {ex.Message}", ex);
-                    continue;
-                }
-
-                initializedPlugins.Add(plugin);
-                _logger.LogInformation($"Data Plugin \"{plugin.TileId.Type}\" with name \"{plugin.TileId.Name} \" have been initialized.");
-            }
-
-            _logger.LogInformation("Data Plugins initialization completed.");
-            return initializedPlugins;
         }
 
         protected string[] GetPluginsPaths(string rootPath, string pluginFolder)
@@ -68,7 +38,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
         }
 
         protected IList<TPluginType> LoadDataPluginsFromDlls<TPluginType>(string[] pluginPaths)
-           where TPluginType : class, IBasePlugin
+           where TPluginType : class, IDataPlugin
         {
             var loadedPlugins = new List<TPluginType>();
             foreach (var pluginPath in pluginPaths)
@@ -83,29 +53,28 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
             return loadedPlugins;
         }
 
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
         protected IList<TPluginType> LoadDataPluginsFromAssembly<TPluginType>(Assembly assembly)
-            where TPluginType : class, IBasePlugin
+            where TPluginType : class, IDataPlugin
         {
             var plugins = new List<TPluginType>();
             foreach (Type type in assembly.GetTypes())
             {
                 if (typeof(TPluginType).IsAssignableFrom(type) && !type.IsAbstract)
                 {
-                    TPluginType plugin;
-                    if (type.GetConstructor(new[] { typeof(IPluginConfigProvider) }).Exists())
+                    try
                     {
-                        plugin = Activator.CreateInstance(type, _pluginConfigProvider) as TPluginType;
+                        TPluginType plugin = Activator.CreateInstance(type) as TPluginType;
+                        plugins.Add(plugin);
+                        _logger.LogInformation($"Loaded plugin {plugin.UniquePluginName} for tiles type {plugin.TileType}.");
                     }
-                    else
+                    catch (Exception exception)
                     {
-                        plugin = Activator.CreateInstance(type) as TPluginType;
+                        _logger.LogError($"Plugin initializiaton failed for type {type.FullName} from assembly {assembly.FullName}, exception message: {exception.Message}");
                     }
-
-                    plugins.Add(plugin);
                 }
             }
 
-            _logger.LogInformation($"Loaded {plugins.Count} plugins.");
             return plugins;
         }
     }
