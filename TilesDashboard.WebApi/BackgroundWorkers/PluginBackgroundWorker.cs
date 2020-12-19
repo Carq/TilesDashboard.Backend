@@ -69,7 +69,11 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
 
             foreach (var plugin in loadedPlugins)
             {
-                SchedulePlugin(plugin, pluginsConfigurations.Single(x => x.PluginName == plugin.UniquePluginName), cancellationToken);
+                var pluginConfig = pluginsConfigurations.SingleOrDefault(x => x.PluginName == plugin.UniquePluginName);
+                if (pluginConfig != null)
+                {
+                    SchedulePlugin(plugin, pluginConfig, cancellationToken);
+                }
             }
 
             while (!cancellationToken.IsCancellationRequested)

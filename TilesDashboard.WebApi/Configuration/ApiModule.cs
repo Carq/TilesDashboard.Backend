@@ -26,7 +26,6 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<TileDashboardSettings>().As<IDatabaseConfiguration>().As<ISecurityConfig>().SingleInstance();
             builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeProvider>().SingleInstance();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
-            builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
             RegisterDatabase(builder);
             PluginInfrastructure(builder);
         }
