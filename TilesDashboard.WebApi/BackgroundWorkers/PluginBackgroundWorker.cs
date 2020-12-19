@@ -12,7 +12,8 @@ using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.V2;
-using TilesDashboard.PluginSystem;
+using TilesDashboard.PluginSystem.Entities;
+using TilesDashboard.PluginSystem.Repositories;
 using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.WebApi.PluginSystem;
 using TilesDashboard.WebApi.PluginSystem.Extensions;
@@ -63,11 +64,12 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         {
             _logger.LogInformation("Tiles background worker started.");
             var loadedPlugins = await _pluginLoader.LoadDataPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
-            var pluginsConfigurationPerTile = await _pluginConfigRepository.GetAllPluginsConfiguration(cancellationToken);
+            await InitializePluginsStorage(loadedPlugins, cancellationToken);
+            var pluginsConfigurations = await _pluginConfigRepository.GetEnabledPluginsConfiguration(cancellationToken);
 
             foreach (var plugin in loadedPlugins)
             {
-                SchedulePlugin(plugin, pluginsConfigurationPerTile.Where(x => x.PluginName == plugin.UniquePluginName).ToList(), cancellationToken);
+                SchedulePlugin(plugin, pluginsConfigurations.Single(x => x.PluginName == plugin.UniquePluginName), cancellationToken);
             }
 
             while (!cancellationToken.IsCancellationRequested)
@@ -76,15 +78,26 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             }
         }
 
-        private void SchedulePlugin(IDataPlugin plugin, IList<PluginConfigForTile> pluginConfigurationForTiles, CancellationToken cancellationToken)
+        private async Task InitializePluginsStorage(IList<IDataPlugin> loadedPlugins, CancellationToken cancellationToken)
         {
-            foreach (var pluginConfigurationForTile in pluginConfigurationForTiles)
+            foreach (var plugin in loadedPlugins)
+            {
+                if (!await _pluginConfigRepository.IsAnyPluginConfigurationExist(plugin.UniquePluginName, cancellationToken))
+                {
+                    await _pluginConfigRepository.CreatePluginConfigurationWithTempleteEntry(plugin.UniquePluginName, plugin.TileType, cancellationToken);
+                }
+            }
+        }
+
+        private void SchedulePlugin(IDataPlugin plugin, PluginConfiguration pluginConfiguration, CancellationToken cancellationToken)
+        {
+            foreach (var pluginConfigurationForTile in pluginConfiguration.PluginTileConfigs.Where(x => x.Disabled == false))
             {
                 SchedulePlugin(plugin, pluginConfigurationForTile, cancellationToken);
             }
         }
 
-        private void SchedulePlugin(IDataPlugin plugin, PluginConfigForTile pluginConfigurationForTile, CancellationToken cancellationToken)
+        private void SchedulePlugin(IDataPlugin plugin, PluginTileConfig pluginConfigurationForTile, CancellationToken cancellationToken)
         {
             var schedule = CrontabSchedule.Parse(pluginConfigurationForTile.CronSchedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             DateTimeOffset nextOccurrence = schedule.GetNextOccurrence(_dateTimeProvider.Now.DateTime);
@@ -98,7 +111,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
-        private IObservable<IDataPlugin> HandlePlugin(IDataPlugin plugin, PluginConfigForTile pluginConfigurationForTile, CancellationToken cancellationToken)
+        private IObservable<IDataPlugin> HandlePlugin(IDataPlugin plugin, PluginTileConfig pluginConfigurationForTile, CancellationToken cancellationToken)
         {
             return Observable.Create<IDataPlugin>(
                 async observer =>

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
@@ -26,8 +27,19 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<DateTimeOffsetProvider>().As<IDateTimeProvider>().SingleInstance();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
             builder.RegisterType<TilesNotificationHub>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
-
+            RegisterDatabase(builder);
             PluginInfrastructure(builder);
+        }
+
+        private static void RegisterDatabase(ContainerBuilder builder)
+        {
+            builder.Register((c, p) =>
+            {
+                var config = c.Resolve<IDatabaseConfiguration>();
+                var client = new MongoClient(config.ConnectionString);
+                return client.GetDatabase(config.DatabaseName);
+            }).As<IMongoDatabase>()
+            .InstancePerLifetimeScope();
         }
 
         private static void PluginInfrastructure(ContainerBuilder builder)

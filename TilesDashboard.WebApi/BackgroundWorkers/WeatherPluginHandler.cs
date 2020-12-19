@@ -5,7 +5,8 @@ using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.V2;
-using TilesDashboard.PluginSystem;
+using TilesDashboard.PluginSystem.Entities;
+using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Services;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
@@ -22,13 +23,13 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _weatherService = weatherService;
         }
 
-        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, PluginConfigForTile pluginConfigForTile, CancellationToken cancellationToken)
+        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
             var data = await weatherPlugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
             _logger.LogDebug($"Weather plugin: \"{weatherPlugin.UniquePluginName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
             if (data.Status.Is(Status.OK))
             {
-                await _weatherService.RecordValue(pluginConfigForTile.TileStorageId, data.Temperature, data.Huminidy ?? 0);
+                await _weatherService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Temperature, data.Huminidy ?? 0);
             }
 
             return data;

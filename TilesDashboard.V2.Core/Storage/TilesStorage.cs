@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.V2.Core.Storage
@@ -8,10 +7,9 @@ namespace TilesDashboard.V2.Core.Storage
     {
         private readonly IMongoDatabase _database;
 
-        public TilesStorage(IDatabaseConfiguration config)
+        public TilesStorage(IMongoDatabase database)
         {
-            var client = new MongoClient(config.ConnectionString);
-            _database = client.GetDatabase(config.DatabaseName);
+            _database = database;
         }
 
         public IMongoCollection<TileEntity> TilesInformation => _database.GetCollection<TileEntity>(CollectionNames.TilesInformation);
