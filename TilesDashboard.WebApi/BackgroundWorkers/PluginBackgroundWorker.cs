@@ -132,6 +132,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 var weatherPlugin = (WeatherPluginBase)plugin;
                                 result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
+                            case TileType.Metric:
+                                var metricPlugin = (MetricPluginBase)plugin;
+                                result = await _metricPluginHandler.HandlePlugin(metricPlugin, pluginConfigurationForTile, cancellationToken);
+                                break;
                             default:
                                 throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
                         }

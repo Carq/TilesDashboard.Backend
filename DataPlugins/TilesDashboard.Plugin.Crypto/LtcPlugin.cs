@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -9,22 +10,14 @@ using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Plugin.Crypto
 {
-    public class LtcPlugin : MetricPluginBase
+    public class LtcPlugin : PluginBase.V2.MetricPluginBase
     {
-        public override string TileName { get; } = "LTC PLN";
+        public override string UniquePluginName => $"TileCorePlugins.{nameof(LtcPlugin)}";
 
-        public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
-
-        private readonly string RootConfig = "LtcPlugin";
-
-        public LtcPlugin(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
-        {
-        }
-
-        public override async Task<MetricData> GetDataAsync(CancellationToken cancellationToken = default)
+        public override async Task<MetricData> GetTileValueAsync(IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
         {
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync($"https://api.bitbay.net/rest/trading/ticker", cancellationToken);
+            var response = await httpClient.GetAsync($"https://api.bitbay.net/rest/trading/ticker", cancellation);
             if (response.IsSuccessStatusCode)
             {
                 var responseDto = JsonSerializer.Deserialize<CryptoTickerDto>(await response.Content.ReadAsStringAsync());

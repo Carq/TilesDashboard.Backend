@@ -26,9 +26,9 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
             var data = await weatherPlugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
-            _logger.LogDebug($"Weather plugin: \"{weatherPlugin.UniquePluginName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
             if (data.Status.Is(Status.OK))
             {
+                _logger.LogDebug($"Weather plugin: \"{weatherPlugin.UniquePluginName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
                 await _weatherService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Temperature, data.Huminidy ?? 0);
             }
 

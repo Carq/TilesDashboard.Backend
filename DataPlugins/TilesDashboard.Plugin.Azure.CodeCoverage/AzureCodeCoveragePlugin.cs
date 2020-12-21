@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,29 +9,20 @@ using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public abstract class AzureCodeCoveragePluginBase : MetricPluginBase
+    public class AzureCodeCoveragePlugin : PluginBase.V2.MetricPluginBase
     {
-        public AzureCodeCoveragePluginBase(IPluginConfigProvider configProvider)
-            : base(configProvider)
-        {
-        }
+        public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureCodeCoveragePlugin)}";
 
-        public abstract string RootConfig { get; }
-
-        public override string TileName => ConfigProvider.GetConfigEntry($"{RootConfig}:TileName");
-
-        public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
-
-        public override Task InitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public override async Task<MetricData> GetDataAsync(CancellationToken cancellationToken)
+        public override async Task<MetricData> GetTileValueAsync(IDictionary<string, string> pluginConfiguration, CancellationToken cancellationToken = default)
         {
             try
             {
-                var azureDevOpsHelper = new AzureDevOpsHelper(ConfigProvider, RootConfig);
+                var azureDevOpsHelper = new AzureDevOpsHelper(
+                                                pluginConfiguration["Organization"],
+                                                pluginConfiguration["Project"],
+                                                pluginConfiguration["BuildDefinition"],
+                                                pluginConfiguration["PersonalAccessToken"]);
+
                 var codeCoverageDetails = await azureDevOpsHelper.GetCodeCoverageResultForLastGreenBuildAsync(cancellationToken);
                 if (codeCoverageDetails == null)
                 {
