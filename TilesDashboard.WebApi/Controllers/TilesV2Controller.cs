@@ -24,11 +24,14 @@ namespace TilesDashboard.WebApi.Controllers
 
         private readonly IMetricService _metricService;
 
-        public TilesV2Controller(ITileBaseService tileService, IWeatherService weatherService, IMetricService metricService)
+        private readonly IIntegerService _integerService;
+
+        public TilesV2Controller(ITileBaseService tileService, IWeatherService weatherService, IMetricService metricService, IIntegerService integerService)
         {
             _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));
             _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
             _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
+            _integerService = integerService ?? throw new ArgumentNullException(nameof(integerService));
         }
 
         [HttpGet("all")]
@@ -90,7 +93,21 @@ namespace TilesDashboard.WebApi.Controllers
         [BearerAuthorization]
         public async Task RecordWeatherValueByStorageId(string storageId, [FromBody] RecordMetricData<decimal> metricData)
         {
-             await _metricService.RecordValue(new StorageId(storageId), metricData.Type.Convert<MetricType>(), metricData.Value);
+            await _metricService.RecordValue(new StorageId(storageId), metricData.Type.Convert<MetricType>(), metricData.Value);
+        }
+
+        [HttpPost("integer/{tileName}/record")]
+        [BearerAuthorization]
+        public async Task RecordIntegerValue(string tileName, [FromBody] RecordValueDto<int> integerValue)
+        {
+            await _integerService.RecordValue(new TileId(tileName, TileType.Metric), integerValue.Value);
+        }
+
+        [HttpPost("integer/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordIntegerValueByStorageId(string storageId, [FromBody] RecordValueDto<int> integerValue)
+        {
+            await _integerService.RecordValue(new StorageId(storageId), integerValue.Value);
         }
     }
 }
