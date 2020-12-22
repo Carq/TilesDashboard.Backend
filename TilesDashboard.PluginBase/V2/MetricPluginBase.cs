@@ -6,6 +6,5 @@ namespace TilesDashboard.PluginBase.V2
     public abstract class MetricPluginBase : DataPluginBase<MetricData>
     {
         public override TileType TileType => TileType.Metric;
-
     }
 }

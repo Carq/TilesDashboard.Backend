@@ -136,6 +136,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 var metricPlugin = (MetricPluginBase)plugin;
                                 result = await _metricPluginHandler.HandlePlugin(metricPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
+                            case TileType.Integer:
+                                var integerPlugin = (IntegerPluginBase)plugin;
+                                result = await _integerPluginHandler.HandlePlugin(integerPlugin, pluginConfigurationForTile, cancellationToken);
+                                break;
                             default:
                                 throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
                         }
