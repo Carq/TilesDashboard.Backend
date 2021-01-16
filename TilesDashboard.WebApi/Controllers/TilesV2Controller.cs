@@ -26,12 +26,20 @@ namespace TilesDashboard.WebApi.Controllers
 
         private readonly IIntegerService _integerService;
 
-        public TilesV2Controller(ITileBaseService tileService, IWeatherService weatherService, IMetricService metricService, IIntegerService integerService)
+        private readonly IHeartBeatService _heartBeatService;
+
+        public TilesV2Controller(
+            ITileBaseService tileService,
+            IWeatherService weatherService,
+            IMetricService metricService,
+            IIntegerService integerService,
+            IHeartBeatService heartBeatService)
         {
             _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));
             _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
             _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
             _integerService = integerService ?? throw new ArgumentNullException(nameof(integerService));
+            _heartBeatService = heartBeatService ?? throw new ArgumentNullException(nameof(heartBeatService));
         }
 
         [HttpGet("all")]
@@ -108,6 +116,20 @@ namespace TilesDashboard.WebApi.Controllers
         public async Task RecordIntegerValueByStorageId(string storageId, [FromBody] RecordValueDto<int> integerValue)
         {
             await _integerService.RecordValue(new StorageId(storageId), integerValue.Value);
+        }
+
+        [HttpPost("heartbeat/{tileName}/record")]
+        [BearerAuthorization]
+        public async Task RecordHeartBeatValue(string tileName, [FromBody] RecordHeartBeatValueDto hearbeatValue)
+        {
+            await _heartBeatService.RecordValue(new TileId(tileName, TileType.HeartBeat), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
+        }
+
+        [HttpPost("heartbeat/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordHeartBeatValueStorageId(string storageId, [FromBody] RecordHeartBeatValueDto hearbeatValue)
+        {
+            await _heartBeatService.RecordValue(new StorageId(storageId), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
         }
     }
 }

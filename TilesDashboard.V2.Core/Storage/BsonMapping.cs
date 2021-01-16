@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.HeartBeat;
 using TilesDashboard.V2.Core.Entities.Integer;
 using TilesDashboard.V2.Core.Entities.Metric;
 using TilesDashboard.V2.Core.Entities.Weather;
@@ -43,6 +44,7 @@ namespace TilesDashboard.V2.Core.Storage
             BsonClassMap.RegisterClassMap<MetricTile>();
             BsonClassMap.RegisterClassMap<WeatherTile>();
             BsonClassMap.RegisterClassMap<IntegerTile>();
+            BsonClassMap.RegisterClassMap<HeartBeatTile>();
         }
 
         private static void TileDataMapping()

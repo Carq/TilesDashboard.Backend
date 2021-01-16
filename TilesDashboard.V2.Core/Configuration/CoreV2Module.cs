@@ -16,6 +16,7 @@ namespace TilesDashboard.V2.Core.Configuration
             builder.RegisterType<WeatherService>().As<IWeatherService>().InstancePerLifetimeScope();
             builder.RegisterType<IntegerService>().As<IIntegerService>().InstancePerLifetimeScope();
             builder.RegisterType<TileBaseService>().As<ITileBaseService>().InstancePerLifetimeScope();
+            builder.RegisterType<HeartBeatService>().As<IHeartBeatService>().InstancePerLifetimeScope();
         }
     }
 }

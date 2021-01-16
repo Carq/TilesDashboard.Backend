@@ -9,7 +9,8 @@ namespace TilesDashboard.V2.Core.Services
 {
     public class IntegerService : TileBaseService, IIntegerService
     {
-        public IntegerService(ITileRepository tileRepository, IDateTimeProvider dateTimeProvider) : base(tileRepository, dateTimeProvider)
+        public IntegerService(ITileRepository tileRepository, IDateTimeProvider dateTimeProvider)
+            : base(tileRepository, dateTimeProvider)
         {
         }
 
