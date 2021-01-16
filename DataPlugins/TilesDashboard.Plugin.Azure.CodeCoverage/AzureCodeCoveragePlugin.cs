@@ -9,7 +9,7 @@ using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public class AzureCodeCoveragePlugin : PluginBase.V2.MetricPluginBase
+    public class AzureCodeCoveragePlugin : MetricPluginBase
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureCodeCoveragePlugin)}";
 

@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase.V2;
+using TilesDashboard.PluginBase.Data;
 
 namespace TilesDashboard.WebApi.PluginSystem.Loaders
 {

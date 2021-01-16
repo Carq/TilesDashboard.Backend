@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.PluginBase.Data
@@ -9,40 +8,16 @@ namespace TilesDashboard.PluginBase.Data
     public abstract class DataPluginBase<TResult> : IDataPlugin
         where TResult : Result
     {
-        public DataPluginBase(IPluginConfigProvider configProvider)
-        {
-            ConfigProvider = configProvider ?? throw new ArgumentNullException(nameof(configProvider));
-        }
-
-        public DataPluginBase()
-        {
-        }
-
         /// <summary>
-        /// Tile Name which is used to update Tile in database and to display tile name on frontend.
+        /// Unique Plugin Name which is used to get plugin config from storage.
         /// </summary>
-        public abstract string TileName { get; }
+        public abstract string UniquePluginName { get; }
 
         /// <summary>
         /// Tile type.
         /// </summary>
         public abstract TileType TileType { get; }
 
-        /// <inheritdoc/>
-        public abstract string CronSchedule { get; }
-
-        /// <summary>
-        /// Give access to config entries. Config Provider will be injected by PluginSystem.
-        /// </summary>
-        public IPluginConfigProvider ConfigProvider { get; }
-
-        public TileId TileId => new TileId(TileName, TileType);
-
-        public abstract Task<TResult> GetDataAsync(CancellationToken cancellation = default);
-
-        public virtual Task InitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
+        public abstract Task<TResult> GetTileValueAsync(IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using TilesDashboard.Handy.Events;
 using TilesDashboard.V2.Core.Repositories;
 using TilesDashboard.V2.Core.Services;
 using TilesDashboard.V2.Core.Storage;
@@ -17,6 +18,8 @@ namespace TilesDashboard.V2.Core.Configuration
             builder.RegisterType<IntegerService>().As<IIntegerService>().InstancePerLifetimeScope();
             builder.RegisterType<TileBaseService>().As<ITileBaseService>().InstancePerLifetimeScope();
             builder.RegisterType<HeartBeatService>().As<IHeartBeatService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<EventDispatcher>().As<IEventDispatcher>();
         }
     }
 }

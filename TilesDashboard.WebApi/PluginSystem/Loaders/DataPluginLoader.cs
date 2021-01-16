@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.PluginBase.V2;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.WebApi.PluginSystem.Loaders;
 
 namespace TilesDashboard.WebApi.PluginSystem

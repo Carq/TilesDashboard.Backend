@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using TilesDashboard.Core.Configuration;
 using TilesDashboard.PluginSystem.Configuration;
 using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
@@ -48,7 +47,6 @@ namespace TilesDashboard.WebApi
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<ApiModule>();
-            builder.RegisterModule<CoreModule>();
             builder.RegisterModule<CoreV2Module>();
             builder.RegisterModule<PluginSystemModule>();
         }

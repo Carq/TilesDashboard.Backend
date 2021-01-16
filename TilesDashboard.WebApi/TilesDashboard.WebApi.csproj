@@ -33,10 +33,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
-    <ProjectReference Include="..\TilesDashboard.Core\TilesDashboard.Core.csproj" />
     <ProjectReference Include="..\TilesDashboard.Handy\TilesDashboard.Handy.csproj" />
     <ProjectReference Include="..\TilesDashboard.PluginBase\TilesDashboard.PluginBase.csproj" />
     <ProjectReference Include="..\TilesDashboard.PluginSystem\TilesDashboard.PluginSystem.csproj" />
+    <ProjectReference Include="..\TilesDashboard.V2.Core\TilesDashboard.V2.Core.csproj" />
   </ItemGroup>
 
 </Project>

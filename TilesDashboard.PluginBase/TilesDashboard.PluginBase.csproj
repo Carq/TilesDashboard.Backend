@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
-    <ProjectReference Include="..\TilesDashboard.Core.Type\TilesDashboard.Core.Type.csproj" />
     <ProjectReference Include="..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
   </ItemGroup>
 

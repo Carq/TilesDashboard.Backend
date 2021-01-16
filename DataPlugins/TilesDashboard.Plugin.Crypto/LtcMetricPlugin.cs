@@ -10,7 +10,7 @@ using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.Plugin.Crypto
 {
-    public class LtcMetricPlugin : PluginBase.V2.MetricPluginBase
+    public class LtcMetricPlugin : MetricPluginBase
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(LtcMetricPlugin)}";
 

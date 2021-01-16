@@ -8,7 +8,7 @@ using TilesDashboard.PluginBase.Data.WeatherPlugin;
 
 namespace TilesDashboard.Plugin.OpenWeatherMap
 {
-    public class OpenWeatherMapPlugin : PluginBase.V2.WeatherPluginBase
+    public class OpenWeatherMapPlugin : WeatherPluginBase
     {
         private readonly HttpClient _httpClient = new HttpClient();
 

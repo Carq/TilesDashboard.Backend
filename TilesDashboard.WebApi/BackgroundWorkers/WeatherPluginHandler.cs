@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
-using TilesDashboard.PluginBase.V2;
+using TilesDashboard.PluginBase.Data.WeatherPlugin;
 using TilesDashboard.PluginSystem.Entities;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Services;

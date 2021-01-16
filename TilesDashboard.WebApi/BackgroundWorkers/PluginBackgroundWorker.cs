@@ -11,13 +11,15 @@ using NCrontab;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
-using TilesDashboard.PluginBase.V2;
+using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
+using TilesDashboard.PluginBase.Data.IntegerPlugin;
+using TilesDashboard.PluginBase.Data.MetricPlugin;
+using TilesDashboard.PluginBase.Data.WeatherPlugin;
 using TilesDashboard.PluginSystem.Entities;
 using TilesDashboard.PluginSystem.Repositories;
 using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.WebApi.PluginSystem;
 using TilesDashboard.WebApi.PluginSystem.Extensions;
-using IDataPlugin = TilesDashboard.PluginBase.V2.IDataPlugin;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {

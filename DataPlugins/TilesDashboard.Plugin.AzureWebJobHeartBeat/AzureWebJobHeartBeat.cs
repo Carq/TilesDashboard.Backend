@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 using TilesDashboard.Plugin.AzureWebJobHeartBeat.Dto;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
-using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
 {
-    public class AzureWebJobHeartBeat : PluginBase.V2.HeartBeatPluginBase
+    public class AzureWebJobHeartBeat : HeartBeatPluginBase
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureWebJobHeartBeat)}";
 

@@ -9,7 +9,7 @@ using TilesDashboard.PluginBase.Data.IntegerPlugin;
 
 namespace TilesDashboard.Plugin.Crypto
 {
-    public class LtcIntegerPlugin : PluginBase.V2.IntegerPluginBase
+    public class LtcIntegerPlugin : IntegerPluginBase
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(LtcIntegerPlugin)}";
 
