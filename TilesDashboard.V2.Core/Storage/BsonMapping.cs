@@ -81,6 +81,7 @@ namespace TilesDashboard.V2.Core.Storage
             BsonClassMap.RegisterClassMap<TimeMetricValue>();
             BsonClassMap.RegisterClassMap<MoneyMetricValue>();
             BsonClassMap.RegisterClassMap<IntegerValue>();
+            BsonClassMap.RegisterClassMap<HeartBeatValue>();
         }
     }
 }

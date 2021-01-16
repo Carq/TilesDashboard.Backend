@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text.Json;
@@ -7,35 +8,28 @@ using System.Threading.Tasks;
 using TilesDashboard.Plugin.HeartBeatGeneral.Dto;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
-using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.HeartBeatGeneral
 {
-    public class GarminConnectorHeartBeatGeneral : HeartBeatPluginBase
+    public class HealthCheckHeartBeatGeneral : PluginBase.V2.HeartBeatPluginBase
     {
-        public override string TileName { get; } = "Garmin Connector";
+        public override string UniquePluginName => $"TileCorePlugins.{nameof(HealthCheckHeartBeatGeneral)}";
 
-        public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
-
-        private readonly string RootConfig = "GarminConnectorHeartBeat";
-
-        public GarminConnectorHeartBeatGeneral(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
-        {
-        }
-
-        public override async Task<HeartBeatData> GetDataAsync(CancellationToken cancellationToken = default)
+        public override async Task<HeartBeatData> GetTileValueAsync(IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
         {
             var httpClient = new HttpClient();
             var stopwatcher = new Stopwatch();
+            var heartBeatAddress = pluginConfiguration["HeartBeatAddress"];
 
             stopwatcher.Start();
             try
             {
-                var response = await httpClient.GetAsync($"{ConfigProvider.GetConfigEntry($"{RootConfig}:HeartBeatAddress")}", cancellationToken);
+                var response = await httpClient.GetAsync(heartBeatAddress, cancellation);
                 stopwatcher.Stop();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                var heartbeatDto = JsonSerializer.Deserialize<HeartbeatDto>(responseContent,
+                var heartbeatDto = JsonSerializer.Deserialize<HeartbeatDto>(
+                    responseContent,
                     new JsonSerializerOptions
                     {
                         PropertyNameCaseInsensitive = true
@@ -47,7 +41,7 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
                     return new HeartBeatData((int)stopwatcher.ElapsedMilliseconds, heartbeatDto.Version, heartbeatDto.LastAppliedMigration, Status.OK);
                 }
 
-                return HeartBeatData.NoResponse();
+                return HeartBeatData.Error($"Code: {response.StatusCode}");
             }
             catch (Exception ex)
             {

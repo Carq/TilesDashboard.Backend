@@ -97,11 +97,11 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         {
             foreach (var pluginConfigurationForTile in pluginConfiguration.PluginTileConfigs.Where(x => x.Disabled == false))
             {
-                SchedulePlugin(plugin, pluginConfigurationForTile, cancellationToken);
+                SchedulePluginForTile(plugin, pluginConfigurationForTile, cancellationToken);
             }
         }
 
-        private void SchedulePlugin(IDataPlugin plugin, PluginTileConfig pluginConfigurationForTile, CancellationToken cancellationToken)
+        private void SchedulePluginForTile(IDataPlugin plugin, PluginTileConfig pluginConfigurationForTile, CancellationToken cancellationToken)
         {
             var schedule = CrontabSchedule.Parse(pluginConfigurationForTile.CronSchedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             DateTimeOffset nextOccurrence = schedule.GetNextOccurrence(_dateTimeProvider.Now.DateTime);
@@ -110,7 +110,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                   .Select(x => HandlePlugin(plugin, pluginConfigurationForTile, cancellationToken))
                   .Switch()
                   .Subscribe(
-                    plugin => SchedulePlugin(plugin, pluginConfigurationForTile, cancellationToken),
+                    plugin => SchedulePluginForTile(plugin, pluginConfigurationForTile, cancellationToken),
                     exception => _logger.LogError($"Error occurs during plugin processing. Plugin will be disabled. Error: {exception.Message}. Inner Exception: {exception.InnerException?.Message}", exception));
         }
 
@@ -139,6 +139,10 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                             case TileType.Integer:
                                 var integerPlugin = (IntegerPluginBase)plugin;
                                 result = await _integerPluginHandler.HandlePlugin(integerPlugin, pluginConfigurationForTile, cancellationToken);
+                                break;
+                            case TileType.HeartBeat:
+                                var heartBeatPlugin = (HeartBeatPluginBase)plugin;
+                                result = await _heartBeatPluginHandler.HandlePlugin(heartBeatPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
                             default:
                                 throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
