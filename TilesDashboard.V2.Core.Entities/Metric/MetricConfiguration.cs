@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.V2.Core.Entities.Metric
 {

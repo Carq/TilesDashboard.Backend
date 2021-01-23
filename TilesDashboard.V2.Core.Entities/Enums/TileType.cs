@@ -7,5 +7,6 @@
         Weather = 2,
         Integer = 3,
         HeartBeat = 4,
+        Dual = 5,
     }
 }

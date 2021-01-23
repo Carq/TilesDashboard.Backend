@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
-using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Metric;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {

@@ -2,6 +2,7 @@
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization.Conventions;
 using TilesDashboard.Handy.Extensions;
+using TilesDashboard.V2.Core.Entities.Dual;
 using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.V2.Core.Entities.HeartBeat;
 using TilesDashboard.V2.Core.Entities.Integer;
@@ -46,6 +47,7 @@ namespace TilesDashboard.V2.Core.Storage
                 TileType.Weather => typeof(WeatherTile),
                 TileType.Integer => typeof(IntegerTile),
                 TileType.HeartBeat => typeof(HeartBeatTile),
+                TileType.Dual => typeof(DualTile),
                 TileType.Undefined => throw new NotSupportedException(),
                 _ => throw new NotSupportedException()
             };

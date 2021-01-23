@@ -8,6 +8,7 @@ using TilesDashboard.Contract.RecordData;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Metric;
 using TilesDashboard.V2.Core.Services;
 using TilesDashboard.WebApi.Authorization;
 using TilesDashboard.WebApi.Mappers;
@@ -16,7 +17,7 @@ namespace TilesDashboard.WebApi.Controllers
 {
     [Route("tiles")]
     [ApiController]
-    public class TilesV2Controller
+    public class TilesController
     {
         private readonly ITileBaseService _tileService;
 
@@ -28,18 +29,22 @@ namespace TilesDashboard.WebApi.Controllers
 
         private readonly IHeartBeatService _heartBeatService;
 
-        public TilesV2Controller(
+        private readonly IDualService _dualService;
+
+        public TilesController(
             ITileBaseService tileService,
             IWeatherService weatherService,
             IMetricService metricService,
             IIntegerService integerService,
-            IHeartBeatService heartBeatService)
+            IHeartBeatService heartBeatService,
+            IDualService dualService)
         {
             _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));
             _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
             _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
             _integerService = integerService ?? throw new ArgumentNullException(nameof(integerService));
             _heartBeatService = heartBeatService ?? throw new ArgumentNullException(nameof(heartBeatService));
+            _dualService = dualService ?? throw new ArgumentNullException(nameof(dualService));
         }
 
         [HttpGet("all")]
@@ -130,6 +135,20 @@ namespace TilesDashboard.WebApi.Controllers
         public async Task RecordHeartBeatValueStorageId(string storageId, [FromBody] RecordHeartBeatValueDto hearbeatValue)
         {
             await _heartBeatService.RecordValue(new StorageId(storageId), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
+        }
+
+        [HttpPost("dual/{tileName}/record")]
+        [BearerAuthorization]
+        public async Task RecordDualValue(string tileName, [FromBody] RecordDualValue dualValue)
+        {
+            await _dualService.RecordValue(new TileId(tileName, TileType.Dual), dualValue.Primary, dualValue.Secondary);
+        }
+
+        [HttpPost("dual/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordDualValueStorageId(string storageId, [FromBody] RecordDualValue dualValue)
+        {
+            await _dualService.RecordValue(new StorageId(storageId), dualValue.Primary, dualValue.Secondary);
         }
     }
 }

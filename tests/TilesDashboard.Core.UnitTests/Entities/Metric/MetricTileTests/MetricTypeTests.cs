@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using TilesDashboard.Core.UnitTests.TestClassBuilders;
-using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.V2.Core.Entities.Metric;
 
 namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
