@@ -1,111 +1,154 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TilesDashboard.Contract;
 using TilesDashboard.Contract.RecordData;
-using TilesDashboard.Core.Domain.Entities;
-using TilesDashboard.Core.Domain.Services;
-using TilesDashboard.Core.Type.Enums;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.Handy.Tools;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Metric;
+using TilesDashboard.V2.Core.Services;
 using TilesDashboard.WebApi.Authorization;
 using TilesDashboard.WebApi.Mappers;
 
 namespace TilesDashboard.WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("tiles")]
     [ApiController]
-    public class TilesController : ControllerBase
+    public class TilesController
     {
-        private const int AmountOfDate = 5;
+        private readonly ITileBaseService _tileService;
+
+        private readonly IWeatherService _weatherService;
 
         private readonly IMetricService _metricService;
 
-        private readonly IIntegerTileService _integerTileService;
+        private readonly IIntegerService _integerService;
 
-        private readonly ITileService _tileService;
+        private readonly IHeartBeatService _heartBeatService;
 
-        private readonly IDateTimeOffsetProvider _dateTimeOffsetProvider;
+        private readonly IDualService _dualService;
 
-        public TilesController(IMetricService metricService, ITileService tileService, IIntegerTileService integerTileService, IDateTimeOffsetProvider dateTimeOffsetProvider)
+        public TilesController(
+            ITileBaseService tileService,
+            IWeatherService weatherService,
+            IMetricService metricService,
+            IIntegerService integerService,
+            IHeartBeatService heartBeatService,
+            IDualService dualService)
         {
-            _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
             _tileService = tileService ?? throw new ArgumentNullException(nameof(tileService));
-            _integerTileService = integerTileService ?? throw new ArgumentNullException(nameof(integerTileService));
-            _dateTimeOffsetProvider = dateTimeOffsetProvider ?? throw new ArgumentNullException(nameof(dateTimeOffsetProvider));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
+            _metricService = metricService ?? throw new ArgumentNullException(nameof(metricService));
+            _integerService = integerService ?? throw new ArgumentNullException(nameof(integerService));
+            _heartBeatService = heartBeatService ?? throw new ArgumentNullException(nameof(heartBeatService));
+            _dualService = dualService ?? throw new ArgumentNullException(nameof(dualService));
         }
 
         [HttpGet("all")]
         [BearerReadAuthorization]
-        public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData(CancellationToken cancellationToken)
+        public async Task<IList<TileWithCurrentDataDto>> GetAllTilesWithRecentData()
         {
-            return TileDtoMapper.Map(await _tileService.GetAllAsync(AmountOfDate, cancellationToken));
+            return (await _tileService.GetAllTilesWithRecentData()).MapToContract();
         }
 
-        [HttpPost("{tileType}/{tileName}/group")]
-        [BearerAuthorization]
-        public async Task SetTileGroup(string tileType, string tileName, [FromBody] string group, CancellationToken cancellationToken)
-        {
-            await _tileService.SetGroupToTile(tileName, Enum.Parse<TileType>(tileType), group, cancellationToken);
-        }
-
-        [HttpGet("metric/{tileName}/recent")]
+        [HttpGet("{tileType}/{tileName}")]
         [BearerReadAuthorization]
-        public async Task<IList<object>> GetMetricRecentData(string tileName, [FromQuery][Range(1, 30)] int? amountOfData, CancellationToken cancellationToken)
+        public async Task<TileWithCurrentDataDto> GetTileBasicData(TileType tileType, string tileName)
         {
-            return TileDtoMapper.Map(await _metricService.GetMetricRecentDataAsync(tileName, amountOfData ?? AmountOfDate, cancellationToken));
+            return (await _tileService.GetTile(new TileId(tileName, tileType))).MapToContract();
+        }
+
+        [HttpGet("{tileType}/{tileName}/recent")]
+        [BearerReadAuthorization]
+        public async Task<IList<object>> GetTileRecentData(TileType tileType, string tileName, [FromQuery][Range(1, 120)] int amountOfData = 30)
+        {
+            return (await _tileService.GetTileRecentData(new TileId(tileName, tileType), amountOfData)).MapToContract();
+        }
+
+        [HttpGet("{tileType}/{tileName}/since")]
+        [BearerReadAuthorization]
+        public async Task<IList<object>> GetTileSinceDate(TileType tileType, string tileName, [FromQuery][Range(1, 120)] int? days, [Range(1, 48)] int? hours)
+        {
+            int sinceHours = (days ?? 30) * 24;
+            if (hours.HasValue)
+            {
+                sinceHours = hours.Value;
+            }
+
+            return (await _tileService.GetTileSinceData(new TileId(tileName, tileType), sinceHours)).MapToContract();
+        }
+
+        [HttpPost("weather/{tileName}/record")]
+        [BearerAuthorization]
+        public async Task RecordWeatherValue(string tileName, [FromBody] RecordWeatherDataDto weatherDataDto)
+        {
+            await _weatherService.RecordValue(new TileId(tileName, TileType.Weather), weatherDataDto.Temperature, weatherDataDto.Humidity);
+        }
+
+        [HttpPost("weather/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordWeatherValueByStorageId([MaxLength(StorageId.Length)] string storageId, [FromBody] RecordWeatherDataDto weatherDataDto)
+        {
+            await _weatherService.RecordValue(new StorageId(storageId), weatherDataDto.Temperature, weatherDataDto.Humidity);
         }
 
         [HttpPost("metric/{tileName}/record")]
         [BearerAuthorization]
-        public async Task RecordMetricData(string tileName, [FromBody] RecordMetricData<decimal> metricData, CancellationToken cancellationToken)
+        public async Task RecordMetricValue(string tileName, [FromBody] RecordMetricData<decimal> metricData)
         {
-            await _metricService.RecordMetricDataAsync(tileName, metricData.Type.Convert<MetricType>(), metricData.Value, cancellationToken);
+            await _metricService.RecordValue(new TileId(tileName, TileType.Metric), metricData.Type.Convert<MetricType>(), metricData.Value);
         }
 
-        [HttpGet("metric/{tileName}/since")]
-        [BearerReadAuthorization]
-        public async Task<IList<object>> GetMetricDataSince(string tileName, [FromQuery][Required][Range(1, 30)] int days, CancellationToken cancellationToken)
+        [HttpPost("metric/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordWeatherValueByStorageId(string storageId, [FromBody] RecordMetricData<decimal> metricData)
         {
-            return TileDtoMapper.Map(await _metricService.GetMetricDataSinceAsync(tileName, days, cancellationToken));
-        }
-
-        [HttpGet("integer/{tileName}/recent")]
-        [BearerReadAuthorization]
-        public async Task<IList<object>> GetIntegerRecentData(string tileName, [FromQuery][Range(1, 30)] int? amountOfData, CancellationToken cancellationToken)
-        {
-            return TileDtoMapper.Map(await _integerTileService.GetIntegerRecentDataAsync(tileName, amountOfData ?? AmountOfDate, cancellationToken));
+            await _metricService.RecordValue(new StorageId(storageId), metricData.Type.Convert<MetricType>(), metricData.Value);
         }
 
         [HttpPost("integer/{tileName}/record")]
         [BearerAuthorization]
-        public async Task RecordIntegerData(string tileName, [FromBody] int value, CancellationToken cancellationToken)
+        public async Task RecordIntegerValue(string tileName, [FromBody] RecordValueDto<int> integerValue)
         {
-            await _integerTileService.RecordIntegerDataAsync(tileName, value, cancellationToken);
+            await _integerService.RecordValue(new TileId(tileName, TileType.Metric), integerValue.Value);
         }
 
-        [HttpGet("integer/{tileName}/since")]
-        [BearerReadAuthorization]
-        public async Task<IList<object>> GetIntegerDataSince(string tileName, [FromQuery][Required][Range(1, 30)] int days, CancellationToken cancellationToken)
+        [HttpPost("integer/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordIntegerValueByStorageId(string storageId, [FromBody] RecordValueDto<int> integerValue)
         {
-            return TileDtoMapper.Map(await _integerTileService.GetIntegerDataSinceAsync(tileName, days, cancellationToken));
+            await _integerService.RecordValue(new StorageId(storageId), integerValue.Value);
         }
 
-        [HttpGet("heartbeat/{tileName}/recent")]
-        [BearerReadAuthorization]
-        public async Task<IList<object>> GetHeartbeatRecentData(string tileName, [FromQuery][Range(1, 30)] int? amountOfData, CancellationToken cancellationToken)
+        [HttpPost("heartbeat/{tileName}/record")]
+        [BearerAuthorization]
+        public async Task RecordHeartBeatValue(string tileName, [FromBody] RecordHeartBeatValueDto hearbeatValue)
         {
-            return TileDtoMapper.Map(await _tileService.GetRecentDataAsync<HeartBeatData>(tileName, TileType.HeartBeat, amountOfData ?? AmountOfDate, cancellationToken));
+            await _heartBeatService.RecordValue(new TileId(tileName, TileType.HeartBeat), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
         }
 
-        [HttpGet("heartbeat/{tileName}/since")]
-        [BearerReadAuthorization]
-        public async Task<IList<object>> GetHeartbeatDataSince(string tileName, [FromQuery][Required][Range(1, 30)] int days, CancellationToken cancellationToken)
+        [HttpPost("heartbeat/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordHeartBeatValueStorageId(string storageId, [FromBody] RecordHeartBeatValueDto hearbeatValue)
         {
-            return TileDtoMapper.Map(await _tileService.GetDataSinceAsync<HeartBeatData>(tileName, TileType.HeartBeat, _dateTimeOffsetProvider.Now.AddDays(-days), cancellationToken));
+            await _heartBeatService.RecordValue(new StorageId(storageId), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
+        }
+
+        [HttpPost("dual/{tileName}/record")]
+        [BearerAuthorization]
+        public async Task RecordDualValue(string tileName, [FromBody] RecordDualValue dualValue)
+        {
+            await _dualService.RecordValue(new TileId(tileName, TileType.Dual), dualValue.Primary, dualValue.Secondary);
+        }
+
+        [HttpPost("dual/id/{storageId}/record")]
+        [BearerAuthorization]
+        public async Task RecordDualValueStorageId(string storageId, [FromBody] RecordDualValue dualValue)
+        {
+            await _dualService.RecordValue(new StorageId(storageId), dualValue.Primary, dualValue.Secondary);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
-using TilesDashboard.Core.Configuration;
+using TilesDashboard.V2.Core.Configuration;
 
 namespace TilesDashboard.WebApi.Configuration
 {

@@ -6,6 +6,6 @@ namespace TilesDashboard.WebApi.PluginSystem
 {
     public interface IDataPluginLoader
     {
-        Task<IList<IDataPlugin>> LoadDataProviderPluginsAsync(string rootPath);
+        Task<IList<IDataPlugin>> LoadDataPluginsAsync(string rootPath);
     }
 }

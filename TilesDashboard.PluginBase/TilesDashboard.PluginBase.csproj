@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <CodeAnalysisRuleSet>..\TilesDashboard.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TilesDashboard.Contract\TilesDashboard.Contract.csproj" />
-    <ProjectReference Include="..\TilesDashboard.Core.Type\TilesDashboard.Core.Type.csproj" />
+    <ProjectReference Include="..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
   </ItemGroup>
 
 </Project>

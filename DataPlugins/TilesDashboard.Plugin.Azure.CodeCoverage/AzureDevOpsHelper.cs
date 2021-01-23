@@ -21,12 +21,12 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
 
         private string _personalAccessToken;
 
-        public AzureDevOpsHelper(IPluginConfigProvider pluginConfigProvider, string rootConfig)
+        public AzureDevOpsHelper(string organization, string project, string buildDefinition, string personalAccessToken)
         {
-            _organization = pluginConfigProvider.GetConfigEntry($"{rootConfig}:Organization");
-            _project = pluginConfigProvider.GetConfigEntry($"{rootConfig}:Project");
-            _personalAccessToken = pluginConfigProvider.GetConfigEntry($"{rootConfig}:PersonalAccessToken");
-            _buildDefinition = pluginConfigProvider.GetConfigEntry($"{rootConfig}:BuildDefinition");
+            _organization = ValidateParameter(organization, nameof(organization));
+            _project = ValidateParameter(project, nameof(project));
+            _buildDefinition = ValidateParameter(buildDefinition, nameof(buildDefinition));
+            _personalAccessToken = ValidateParameter(personalAccessToken, nameof(personalAccessToken));
         }
 
         public async Task<CodeCoverageDto> GetCodeCoverageResultForLastGreenBuildAsync(CancellationToken cancellationToken)
@@ -54,8 +54,12 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
             return JsonSerializer.Deserialize<CodeCoverageDto>(await codeCoverageResponse.Content.ReadAsStringAsync());
         }
 
+        private static string ValidateParameter(string organization, string parameterName)
+        {
+            return string.IsNullOrWhiteSpace(organization) ? throw new ArgumentException($"Config entry '{parameterName}' is empty, please verify plugin configuration.") : organization;
+        }
 
-         private async Task<HttpResponseMessage> GetBuildListHttpResponse(HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
+        private async Task<HttpResponseMessage> GetBuildListHttpResponse(HttpClient httpClient, AuthenticationHeaderValue autheticationHeader, CancellationToken cancellationToken)
         {
             var buildListHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/{_organization}/{_project}/_apis/build/builds?$top=1&definitions={_buildDefinition}&api-version=5.1&resultFilter=succeeded");
             buildListHttpRequest.Headers.Authorization = autheticationHeader;

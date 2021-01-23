@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
@@ -8,31 +9,25 @@ using System.Threading.Tasks;
 using TilesDashboard.Plugin.AzureWebJobHeartBeat.Dto;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
-using TilesDashboard.PluginBase.MetricPlugin;
 
 namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
 {
     public class AzureWebJobHeartBeat : HeartBeatPluginBase
     {
-        private readonly string RootConfig = "TelemetryJobHeartBeat";
+        public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureWebJobHeartBeat)}";
 
-        public AzureWebJobHeartBeat(IPluginConfigProvider pluginConfigProvider) : base(pluginConfigProvider)
-        {
-        }
-
-        public override string TileName { get; } = "Telemetry Job";
-
-        public override string CronSchedule => ConfigProvider.GetConfigEntry($"{RootConfig}:CronSchedule");
-
-        public override async Task<HeartBeatData> GetDataAsync(CancellationToken cancellation = default)
+        public override async Task<HeartBeatData> GetTileValueAsync(IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
         {
             var httpClient = new HttpClient();
             var stopWatch = new Stopwatch();
+            var username = pluginConfiguration["UserName"];
+            var password = pluginConfiguration["Password"];
+            var heartBeatAddress = pluginConfiguration["HeartBeatAddress"];
 
             stopWatch.Start();
             try
             {
-                using var request = CreateHttpRequest();
+                using var request = CreateHttpRequest(username, password, heartBeatAddress);
                 using var response = await httpClient.SendAsync(request, cancellation);
 
                 stopWatch.Stop();
@@ -47,11 +42,11 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
 
                     if (webJobResponse.Status == "Running")
                     {
-                        return new HeartBeatData((int)stopWatch.ElapsedMilliseconds, null, null, Status.OK);
+                        return new HeartBeatData((int)stopWatch.ElapsedMilliseconds, "?", null, Status.OK);
                     }
                 }
 
-                return HeartBeatData.NoResponse();;
+                return HeartBeatData.NoResponse(); ;
             }
             catch (Exception ex)
             {
@@ -59,11 +54,9 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
             }
         }
 
-        private HttpRequestMessage CreateHttpRequest()
+        private HttpRequestMessage CreateHttpRequest(string username, string password, string heartbeatAddress)
         {
-            var username = ConfigProvider.GetConfigEntry($"{RootConfig}:UserName");
-            var password = ConfigProvider.GetConfigEntry($"{RootConfig}:Password");
-            var request = new HttpRequestMessage(HttpMethod.Get, ConfigProvider.GetConfigEntry($"{RootConfig}:HeartBeatAddress"));
+            var request = new HttpRequestMessage(HttpMethod.Get, heartbeatAddress);
 
             request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.ASCII.GetBytes(username + ":" + password))}");
 

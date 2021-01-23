@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Core.Type;
+using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.PluginBase.Notification
 {
@@ -15,7 +15,7 @@ namespace TilesDashboard.PluginBase.Notification
         /// <inheritdoc/>
         public abstract TileId TileId { get; }
 
-         /// <summary>
+        /// <summary>
         /// Give access to config entries. Config Provider will be injected by PluginSystem.
         /// </summary>
         public IPluginConfigProvider ConfigProvider { get; }
@@ -25,6 +25,6 @@ namespace TilesDashboard.PluginBase.Notification
             return Task.CompletedTask;
         }
 
-        public abstract Task PerformNotificationAsync(object newData,CancellationToken cancellationToken);
+        public abstract Task PerformNotificationAsync(object newData, CancellationToken cancellationToken);
     }
 }

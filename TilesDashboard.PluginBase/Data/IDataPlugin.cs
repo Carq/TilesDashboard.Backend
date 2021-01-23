@@ -1,12 +1,13 @@
-﻿namespace TilesDashboard.PluginBase.Data
-{
-    public interface IDataPlugin : IBasePlugin
-    {
-        /// <summary>
-        /// Schedule execution of GetDataAsync(). https://crontab.cronhub.io/
-        /// </summary>
-        public abstract string CronSchedule { get; }
+﻿using TilesDashboard.V2.Core.Entities.Enums;
 
-        PluginType IBasePlugin.Type => PluginType.Data;
+namespace TilesDashboard.PluginBase.Data
+{
+    public interface IDataPlugin
+    {
+        abstract string UniquePluginName { get; }
+
+        TileType TileType { get; }
+
+        PluginType PluginType => PluginType.Data;
     }
 }

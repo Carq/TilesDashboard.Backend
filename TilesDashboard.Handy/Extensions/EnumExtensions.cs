@@ -10,16 +10,27 @@ namespace TilesDashboard.Handy.Extensions
             return (TDesc)Enum.Parse(typeof(TDesc), enumToConvert.ToString(), true);
         }
 
-        public static bool Is<TEnum>(this TEnum enumToConvert, Enum toCompare)
-          where TEnum : Enum
+        public static TDesc Convert<TDesc>(this string enumAsString)
+           where TDesc : Enum
         {
-            return Equals(enumToConvert.ToString(), toCompare.ToString());
+            return (TDesc)Enum.Parse(typeof(TDesc), enumAsString, true);
         }
 
-        public static bool IsNot<TEnum>(this TEnum enumToConvert, Enum toCompare)
+        public static bool Is<TEnum>(this TEnum enumToCheck, Enum toCompare)
+          where TEnum : Enum
+        {
+            return Equals(enumToCheck.ToString(), toCompare.ToString());
+        }
+
+        public static bool IsUndefined(this Enum enumToCheck)
+        {
+            return Equals(enumToCheck.ToString(), "Undefined");
+        }
+
+        public static bool IsNot<TEnum>(this TEnum enumToCheck, Enum toCompare)
             where TEnum : Enum
         {
-            return !enumToConvert.Is(toCompare);
+            return !enumToCheck.Is(toCompare);
         }
     }
 }

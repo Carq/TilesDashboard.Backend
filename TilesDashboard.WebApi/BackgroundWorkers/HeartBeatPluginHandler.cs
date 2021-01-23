@@ -1,11 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
-using TilesDashboard.PluginBase.MetricPlugin;
+using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
+using TilesDashboard.PluginSystem.Entities;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Services;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -21,13 +23,13 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _heartBeatService = heartBeatService;
         }
 
-        public async Task<Result> HandlePlugin(HeartBeatPluginBase plugin, CancellationToken cancellationToken)
+        public async Task<Result> HandlePlugin(HeartBeatPluginBase plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
-            var data = await plugin.GetDataAsync();
-            _logger.LogDebug($"Heartbeat plugin: \"{plugin}\"");
+            var data = await plugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
+            _logger.LogDebug($"Heartbeat plugin: \"{plugin.UniquePluginName}\", Value: {data.Value}");
             if (data.Status.Is(Status.OK))
             {
-                await _heartBeatService.RecordDataAsync(plugin.TileName, data.Value, data.AppVersion, data.AdditionalInfo, cancellationToken);
+                await _heartBeatService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Value, data.AppVersion, data.AdditionalInfo);
             }
 
             return data;

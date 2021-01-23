@@ -1,11 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.IntegerPlugin;
+using TilesDashboard.PluginSystem.Entities;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Services;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -13,21 +15,21 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
     {
         private readonly ILogger<IntegerPluginHandler> _logger;
 
-        private readonly IIntegerTileService _integerTileService;
+        private readonly IIntegerService _integerService;
 
-        public IntegerPluginHandler(ILogger<IntegerPluginHandler> logger, IIntegerTileService integerTileService)
+        public IntegerPluginHandler(ILogger<IntegerPluginHandler> logger, IIntegerService integerService)
         {
             _logger = logger;
-            _integerTileService = integerTileService;
+            _integerService = integerService;
         }
 
-        public async Task<Result> HandlePlugin(IntegerPluginBase integerPlugin, CancellationToken stoppingToken)
+        public async Task<Result> HandlePlugin(IntegerPluginBase plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
-            var data = await integerPlugin.GetDataAsync();
-            _logger.LogDebug($"Integer plugin: \"{integerPlugin.TileName}\", Value: {data.Value}");
+            var data = await plugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
+            _logger.LogDebug($"Integer plugin: \"{plugin.UniquePluginName}\", Value: {data.Value}");
             if (data.Status.Is(Status.OK))
             {
-                await _integerTileService.RecordIntegerDataAsync(integerPlugin.TileName, data.Value, stoppingToken);
+                await _integerService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Value);
             }
 
             return data;

@@ -1,12 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.Core.Domain.Services;
-using TilesDashboard.Core.Domain.ValueObjects;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.WeatherPlugin;
+using TilesDashboard.PluginSystem.Entities;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Services;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -14,21 +15,21 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
     {
         private readonly ILogger<WeatherPluginHandler> _logger;
 
-        private readonly IWeatherServices _weatherServices;
+        private readonly IWeatherService _weatherService;
 
-        public WeatherPluginHandler(ILogger<WeatherPluginHandler> logger, IWeatherServices weatherServices)
+        public WeatherPluginHandler(ILogger<WeatherPluginHandler> logger, IWeatherService weatherService)
         {
             _logger = logger;
-            _weatherServices = weatherServices;
+            _weatherService = weatherService;
         }
 
-        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, CancellationToken stoppingToken)
+        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
-            var data = await weatherPlugin.GetDataAsync();
-            _logger.LogDebug($"Weather plugin: \"{weatherPlugin.TileName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
+            var data = await weatherPlugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
             if (data.Status.Is(Status.OK))
             {
-                await _weatherServices.RecordWeatherDataAsync(weatherPlugin.TileName, new Temperature(data.Temperature), data.Huminidy.HasValue ? new Percentage(data.Huminidy.Value) : null, null, stoppingToken);
+                _logger.LogDebug($"Weather plugin: \"{weatherPlugin.UniquePluginName}\", Temperature: {data.Temperature}, Huminidy: {data.Huminidy}%");
+                await _weatherService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Temperature, data.Huminidy ?? 0);
             }
 
             return data;

@@ -1,11 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.Core.Domain.Services;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
+using TilesDashboard.PluginSystem.Entities;
+using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Services;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -21,13 +23,13 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _metricService = metricService;
         }
 
-        public async Task<Result> HandlePlugin(MetricPluginBase plugin, CancellationToken cancellationToken)
+        public async Task<Result> HandlePlugin(MetricPluginBase plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
-            var data = await plugin.GetDataAsync();
-            _logger.LogDebug($"Metric plugin: \"{plugin.TileName}\", Value: {data.Value}");
+            var data = await plugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
             if (data.Status.Is(Status.OK))
             {
-                await _metricService.RecordMetricDataAsync(plugin.TileName, data.MetricType, data.Value, cancellationToken);
+                _logger.LogDebug($"Metric plugin: \"{plugin.UniquePluginName}\", Value: {data.Value}, Value Type: {data.MetricType}");
+                await _metricService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.MetricType, data.Value);
             }
 
             return data;

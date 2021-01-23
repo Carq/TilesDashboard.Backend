@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="4.7.1" />
+    <PackageReference Include="System.Text.Json" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\TilesDashboard.PluginBase\TilesDashboard.PluginBase.csproj" />
+    <ProjectReference Include="..\..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
   </ItemGroup>
 
 </Project>

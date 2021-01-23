@@ -8,10 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using TilesDashboard.Core.Configuration;
+using TilesDashboard.PluginSystem.Configuration;
+using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Configuration;
 using TilesDashboard.WebApi.Hubs;
+using TilesDashboard.WebApi.Middlewares;
 using TilesDashboard.WebApi.StartupConfig;
 
 namespace TilesDashboard.WebApi
@@ -45,7 +47,8 @@ namespace TilesDashboard.WebApi
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule<ApiModule>();
-            builder.RegisterModule<CoreModule>();
+            builder.RegisterModule<CoreV2Module>();
+            builder.RegisterModule<PluginSystemModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +59,7 @@ namespace TilesDashboard.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
             app.UseRouting();
             app.UseCors(Configuration);
             app.UseAuthorization();
