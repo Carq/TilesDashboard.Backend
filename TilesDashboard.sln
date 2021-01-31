@@ -49,7 +49,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PluginSystem", "PluginSyste
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.PluginSystem", "TilesDashboard.PluginSystem\TilesDashboard.PluginSystem.csproj", "{737094F1-AA1C-4E68-86AB-632E6065216B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.Plugin.WeatherSlackNotification", "NotificationPlugins\TilesDashboard.Plugin.WeatherSlackNotification\TilesDashboard.Plugin.WeatherSlackNotification.csproj", "{EA5A203A-8665-471A-A049-6B2AFBDB65D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.WeatherSlackNotification", "NotificationPlugins\TilesDashboard.Plugin.WeatherSlackNotification\TilesDashboard.Plugin.WeatherSlackNotification.csproj", "{EA5A203A-8665-471A-A049-6B2AFBDB65D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.Plugin.ApartmentWeatherNotification", "NotificationPlugins\TilesDashboard.Plugin.ApartmentWeatherNotification\TilesDashboard.Plugin.ApartmentWeatherNotification.csproj", "{485DA6B3-DAB6-4FB4-B571-705730C927FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +139,10 @@ Global
 		{EA5A203A-8665-471A-A049-6B2AFBDB65D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA5A203A-8665-471A-A049-6B2AFBDB65D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA5A203A-8665-471A-A049-6B2AFBDB65D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{485DA6B3-DAB6-4FB4-B571-705730C927FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{485DA6B3-DAB6-4FB4-B571-705730C927FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{485DA6B3-DAB6-4FB4-B571-705730C927FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{485DA6B3-DAB6-4FB4-B571-705730C927FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +163,7 @@ Global
 		{96B070A7-3D1F-4378-948D-9B67D7CB8B16} = {6E62EA5E-2F1A-4973-9A3E-A3E861C5A2CA}
 		{737094F1-AA1C-4E68-86AB-632E6065216B} = {73237407-855A-4022-91AF-753DE7E378ED}
 		{EA5A203A-8665-471A-A049-6B2AFBDB65D3} = {91713885-FD19-409C-A9F3-918DBB48829D}
+		{485DA6B3-DAB6-4FB4-B571-705730C927FC} = {91713885-FD19-409C-A9F3-918DBB48829D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D5F2A81D-3D93-48C4-A41D-F37B94675B12}

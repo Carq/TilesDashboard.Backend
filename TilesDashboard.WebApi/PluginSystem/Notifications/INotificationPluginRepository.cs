@@ -5,6 +5,6 @@ namespace TilesDashboard.WebApi.PluginSystem.Notifications
 {
     public interface INotificationPluginRepository
     {
-        IList<INotificationPlugin> FindNotificationPlugins(IList<string> pluginNames);
+        IList<INotificationPlugin> FindNotificationPlugins();
     }
 }

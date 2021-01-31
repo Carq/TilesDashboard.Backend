@@ -14,9 +14,9 @@ namespace TilesDashboard.WebApi.PluginSystem.Notifications
             _notificationPluginContext = notificationPluginContext ?? throw new ArgumentNullException(nameof(notificationPluginContext));
         }
 
-        public IList<INotificationPlugin> FindNotificationPlugins(IList<string> pluginNames)
+        public IList<INotificationPlugin> FindNotificationPlugins()
         {
-            return _notificationPluginContext.NotificationPlugins.Where(x => pluginNames.Contains(x.UniquePluginName)).ToList();
+            return _notificationPluginContext.NotificationPlugins.ToList();
         }
     }
 }

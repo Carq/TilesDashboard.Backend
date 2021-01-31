@@ -177,7 +177,7 @@ namespace TilesDashboard.V2.Core.Repositories
                 new UpdateOptions() { IsUpsert = true, },
                 cancellationToken);
 
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileId, tileValue), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileId, tileStorageId, tileValue), cancellationToken);
         }
     }
 }

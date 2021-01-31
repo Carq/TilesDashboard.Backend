@@ -16,6 +16,8 @@ namespace TilesDashboard.PluginSystem.Repositories
     {
         private readonly IPluginSystemStorage _pluginSystemStorage;
 
+        private IList<PluginConfiguration> _notificationPluginsCache;
+
         private readonly PluginTileConfig _disabledTemplateOfPluginTileConfig =
                                                 new PluginTileConfig(
                                                     new StorageId("5fa824caee570237cc96b0f9"),
@@ -65,7 +67,12 @@ namespace TilesDashboard.PluginSystem.Repositories
 
         public async Task<IList<PluginConfiguration>> GetEnabledDataPluginsConfiguration(CancellationToken cancellationToken)
         {
-            return await _pluginSystemStorage.PluginsConfigurations.Find(x => x.Disable == false && x.PluginType == PluginType.Data).ToListAsync(cancellationToken);
+            if (_notificationPluginsCache == null)
+            {
+                _notificationPluginsCache = await _pluginSystemStorage.PluginsConfigurations.Find(x => x.Disable == false && x.PluginType == PluginType.Data).ToListAsync(cancellationToken);
+            }
+
+            return _notificationPluginsCache;
         }
 
         public async Task<bool> IsAnyPluginConfigurationExist(string pluginName, CancellationToken cancellationToken)

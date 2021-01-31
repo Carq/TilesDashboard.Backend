@@ -5,7 +5,8 @@
     <CodeAnalysisRuleSet>..\TilesDashboard.ruleset</CodeAnalysisRuleSet>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <OutputType>Exe</OutputType>
-    <AssemblyName>z</AssemblyName>
+    <AssemblyName>TilesDashboard</AssemblyName>
+    <UserSecretsId>ff347545-b263-4f3e-9a42-7a645747f3f7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
