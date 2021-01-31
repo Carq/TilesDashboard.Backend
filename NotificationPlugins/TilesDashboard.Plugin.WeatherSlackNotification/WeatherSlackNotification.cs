@@ -7,24 +7,27 @@ using System.Threading.Tasks;
 using TilesDashboard.PluginBase.Notification;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
-using TilesDashboard.V2.Core.Entities.Metric;
+using TilesDashboard.V2.Core.Entities.Weather;
 
-namespace TileDashboard.Plugin.CodeCoverageSlackNotification
+namespace TilesDashboard.Plugin.WeatherSlackNotification
 {
-    public class CodeCoverageSlackNotificationPlugin : NotificationPluginBase<PercentageMetricValue>
+    public class WeatherSlackNotification : NotificationPluginBase<WeatherValue>
     {
-        public override string UniquePluginName => $"TileCorePlugins.{nameof(CodeCoverageSlackNotificationPlugin)}";
+        public override string UniquePluginName => $"TileCorePlugins.{nameof(WeatherSlackNotification)}";
 
-        public override TileType TileType => TileType.Metric;
+        public override TileType TileType => TileType.Weather;
 
-        public override async Task PerformNotificationAsync(TileId tileId, PercentageMetricValue newData, IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
+        public override async Task PerformNotificationAsync(TileId tileId, WeatherValue newData, IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
         {
             if (newData == null || !pluginConfiguration.TryGetValue("SlackHook", out var slackHook) || string.IsNullOrWhiteSpace(slackHook))
             {
                 return;
             }
 
-            await SendMessage($"New value for {tileId}: {newData.Value}%", slackHook, cancellation);
+            if (newData.Temperature > 22.5m)
+            {
+                await SendMessage($"New value for {tileId}: {newData.Temperature}°C", slackHook, cancellation);
+            }
         }
 
         private async Task SendMessage(string message, string slackHook, CancellationToken cancellationToken)

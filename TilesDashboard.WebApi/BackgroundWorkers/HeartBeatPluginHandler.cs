@@ -23,7 +23,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _heartBeatService = heartBeatService;
         }
 
-        public async Task<Result> HandlePlugin(HeartBeatPluginBase plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
+        public async Task<PluginDataResult> HandlePlugin(HeartBeatPluginBase plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
             var data = await plugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
             _logger.LogDebug($"Heartbeat plugin: \"{plugin.UniquePluginName}\", Value: {data.Value}");

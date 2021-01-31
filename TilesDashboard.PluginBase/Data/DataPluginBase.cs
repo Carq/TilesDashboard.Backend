@@ -6,7 +6,7 @@ using TilesDashboard.V2.Core.Entities.Enums;
 namespace TilesDashboard.PluginBase.Data
 {
     public abstract class DataPluginBase<TResult> : IDataPlugin
-        where TResult : Result
+        where TResult : PluginDataResult
     {
         /// <summary>
         /// Unique Plugin Name which is used to get plugin config from storage.

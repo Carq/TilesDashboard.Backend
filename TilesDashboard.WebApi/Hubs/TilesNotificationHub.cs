@@ -18,7 +18,7 @@ namespace TilesDashboard.WebApi.Hubs
 
         public async Task ExecuteAsync(NewDataEvent eventBody, CancellationToken cancellationToken)
         {
-            await _context.Clients.All.SendAsync("NewData", eventBody.TileId.Name, eventBody.TileId.Type.ToString(), eventBody.NewValue, cancellationToken);
+            await _context.Clients.All.SendAsync("NewData", eventBody.TileId.Name, eventBody.TileId.Type.ToString(), eventBody.TileValue, cancellationToken);
         }
     }
 }

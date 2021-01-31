@@ -1,6 +1,6 @@
 ﻿namespace TilesDashboard.PluginBase.Data.HeartBeatPlugin
 {
-    public class HeartBeatData : Result
+    public class HeartBeatData : PluginDataResult
     {
         public HeartBeatData(Status status)
             : base(status)

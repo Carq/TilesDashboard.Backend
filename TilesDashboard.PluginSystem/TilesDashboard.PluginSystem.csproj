@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TilesDashboard.PluginBase\TilesDashboard.PluginBase.csproj" />
     <ProjectReference Include="..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
   </ItemGroup>
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.PluginBase.Data;
 using TilesDashboard.WebApi.PluginSystem.Loaders;
 
 namespace TilesDashboard.PluginBase.Notification
@@ -24,9 +23,9 @@ namespace TilesDashboard.PluginBase.Notification
             _logger.LogInformation("Loading Notification plugins...");
 
             var pluginPaths = GetPluginsPaths(rootPath, _pluginFolder);
-            var loadedPlugins = LoadDataPluginsFromDlls<IDataPlugin>(pluginPaths);
+            var loadedPlugins = LoadDataPluginsFromDlls<INotificationPlugin>(pluginPaths);
 
-            return Task.FromResult(loadedPlugins as IList<INotificationPlugin>);
+            return Task.FromResult(loadedPlugins);
         }
     }
 }

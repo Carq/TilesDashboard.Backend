@@ -1,6 +1,6 @@
 ﻿namespace TilesDashboard.PluginBase.Data.IntegerPlugin
 {
-    public class IntegerData : Result
+    public class IntegerData : PluginDataResult
     {
         public IntegerData(Status status) : base(status)
         {

@@ -1,30 +1,24 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.V2.Core.Entities;
+using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.PluginBase.Notification
 {
-    public abstract class NotificationPluginBase : INotificationPlugin
+    public abstract class NotificationPluginBase<TTileData> : INotificationPlugin
+        where TTileData : TileValue
     {
-        public NotificationPluginBase(IPluginConfigProvider configProvider)
-        {
-            ConfigProvider = configProvider ?? throw new ArgumentNullException(nameof(configProvider));
-        }
-
-        /// <inheritdoc/>
-        public abstract TileId TileId { get; }
+         /// <summary>
+        /// Unique Plugin Name which is used to get plugin config from storage.
+        /// </summary>
+        public abstract string UniquePluginName { get; }
 
         /// <summary>
-        /// Give access to config entries. Config Provider will be injected by PluginSystem.
+        /// Tile type.
         /// </summary>
-        public IPluginConfigProvider ConfigProvider { get; }
+        public abstract TileType TileType { get; }
 
-        public virtual Task InitializeAsync()
-        {
-            return Task.CompletedTask;
-        }
-
-        public abstract Task PerformNotificationAsync(object newData, CancellationToken cancellationToken);
+        public abstract Task PerformNotificationAsync(TileId tileId, TTileData newData, IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default);
     }
 }

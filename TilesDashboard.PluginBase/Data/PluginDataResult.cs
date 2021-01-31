@@ -3,9 +3,9 @@
     /// <summary>
     /// Base class which represents output of each plugin.
     /// </summary>
-    public class Result
+    public class PluginDataResult
     {
-        protected Result(Status status)
+        protected PluginDataResult(Status status)
         {
             Status = status;
         }
@@ -19,7 +19,7 @@
 
         public string ErrorMessage { get; private set; }
 
-        public Result WithErrorMessage(string errorMessage)
+        public PluginDataResult WithErrorMessage(string errorMessage)
         {
             ErrorMessage = errorMessage;
             return this;

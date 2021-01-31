@@ -1,6 +1,6 @@
 ﻿namespace TilesDashboard.PluginBase.Data.WeatherPlugin
 {
-    public class WeatherData : Result
+    public class WeatherData : PluginDataResult
     {
         public WeatherData(decimal temperature, decimal huminidy, Status status)
             : base(status)

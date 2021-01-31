@@ -67,7 +67,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _logger.LogInformation("Tiles background worker started.");
             var loadedPlugins = await _pluginLoader.LoadDataPluginsAsync(AppDomain.CurrentDomain.BaseDirectory);
             await InitializePluginsStorage(loadedPlugins, cancellationToken);
-            var pluginsConfigurations = await _pluginConfigRepository.GetEnabledPluginsConfiguration(cancellationToken);
+            var pluginsConfigurations = await _pluginConfigRepository.GetEnabledDataPluginsConfiguration(cancellationToken);
 
             foreach (var plugin in loadedPlugins)
             {
@@ -90,7 +90,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             {
                 if (!await _pluginConfigRepository.IsAnyPluginConfigurationExist(plugin.UniquePluginName, cancellationToken))
                 {
-                    await _pluginConfigRepository.CreatePluginConfigurationWithTempleteEntry(plugin.UniquePluginName, plugin.TileType, cancellationToken);
+                    await _pluginConfigRepository.CreatePluginConfigurationWithTempleteEntry(plugin.UniquePluginName, plugin.TileType, plugin.PluginType, cancellationToken);
                 }
             }
         }
@@ -126,7 +126,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                     {
                         _logger.LogDebug($"Execute GetTileValueAsync method for plugin: \"{plugin.UniquePluginName}\" - \"{plugin.TileType}\"...");
 
-                        Result result = null;
+                        PluginDataResult result = null;
 
                         switch (plugin.TileType)
                         {

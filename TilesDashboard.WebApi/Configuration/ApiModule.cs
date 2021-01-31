@@ -54,7 +54,7 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<NotificationPluginLoader>().As<INotificationPluginLoader>();
             builder.RegisterType<NotificationPluginRepository>().As<INotificationPluginRepository>();
             builder.RegisterType<NotificationPluginContext>().As<INotificationPluginContext>().SingleInstance();
-            builder.RegisterType<PluginNotificationEventHandler>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
+            builder.RegisterType<PluginNotificationHandler>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
         }
 
         private static void RegisterDataPluginStuff(ContainerBuilder builder)

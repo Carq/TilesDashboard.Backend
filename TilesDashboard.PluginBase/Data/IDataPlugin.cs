@@ -1,13 +1,7 @@
-﻿using TilesDashboard.V2.Core.Entities.Enums;
-
-namespace TilesDashboard.PluginBase.Data
+﻿namespace TilesDashboard.PluginBase.Data
 {
-    public interface IDataPlugin
+    public interface IDataPlugin : IPlugin
     {
-        abstract string UniquePluginName { get; }
-
-        TileType TileType { get; }
-
-        PluginType PluginType => PluginType.Data;
+        PluginType IPlugin.PluginType => PluginType.Data;
     }
 }

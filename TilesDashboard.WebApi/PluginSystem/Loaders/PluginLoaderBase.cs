@@ -38,12 +38,12 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
         }
 
         protected IList<TPluginType> LoadDataPluginsFromDlls<TPluginType>(string[] pluginPaths)
-           where TPluginType : class, IDataPlugin
+           where TPluginType : class, IPlugin
         {
             var loadedPlugins = new List<TPluginType>();
             foreach (var pluginPath in pluginPaths)
             {
-                _logger.LogInformation($"Loading Data plugins from {pluginPath}.");
+                _logger.LogInformation($"Loading plugins from {pluginPath}.");
                 PluginLoadContext loadContext = new PluginLoadContext(pluginPath);
                 var pluginAssembly = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginPath)));
                 loadedPlugins.AddRange(LoadDataPluginsFromAssembly<TPluginType>(pluginAssembly));
@@ -55,7 +55,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
         protected IList<TPluginType> LoadDataPluginsFromAssembly<TPluginType>(Assembly assembly)
-            where TPluginType : class, IDataPlugin
+            where TPluginType : class, IPlugin
         {
             var plugins = new List<TPluginType>();
             foreach (Type type in assembly.GetTypes())

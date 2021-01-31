@@ -23,7 +23,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _weatherService = weatherService;
         }
 
-        public async Task<Result> HandlePlugin(WeatherPluginBase weatherPlugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
+        public async Task<PluginDataResult> HandlePlugin(WeatherPluginBase weatherPlugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
             var data = await weatherPlugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
             if (data.Status.Is(Status.OK))
