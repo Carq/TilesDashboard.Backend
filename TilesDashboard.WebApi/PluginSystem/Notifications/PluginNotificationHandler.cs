@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.PluginSystem.Repositories;
+using TilesDashboard.V2.Core.Entities.Metric;
 using TilesDashboard.V2.Core.Repositories;
 
 namespace TilesDashboard.WebApi.PluginSystem.Notifications
@@ -38,6 +41,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Notifications
             }
 
             var notificationPluginsConfigurations = await _pluginConfigRepository.GetEnabledNotificationPluginsConfiguration(eventBody.TileId.Type, cancellationToken);
+
             foreach (var plugin in notificationPlugins.Where(x => x.TileType == eventBody.TileId.Type))
             {
                 var notificationConfigurationsForPlugin = notificationPluginsConfigurations.SingleOrDefault(x => x.PluginName == plugin.UniquePluginName).NotificationPluginTileConfigs;
@@ -46,10 +50,19 @@ namespace TilesDashboard.WebApi.PluginSystem.Notifications
                 {
                     try
                     {
+                        // TODO: improve this
+                        var metricTile = await _tileRepository.GetTile<MetricTile>(eventBody.TileId);
+                        var configuration = metricTile.GetMetricConfiguration();
+
+                        var mergedConfiguration = pluginTileConfiguration.Configuration;
+                        mergedConfiguration.Add("Limit", configuration.Limit.ToString(CultureInfo.InvariantCulture));
+                        mergedConfiguration.Add("Wish", configuration.Wish?.ToString(CultureInfo.InvariantCulture));
+                        mergedConfiguration.Add("Goal", configuration.Goal?.ToString(CultureInfo.InvariantCulture));
+
                         await ((dynamic)plugin).PerformNotificationAsync(
                             eventBody.TileId,
                             (dynamic)eventBody.TileValue,
-                            pluginTileConfiguration.Configuration,
+                            mergedConfiguration,
                             cancellationToken);
                     }
                     catch (Exception ex)
