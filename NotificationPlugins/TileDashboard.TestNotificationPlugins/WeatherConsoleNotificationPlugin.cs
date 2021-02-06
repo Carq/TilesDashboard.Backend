@@ -15,7 +15,7 @@ namespace TileDashboard.TestNotificationPlugins
 
         public override TileType TileType => TileType.Weather;
 
-        public override Task PerformNotificationAsync(TileId tileId, WeatherValue newData, IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
+        public override Task PerformNotificationAsync(TileId tileId, WeatherValue newData, IReadOnlyDictionary<string, string> pluginConfiguration, IReadOnlyDictionary<string, string> tileConfiguration, CancellationToken cancellation = default)
         {
             Console.WriteLine($"New notification from {tileId}");
             return Task.CompletedTask;

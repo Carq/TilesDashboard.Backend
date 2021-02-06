@@ -23,7 +23,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             _integerService = integerService;
         }
 
-        public async Task<PluginDataResult> HandlePlugin(IntegerPluginBase plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
+        public async Task<PluginDataResult> HandlePlugin(IntegerDataPlugin plugin, PluginTileConfig pluginConfigForTile, CancellationToken cancellationToken)
         {
             var data = await plugin.GetTileValueAsync(pluginConfigForTile.Configuration, cancellationToken);
             _logger.LogDebug($"Integer plugin: \"{plugin.UniquePluginName}\", Value: {data.Value}");

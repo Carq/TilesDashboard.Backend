@@ -24,7 +24,6 @@ namespace TilesDashboard.PluginBase.Notification
 
             var pluginPaths = GetPluginsPaths(rootPath, _pluginFolder);
             var loadedPlugins = LoadDataPluginsFromDlls<INotificationPlugin>(pluginPaths);
-
             return Task.FromResult(loadedPlugins);
         }
     }

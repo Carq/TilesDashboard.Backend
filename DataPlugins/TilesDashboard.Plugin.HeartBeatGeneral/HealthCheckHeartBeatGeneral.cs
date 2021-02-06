@@ -11,7 +11,7 @@ using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
 
 namespace TilesDashboard.Plugin.HeartBeatGeneral
 {
-    public class HealthCheckHeartBeatGeneral : HeartBeatPluginBase
+    public class HealthCheckHeartBeatGeneral : HeartBeatDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(HealthCheckHeartBeatGeneral)}";
 

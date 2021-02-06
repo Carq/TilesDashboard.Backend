@@ -11,13 +11,13 @@ using TilesDashboard.V2.Core.Entities.Weather;
 
 namespace TilesDashboard.Plugin.WeatherSlackNotification
 {
-    public class WeatherSlackNotification : NotificationPluginBase<WeatherValue>
+    public class WeatherSlackNotification : WeatherNotificationPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(WeatherSlackNotification)}";
 
         public override TileType TileType => TileType.Weather;
 
-        public override async Task PerformNotificationAsync(TileId tileId, WeatherValue newData, IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
+        public override async Task PerformNotificationAsync(TileId tileId, WeatherValue newData, IReadOnlyDictionary<string, string> pluginConfiguration, IReadOnlyDictionary<string, string> tileConfiguration, CancellationToken cancellation = default)
         {
             if (newData == null || !pluginConfiguration.TryGetValue("SlackHook", out var slackHook) || string.IsNullOrWhiteSpace(slackHook))
             {

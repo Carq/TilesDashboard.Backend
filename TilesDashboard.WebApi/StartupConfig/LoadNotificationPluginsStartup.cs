@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using TilesDashboard.PluginBase.Notification;
 using TilesDashboard.PluginSystem.Repositories;
+using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.WebApi.PluginSystem.Loaders;
 using TilesDashboard.WebApi.PluginSystem.Notifications;
 

@@ -135,15 +135,15 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                                 result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
                             case TileType.Metric:
-                                var metricPlugin = (MetricPluginBase)plugin;
+                                var metricPlugin = (MetricDataPlugin)plugin;
                                 result = await _metricPluginHandler.HandlePlugin(metricPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
                             case TileType.Integer:
-                                var integerPlugin = (IntegerPluginBase)plugin;
+                                var integerPlugin = (IntegerDataPlugin)plugin;
                                 result = await _integerPluginHandler.HandlePlugin(integerPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
                             case TileType.HeartBeat:
-                                var heartBeatPlugin = (HeartBeatPluginBase)plugin;
+                                var heartBeatPlugin = (HeartBeatDataPlugin)plugin;
                                 result = await _heartBeatPluginHandler.HandlePlugin(heartBeatPlugin, pluginConfigurationForTile, cancellationToken);
                                 break;
                             default:

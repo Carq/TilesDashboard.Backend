@@ -12,7 +12,7 @@ using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
 
 namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
 {
-    public class AzureWebJobHeartBeat : HeartBeatPluginBase
+    public class AzureWebJobHeartBeat : HeartBeatDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureWebJobHeartBeat)}";
 

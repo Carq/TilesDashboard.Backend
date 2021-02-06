@@ -9,7 +9,7 @@ using TilesDashboard.V2.Core.Entities.Metric;
 
 namespace TilesDashboard.Plugin.Azure.CodeCoverage
 {
-    public class AzureCodeCoveragePlugin : MetricPluginBase
+    public class AzureCodeCoveragePlugin : MetricDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureCodeCoveragePlugin)}";
 
@@ -24,7 +24,7 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
                                                 pluginConfiguration["PersonalAccessToken"]);
 
                 var codeCoverageDetails = await azureDevOpsHelper.GetCodeCoverageResultForLastGreenBuildAsync(cancellationToken);
-                if (codeCoverageDetails == null)
+                if (codeCoverageDetails == null || codeCoverageDetails.CoverageData.Count == 0)
                 {
                     return MetricData.NoUpdate();
                 }

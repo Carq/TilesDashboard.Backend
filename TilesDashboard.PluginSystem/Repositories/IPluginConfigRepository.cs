@@ -15,6 +15,6 @@ namespace TilesDashboard.PluginSystem.Repositories
         
         Task CreatePluginConfigurationWithTempleteEntry(string uniquePluginName, TileType tileType, PluginType pluginType, CancellationToken cancellationToken);
 
-        Task<IList<PluginConfiguration>> GetEnabledNotificationPluginsConfiguration(TileType type, CancellationToken cancellationToken);
+        Task<IList<PluginConfiguration>> GetNotificationConfigs(TileType type, CancellationToken cancellationToken);
     }
 }

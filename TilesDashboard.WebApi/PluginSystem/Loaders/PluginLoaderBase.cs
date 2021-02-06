@@ -60,7 +60,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
             var plugins = new List<TPluginType>();
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(TPluginType).IsAssignableFrom(type) && !type.IsAbstract)
+                if (IsAssignableToGenericType(type, typeof(TPluginType)) && !type.IsAbstract)
                 {
                     try
                     {
@@ -76,6 +76,28 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
             }
 
             return plugins;
+        }
+
+        private static bool IsAssignableToGenericType(Type givenType, Type genericType)
+        {
+            if (genericType.IsAssignableFrom(givenType))
+            {
+                return true;
+            }
+
+            var interfaceTypes = givenType.GetInterfaces();
+            foreach (var it in interfaceTypes)
+            {
+                if (it.IsGenericType && genericType.IsGenericType && it.GetGenericTypeDefinition() == genericType.GetGenericTypeDefinition())
+                {
+                    var genericArgumentOfGivenType = it.GetGenericArguments()[0];
+                    var genericArgumentOfGenericType = genericType.GetGenericArguments()[0];
+
+                    return genericArgumentOfGenericType.IsAssignableFrom(genericArgumentOfGivenType);
+                }
+            }
+
+            return false;
         }
     }
 }

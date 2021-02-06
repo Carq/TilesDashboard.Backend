@@ -12,17 +12,17 @@ using TilesDashboard.V2.Core.Entities.Metric;
 
 namespace TileDashboard.Plugin.CodeCoverageSlackNotification
 {
-    public class CodeCoverageSlackNotificationPlugin : NotificationPluginBase<PercentageMetricValue>
+    public class CodeCoverageSlackNotificationPlugin : MetricNotificationPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(CodeCoverageSlackNotificationPlugin)}";
 
         public override TileType TileType => TileType.Metric;
 
-        public override async Task PerformNotificationAsync(TileId tileId, PercentageMetricValue newData, IDictionary<string, string> pluginConfiguration, CancellationToken cancellation = default)
+        public override async Task PerformNotificationAsync(TileId tileId, MetricValue newData, IReadOnlyDictionary<string, string> pluginConfiguration, IReadOnlyDictionary<string, string> tileConfiguration, CancellationToken cancellation = default)
         {
-            decimal wish = decimal.Parse(pluginConfiguration["Wish"]);
-            decimal goal = decimal.Parse(pluginConfiguration["Goal"]);
-            decimal limit = decimal.Parse(pluginConfiguration["Limit"]);
+            decimal wish = decimal.Parse(tileConfiguration["Wish"]);
+            decimal goal = decimal.Parse(tileConfiguration["Goal"]);
+            decimal limit = decimal.Parse(tileConfiguration["Limit"]);
 
             if (newData == null || !pluginConfiguration.TryGetValue("SlackHook", out var slackHook) || string.IsNullOrWhiteSpace(slackHook))
             {

@@ -58,7 +58,7 @@ namespace TilesDashboard.PluginSystem.Repositories
             await _pluginSystemStorage.PluginsConfigurations.InsertOneAsync(pluginConfiguration, null, cancellationToken);
         }
 
-        public async Task<IList<PluginConfiguration>> GetEnabledNotificationPluginsConfiguration(TileType tileType, CancellationToken cancellationToken)
+        public async Task<IList<PluginConfiguration>> GetNotificationConfigs(TileType tileType, CancellationToken cancellationToken)
         {
             return await _pluginSystemStorage.PluginsConfigurations
                 .Find(x => x.Disable == false && x.PluginType == PluginType.Notification && x.TileType == tileType)

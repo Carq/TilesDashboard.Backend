@@ -10,7 +10,7 @@ namespace TilesDashboard.V2.Core.Entities
 
         public Group Group { get; private set; }
 
-        protected Dictionary<string, object> TileConfiguration { get; private set; }
+        public Dictionary<string, object> TileConfiguration { get; private set; }
 
         public virtual object GetConfigurationAsObject() => TileConfiguration;
     }

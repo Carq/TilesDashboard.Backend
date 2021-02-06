@@ -29,7 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NotificationPlugis", "Notif
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TileDashboard.TestNotificationPlugins", "NotificationPlugins\TileDashboard.TestNotificationPlugins\TileDashboard.TestNotificationPlugins.csproj", "{32A41934-04AB-4AFC-AA4E-9BC1943441C9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TileDashboard.Plugin.CodeCoverageSlackNotification", "NotificationPlugins\TileDashboard.Plugin.CodeCoverageSlackNotification\TileDashboard.Plugin.CodeCoverageSlackNotification.csproj", "{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.CodeCoverageSlackNotification", "NotificationPlugins\TileDashboard.Plugin.CodeCoverageSlackNotification\TilesDashboard.Plugin.CodeCoverageSlackNotification.csproj", "{D81B8EA3-2046-422B-9F27-9CABC5B87BC3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.AzureWebJobHeartBeat", "DataPlugins\TilesDashboard.Plugin.AzureWebJobHeartBeat\TilesDashboard.Plugin.AzureWebJobHeartBeat.csproj", "{3CF1B913-6C90-4E42-80A0-0BE4941C0441}"
 EndProject
@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.PluginSystem
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.WeatherSlackNotification", "NotificationPlugins\TilesDashboard.Plugin.WeatherSlackNotification\TilesDashboard.Plugin.WeatherSlackNotification.csproj", "{EA5A203A-8665-471A-A049-6B2AFBDB65D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesDashboard.Plugin.ApartmentWeatherNotification", "NotificationPlugins\TilesDashboard.Plugin.ApartmentWeatherNotification\TilesDashboard.Plugin.ApartmentWeatherNotification.csproj", "{485DA6B3-DAB6-4FB4-B571-705730C927FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.ApartmentWeatherNotification", "NotificationPlugins\TilesDashboard.Plugin.ApartmentWeatherNotification\TilesDashboard.Plugin.ApartmentWeatherNotification.csproj", "{485DA6B3-DAB6-4FB4-B571-705730C927FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 
 namespace TilesDashboard.PluginBase.Data.HeartBeatPlugin
 {
-    public abstract class HeartBeatPluginBase : DataPluginBase<HeartBeatData>
+    public abstract class HeartBeatDataPlugin : DataPluginBase<HeartBeatData>
     {
         public override TileType TileType => TileType.HeartBeat;
     }
