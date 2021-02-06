@@ -16,7 +16,7 @@ namespace TilesDashboard.V2.Core.Entities.Metric
             value = Math.Round(value, 2);
             if (value < Min)
             {
-                throw new ArgumentOutOfRangeException($"Money value of metric cannot be less than 0. Given value is {value}.");
+                throw new ArgumentOutOfRangeException($"Time value of metric cannot be less than 0. Given value is {value}.");
             }
 
             return value;

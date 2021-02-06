@@ -10,5 +10,8 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage.Dtos
 
         [JsonPropertyName("startTime")]
         public DateTimeOffset StartTime { get; set; }
+
+        [JsonPropertyName("finishTime")]
+        public DateTimeOffset FinishTime { get; set; }
     }
 }

@@ -54,6 +54,25 @@ namespace TilesDashboard.Plugin.Azure.CodeCoverage
             return JsonSerializer.Deserialize<CodeCoverageDto>(await codeCoverageResponse.Content.ReadAsStringAsync());
         }
 
+        public async Task<BuildListDto> GetGreenBuildsAsync(DateTime from, DateTime to, CancellationToken cancellationToken)
+        {
+            var httpClient = new HttpClient();
+            var autheticationHeader = Basic(_personalAccessToken);
+            var fromString = from.ToString("yyyy-MM-dd");
+            var toString = to.ToString("yyyy-MM-dd");
+
+            var buildListHttpRequest = new HttpRequestMessage(HttpMethod.Get, $"https://dev.azure.com/{_organization}/{_project}/_apis/build/builds?definitions={_buildDefinition}&minTime={fromString}&maxTime={toString}&api-version=5.1&resultFilter=succeeded");
+            buildListHttpRequest.Headers.Authorization = autheticationHeader;
+
+            var respose = await httpClient.SendAsync(buildListHttpRequest, cancellationToken);
+            if (!respose.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Request for Azure Build List has fail, Http Response Code: {respose.StatusCode}.");
+            }
+
+            return JsonSerializer.Deserialize<BuildListDto>(await respose.Content.ReadAsStringAsync());
+        }
+
         private static string ValidateParameter(string organization, string parameterName)
         {
             return string.IsNullOrWhiteSpace(organization) ? throw new ArgumentException($"Config entry '{parameterName}' is empty, please verify plugin configuration.") : organization;

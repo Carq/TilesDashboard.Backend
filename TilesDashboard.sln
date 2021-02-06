@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.OpenW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugins.Terminal", "DataPlugins\TilesDashboard.Plugins.Terminal\TilesDashboard.Plugins.Terminal.csproj", "{F5DE5C07-108A-4FED-9365-58141B4D0B06}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.Azure.CodeCoverage", "DataPlugins\TilesDashboard.Plugin.Azure.CodeCoverage\TilesDashboard.Plugin.Azure.CodeCoverage.csproj", "{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.Azure", "DataPlugins\TilesDashboard.Plugin.Azure.CodeCoverage\TilesDashboard.Plugin.Azure.csproj", "{BCE40E04-34BC-4A34-89F1-1BCFE87CF632}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesDashboard.Plugin.Crypto", "DataPlugins\TilesDashboard.Plugin.Crypto\TilesDashboard.Plugin.Crypto.csproj", "{194D011E-90AA-45CE-9908-61DD0F67FFE5}"
 EndProject
