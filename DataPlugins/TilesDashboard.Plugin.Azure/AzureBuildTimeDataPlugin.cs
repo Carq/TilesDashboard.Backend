@@ -25,8 +25,8 @@ namespace TilesDashboard.Plugin.Azure
                                                 pluginConfiguration["PersonalAccessToken"]);
 
                 var nowDate = DateTime.Now.Date;
-                var fromBeginingOfMonth = new DateTime(nowDate.Year, nowDate.Month, 1);
-                var builds = await azureDevOpsHelper.GetGreenBuildsAsync(fromBeginingOfMonth, nowDate, cancellation);
+                var lastMonth = nowDate.AddMonths(-1);
+                var builds = await azureDevOpsHelper.GetGreenBuildsAsync(lastMonth, nowDate, cancellation);
                 if (builds == null || builds.Count == 0)
                 {
                     return MetricData.NoUpdate();
