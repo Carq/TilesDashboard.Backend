@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.WeatherPlugin;
 
 namespace TilesDashboard.Plugin.OpenWeatherMap

@@ -1,6 +1,4 @@
-﻿using TilesDashboard.PluginBase.Data;
-
-namespace TilesDashboard.PluginBase.Notification
+﻿namespace TilesDashboard.PluginBase.Notification
 {
     public interface INotificationPlugin : IPlugin
     {

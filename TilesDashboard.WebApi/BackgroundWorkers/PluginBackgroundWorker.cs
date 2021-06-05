@@ -9,7 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NCrontab;
 using TilesDashboard.Handy.Tools;
-using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginSystem.Entities;
 using TilesDashboard.PluginSystem.Repositories;

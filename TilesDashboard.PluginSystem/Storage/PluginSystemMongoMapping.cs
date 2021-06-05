@@ -3,7 +3,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginSystem.Entities;
-using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.PluginSystem.Storage

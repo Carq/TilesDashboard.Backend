@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase.Data;
 using TilesDashboard.V2.Core.Entities;
 
 namespace TilesDashboard.PluginBase.Notification

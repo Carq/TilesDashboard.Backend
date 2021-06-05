@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.IntegerPlugin;
 using TilesDashboard.PluginSystem.Entities;

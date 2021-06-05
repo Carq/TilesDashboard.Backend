@@ -1,4 +1,4 @@
-﻿namespace TileDashboard.Plugin.CodeCoverageSlackNotification
+﻿namespace TilesDashboard.Plugin.CodeCoverageSlackNotification
 {
     public enum MessageMood
     {

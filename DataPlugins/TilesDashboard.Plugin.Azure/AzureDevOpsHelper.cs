@@ -6,10 +6,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Plugin.Azure.CodeCoverage.Dtos;
-using TilesDashboard.PluginBase;
+using TilesDashboard.Plugin.Azure.Dtos;
 
-namespace TilesDashboard.Plugin.Azure.CodeCoverage
+namespace TilesDashboard.Plugin.Azure
 {
     public class AzureDevOpsHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace TilesDashboard.Plugin.Azure.CodeCoverage.Dtos
+namespace TilesDashboard.Plugin.Azure.Dtos
 {
     public class CodeCoverageDto
     {

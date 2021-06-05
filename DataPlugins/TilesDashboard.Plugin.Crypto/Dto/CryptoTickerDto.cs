@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TilesDashboard.Plugin.Crypto
+namespace TilesDashboard.Plugin.Crypto.Dto
 {
     public class CryptoTickerDto
     {

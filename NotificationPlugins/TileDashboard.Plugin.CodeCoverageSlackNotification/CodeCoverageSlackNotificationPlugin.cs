@@ -10,7 +10,7 @@ using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 using TilesDashboard.V2.Core.Entities.Metric;
 
-namespace TileDashboard.Plugin.CodeCoverageSlackNotification
+namespace TilesDashboard.Plugin.CodeCoverageSlackNotification
 {
     public class CodeCoverageSlackNotificationPlugin : MetricNotificationPlugin
     {

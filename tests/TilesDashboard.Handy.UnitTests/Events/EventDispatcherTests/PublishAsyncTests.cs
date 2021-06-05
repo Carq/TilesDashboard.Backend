@@ -1,16 +1,16 @@
-﻿using NUnit.Framework;
-using System;
-using System.Threading.Tasks;
-using TilesDashboard.Handy.UnitTests.Events.EventDispatcherTests;
-using FluentAssertions;
-using TilesDashboard.TestUtils;
+﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Autofac;
-using FakeItEasy;
 using Autofac.Core;
+using FakeItEasy;
+using FluentAssertions;
 using Microsoft.Extensions.Logging;
+using NUnit.Framework;
+using TilesDashboard.Handy.Events;
+using TilesDashboard.TestUtils;
 
-namespace TilesDashboard.Handy.Events
+namespace TilesDashboard.Handy.UnitTests.Events.EventDispatcherTests
 {
     internal class PublishAsyncTests : TestBase<EventDispatcher>
     {

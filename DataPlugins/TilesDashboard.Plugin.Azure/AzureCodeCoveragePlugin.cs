@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
 using TilesDashboard.V2.Core.Entities.Metric;
 
-namespace TilesDashboard.Plugin.Azure.CodeCoverage
+namespace TilesDashboard.Plugin.Azure
 {
     public class AzureCodeCoveragePlugin : MetricDataPlugin
     {

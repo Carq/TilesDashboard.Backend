@@ -36,7 +36,6 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
             var limit = 50m;
             var goal = 60m;
             var wish = 70m;
-            var lowerIsBetter = true;
             var unit = "PLN";
 
             var metricTile = MetricTileTestBuilder.New()
@@ -44,7 +43,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
                 .WithConfigEntry(nameof(MetricConfiguration.Goal), goal)
                 .WithConfigEntry(nameof(MetricConfiguration.Wish), wish)
                 .WithConfigEntry(nameof(MetricConfiguration.Unit), unit)
-                .WithConfigEntry(nameof(MetricConfiguration.LowerIsBetter), lowerIsBetter)
+                .WithConfigEntry(nameof(MetricConfiguration.LowerIsBetter), true)
                 .WithConfigEntry(nameof(MetricConfiguration.MetricType), MetricType.Money)
                 .Build();
 
@@ -57,7 +56,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.MetricTileTests
             configuration.Goal.Should().Be(goal);
             configuration.Wish.Should().Be(wish);
             configuration.Unit.Should().Be(unit);
-            configuration.LowerIsBetter.Should().Be(lowerIsBetter);
+            configuration.LowerIsBetter.Should().Be(true);
             configuration.MetricType.Should().Be(MetricType.Money);
         }
     }

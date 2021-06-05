@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Handy.Extensions;
 using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
 using TilesDashboard.PluginBase.Data.IntegerPlugin;

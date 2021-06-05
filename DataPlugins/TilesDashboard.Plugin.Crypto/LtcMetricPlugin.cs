@@ -4,7 +4,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
+using TilesDashboard.Plugin.Crypto.Dto;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
 using TilesDashboard.V2.Core.Entities.Metric;
 

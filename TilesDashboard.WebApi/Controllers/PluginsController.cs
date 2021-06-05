@@ -17,7 +17,7 @@ namespace TilesDashboard.WebApi.Controllers
             _dataPluginService = dataPluginService;
         }
 
-        [HttpPost("{pluginId}/{tileStorageId}")]
+        [HttpPost("{pluginName}/{tileStorageId}")]
         [BearerAuthorization]
         public async Task TriggerPlugin(string pluginName, string tileStorageId, CancellationToken cancellationToken)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace TilesDashboard.Plugin.Azure.CodeCoverage.Dtos
+namespace TilesDashboard.Plugin.Azure.Dtos
 {
     public class CoverageStatsDto
     {

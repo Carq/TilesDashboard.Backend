@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.Plugin.Azure.CodeCoverage;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
 using TilesDashboard.V2.Core.Entities.Metric;
 
