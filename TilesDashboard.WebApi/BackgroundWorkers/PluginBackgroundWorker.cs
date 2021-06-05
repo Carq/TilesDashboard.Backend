@@ -11,15 +11,11 @@ using NCrontab;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Data;
-using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
-using TilesDashboard.PluginBase.Data.IntegerPlugin;
-using TilesDashboard.PluginBase.Data.MetricPlugin;
-using TilesDashboard.PluginBase.Data.WeatherPlugin;
 using TilesDashboard.PluginSystem.Entities;
 using TilesDashboard.PluginSystem.Repositories;
-using TilesDashboard.V2.Core.Entities.Enums;
-using TilesDashboard.WebApi.PluginSystem;
+using TilesDashboard.PluginSystem.Services;
 using TilesDashboard.WebApi.PluginSystem.Extensions;
+using TilesDashboard.WebApi.PluginSystem.Loaders;
 
 namespace TilesDashboard.WebApi.BackgroundWorkers
 {
@@ -33,32 +29,20 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
 
         private readonly IDateTimeProvider _dateTimeProvider;
 
-        private readonly MetricPluginHandler _metricPluginHandler;
-
-        private readonly WeatherPluginHandler _weatherPluginHandler;
-
-        private readonly IntegerPluginHandler _integerPluginHandler;
-
-        private readonly HeartBeatPluginHandler _heartBeatPluginHandler;
+        private readonly IDataPluginService _dataPluginService;
 
         public PluginBackgroundWorker(
             IDataPluginLoader pluginLoader,
             ILogger<PluginBackgroundWorker> logger,
             IDateTimeProvider dateTimeProvider,
             IPluginConfigRepository pluginConfigRepository,
-            MetricPluginHandler metricPluginHandler,
-            WeatherPluginHandler weatherPluginHandler,
-            IntegerPluginHandler integerPluginHandler,
-            HeartBeatPluginHandler heartBeatPluginHandler)
+            IDataPluginService dataPluginService)
         {
             _pluginLoader = pluginLoader ?? throw new ArgumentNullException(nameof(pluginLoader));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _dateTimeProvider = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
             _pluginConfigRepository = pluginConfigRepository ?? throw new ArgumentNullException(nameof(pluginConfigRepository));
-            _metricPluginHandler = metricPluginHandler ?? throw new ArgumentNullException(nameof(metricPluginHandler));
-            _weatherPluginHandler = weatherPluginHandler ?? throw new ArgumentNullException(nameof(weatherPluginHandler));
-            _integerPluginHandler = integerPluginHandler ?? throw new ArgumentNullException(nameof(integerPluginHandler));
-            _heartBeatPluginHandler = heartBeatPluginHandler ?? throw new ArgumentNullException(nameof(heartBeatPluginHandler));
+            _dataPluginService = dataPluginService;
         }
 
         [SuppressMessage("Microsoft.Naming", "CA1725", Justification = "Allowed here")]
@@ -90,7 +74,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
             {
                 if (!await _pluginConfigRepository.IsAnyPluginConfigurationExist(plugin.UniquePluginName, cancellationToken))
                 {
-                    await _pluginConfigRepository.CreatePluginConfigurationWithTempleteEntry(plugin.UniquePluginName, plugin.TileType, plugin.PluginType, cancellationToken);
+                    await _pluginConfigRepository.CreatePluginConfigurationWithTemplateEntry(plugin.UniquePluginName, plugin.TileType, plugin.PluginType, cancellationToken);
                 }
             }
         }
@@ -107,7 +91,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
         {
             var schedule = CrontabSchedule.Parse(pluginConfigurationForTile.CronSchedule, new CrontabSchedule.ParseOptions { IncludingSeconds = true });
             DateTimeOffset nextOccurrence = schedule.GetNextOccurrence(_dateTimeProvider.Now.DateTime);
-            _logger.LogDebug($"Plugin: \"{plugin.UniquePluginName}\" for Tile Id {pluginConfigurationForTile.TileStorageId} with Type {plugin.TileType} - Next schedule {nextOccurrence}");
+            _logger.LogInformation($"Plugin: \"{plugin.UniquePluginName}\" for Tile Id {pluginConfigurationForTile.TileStorageId} with Type {plugin.TileType} - Next schedule {nextOccurrence}");
             Observable.Timer(nextOccurrence)
                   .Select(x => HandlePlugin(plugin, pluginConfigurationForTile, cancellationToken))
                   .Switch()
@@ -116,7 +100,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                     exception => _logger.LogError($"Error occurs during plugin processing. Plugin will be disabled. Error: {exception.Message}. Inner Exception: {exception.InnerException?.Message}", exception));
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
+        [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
         private IObservable<IDataPlugin> HandlePlugin(IDataPlugin plugin, PluginTileConfig pluginConfigurationForTile, CancellationToken cancellationToken)
         {
             return Observable.Create<IDataPlugin>(
@@ -126,30 +110,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                     {
                         _logger.LogDebug($"Execute GetTileValueAsync method for plugin: \"{plugin.UniquePluginName}\" - \"{plugin.TileType}\"...");
 
-                        PluginDataResult result = null;
-
-                        switch (plugin.TileType)
-                        {
-                            case TileType.Weather:
-                                var weatherPlugin = (WeatherPluginBase)plugin;
-                                result = await _weatherPluginHandler.HandlePlugin(weatherPlugin, pluginConfigurationForTile, cancellationToken);
-                                break;
-                            case TileType.Metric:
-                                var metricPlugin = (MetricDataPlugin)plugin;
-                                result = await _metricPluginHandler.HandlePlugin(metricPlugin, pluginConfigurationForTile, cancellationToken);
-                                break;
-                            case TileType.Integer:
-                                var integerPlugin = (IntegerDataPlugin)plugin;
-                                result = await _integerPluginHandler.HandlePlugin(integerPlugin, pluginConfigurationForTile, cancellationToken);
-                                break;
-                            case TileType.HeartBeat:
-                                var heartBeatPlugin = (HeartBeatDataPlugin)plugin;
-                                result = await _heartBeatPluginHandler.HandlePlugin(heartBeatPlugin, pluginConfigurationForTile, cancellationToken);
-                                break;
-                            default:
-                                throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");
-                        }
-
+                        PluginDataResult result = await _dataPluginService.HandlePlugin(plugin, pluginConfigurationForTile, cancellationToken);
                         if (result.Status.IsError())
                         {
                             observer.OnError(new InvalidOperationException($"Plugin {plugin.UniquePluginName} for tile with Id: \"{pluginConfigurationForTile.TileStorageId}\" return Status \"{result.Status}\" with message: \"{result.ErrorMessage}\""));

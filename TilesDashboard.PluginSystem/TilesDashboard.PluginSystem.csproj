@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TilesDashboard.PluginBase\TilesDashboard.PluginBase.csproj" />
     <ProjectReference Include="..\TilesDashboard.V2.Core.Entities\TilesDashboard.V2.Core.Entities.csproj" />
+    <ProjectReference Include="..\TilesDashboard.V2.Core\TilesDashboard.V2.Core.csproj" />
   </ItemGroup>
 
 </Project>

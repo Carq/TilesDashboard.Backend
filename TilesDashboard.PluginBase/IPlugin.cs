@@ -1,6 +1,6 @@
 ﻿using TilesDashboard.V2.Core.Entities.Enums;
 
-namespace TilesDashboard.PluginBase.Data
+namespace TilesDashboard.PluginBase
 {
     public interface IPlugin
     {

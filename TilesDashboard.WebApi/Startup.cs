@@ -70,6 +70,7 @@ namespace TilesDashboard.WebApi
             });
 
             app.LoadNotificationPlugins();
+            app.LoadDataPlugins();
         }
     }
 }

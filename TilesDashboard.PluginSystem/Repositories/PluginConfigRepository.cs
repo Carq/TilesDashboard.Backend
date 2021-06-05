@@ -1,7 +1,6 @@
 ﻿using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.PluginBase;
@@ -16,8 +15,6 @@ namespace TilesDashboard.PluginSystem.Repositories
     {
         private readonly IPluginSystemStorage _pluginSystemStorage;
 
-        private IList<PluginConfiguration> _notificationPluginsCache;
-
         private readonly PluginTileConfig _disabledTemplateOfPluginTileConfig =
                                                 new PluginTileConfig(
                                                     new StorageId("5fa824caee570237cc96b0f9"),
@@ -28,7 +25,7 @@ namespace TilesDashboard.PluginSystem.Repositories
                                                     },
                                                     true);
 
-          private readonly NotificationPluginTileConfig _disabledTemplateOfNotificaiotnPluginTileConfig =
+          private readonly NotificationPluginTileConfig _disabledTemplateOfNotificationPluginTileConfig =
                                                 new NotificationPluginTileConfig(
                                                     new StorageId("5fa824caee570237cc96b0f9"),
                                                     new Dictionary<string, string>()
@@ -42,7 +39,7 @@ namespace TilesDashboard.PluginSystem.Repositories
             _pluginSystemStorage = pluginSystemStorage ?? throw new ArgumentNullException(nameof(pluginSystemStorage));
         }
 
-        public async Task CreatePluginConfigurationWithTempleteEntry(string uniquePluginName, TileType tileType, PluginType pluginType,  CancellationToken cancellationToken)
+        public async Task CreatePluginConfigurationWithTemplateEntry(string uniquePluginName, TileType tileType, PluginType pluginType,  CancellationToken cancellationToken)
         {
             var pluginConfiguration = new PluginConfiguration(uniquePluginName, tileType, pluginType);
 
@@ -52,7 +49,7 @@ namespace TilesDashboard.PluginSystem.Repositories
             }
             else
             {
-                pluginConfiguration.NotificationPluginTileConfigs.Add(_disabledTemplateOfNotificaiotnPluginTileConfig);
+                pluginConfiguration.NotificationPluginTileConfigs.Add(_disabledTemplateOfNotificationPluginTileConfig);
             }
 
             await _pluginSystemStorage.PluginsConfigurations.InsertOneAsync(pluginConfiguration, null, cancellationToken);
@@ -67,12 +64,7 @@ namespace TilesDashboard.PluginSystem.Repositories
 
         public async Task<IList<PluginConfiguration>> GetEnabledDataPluginsConfiguration(CancellationToken cancellationToken)
         {
-            if (_notificationPluginsCache == null)
-            {
-                _notificationPluginsCache = await _pluginSystemStorage.PluginsConfigurations.Find(x => x.Disable == false && x.PluginType == PluginType.Data).ToListAsync(cancellationToken);
-            }
-
-            return _notificationPluginsCache;
+            return await _pluginSystemStorage.PluginsConfigurations.Find(x => x.Disable == false && x.PluginType == PluginType.Data).ToListAsync(cancellationToken);
         }
 
         public async Task<bool> IsAnyPluginConfigurationExist(string pluginName, CancellationToken cancellationToken)

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using TilesDashboard.PluginBase.Notification;
 using TilesDashboard.PluginSystem.Repositories;
-using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.WebApi.PluginSystem.Loaders;
 using TilesDashboard.WebApi.PluginSystem.Notifications;
 
@@ -31,7 +30,7 @@ namespace TilesDashboard.WebApi.StartupConfig
             {
                 if (!await pluginConfigRepository.IsAnyPluginConfigurationExist(plugin.UniquePluginName, CancellationToken.None))
                 {
-                    await pluginConfigRepository.CreatePluginConfigurationWithTempleteEntry(plugin.UniquePluginName, plugin.TileType, plugin.PluginType, CancellationToken.None);
+                    await pluginConfigRepository.CreatePluginConfigurationWithTemplateEntry(plugin.UniquePluginName, plugin.TileType, plugin.PluginType, CancellationToken.None);
                 }
             }
         }

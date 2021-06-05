@@ -9,7 +9,7 @@ using TilesDashboard.PluginSystem.Entities;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Services;
 
-namespace TilesDashboard.WebApi.BackgroundWorkers
+namespace TilesDashboard.PluginSystem.DataPlugins.Handlers
 {
     public class WeatherPluginHandler
     {

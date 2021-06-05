@@ -13,7 +13,7 @@ namespace TilesDashboard.PluginSystem.Repositories
 
         Task<bool> IsAnyPluginConfigurationExist(string pluginName, CancellationToken cancellationToken);
         
-        Task CreatePluginConfigurationWithTempleteEntry(string uniquePluginName, TileType tileType, PluginType pluginType, CancellationToken cancellationToken);
+        Task CreatePluginConfigurationWithTemplateEntry(string uniquePluginName, TileType tileType, PluginType pluginType, CancellationToken cancellationToken);
 
         Task<IList<PluginConfiguration>> GetNotificationConfigs(TileType type, CancellationToken cancellationToken);
     }

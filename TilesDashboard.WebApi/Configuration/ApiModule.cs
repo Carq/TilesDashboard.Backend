@@ -6,6 +6,8 @@ using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Notification;
+using TilesDashboard.PluginSystem.DataPlugins;
+using TilesDashboard.PluginSystem.DataPlugins.Handlers;
 using TilesDashboard.V2.Core.Configuration;
 using TilesDashboard.WebApi.BackgroundWorkers;
 using TilesDashboard.WebApi.Hubs;
@@ -60,6 +62,7 @@ namespace TilesDashboard.WebApi.Configuration
         private static void RegisterDataPluginStuff(ContainerBuilder builder)
         {
             builder.RegisterType<DataPluginLoader>().As<IDataPluginLoader>();
+            builder.RegisterType<DataPluginContext>().As<IDataPluginContext>().SingleInstance();
             builder.RegisterType<WeatherPluginHandler>();
             builder.RegisterType<MetricPluginHandler>();
             builder.RegisterType<IntegerPluginHandler>();

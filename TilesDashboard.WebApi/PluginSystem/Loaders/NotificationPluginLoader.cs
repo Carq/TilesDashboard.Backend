@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using TilesDashboard.WebApi.PluginSystem.Loaders;
+using TilesDashboard.PluginBase.Notification;
 
-namespace TilesDashboard.PluginBase.Notification
+namespace TilesDashboard.WebApi.PluginSystem.Loaders
 {
     public class NotificationPluginLoader : PluginLoaderBase, INotificationPluginLoader
     {
