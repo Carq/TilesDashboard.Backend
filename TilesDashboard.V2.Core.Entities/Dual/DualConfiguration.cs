@@ -35,6 +35,7 @@ namespace TilesDashboard.V2.Core.Entities.Dual
             SecondaryRedValue = configurationAsDictionary.GetValueOrNull<decimal>(nameof(SecondaryRedValue));
 
             LowerIsBetter = configurationAsDictionary.GetValueOrDefault<bool>(nameof(LowerIsBetter));
+            PrimaryAndSecondaryHaveTheSameYAxis = configurationAsDictionary.GetValueOrDefault<bool>(nameof(PrimaryAndSecondaryHaveTheSameYAxis));
         }
 
         public string PrimaryName { get; private set; }
@@ -72,6 +73,8 @@ namespace TilesDashboard.V2.Core.Entities.Dual
         public decimal? SecondaryYellowValue { get; private set; }
 
         public decimal? SecondaryRedValue { get; private set; }
+
+        public bool PrimaryAndSecondaryHaveTheSameYAxis { get; private set; }
 
         public bool LowerIsBetter { get; private set; }
     }

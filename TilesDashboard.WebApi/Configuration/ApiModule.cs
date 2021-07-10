@@ -64,6 +64,7 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<MetricPluginHandler>();
             builder.RegisterType<IntegerPluginHandler>();
             builder.RegisterType<HeartBeatPluginHandler>();
+            builder.RegisterType<DualPluginHandler>();
         }
     }
 }

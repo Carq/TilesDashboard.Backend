@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.PluginBase.Data;
+using TilesDashboard.PluginBase.Data.DualPlugin;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
 using TilesDashboard.PluginBase.Data.IntegerPlugin;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
@@ -30,7 +31,9 @@ namespace TilesDashboard.PluginSystem.Services
 
         private readonly HeartBeatPluginHandler _heartBeatPluginHandler;
 
-        public DataPluginService(IPluginConfigRepository pluginConfigRepository, IDataPluginContext dataPluginContext, MetricPluginHandler metricPluginHandler, WeatherPluginHandler weatherPluginHandler, IntegerPluginHandler integerPluginHandler, HeartBeatPluginHandler heartBeatPluginHandler)
+        private readonly DualPluginHandler _dualPluginHandler;
+
+        public DataPluginService(IPluginConfigRepository pluginConfigRepository, IDataPluginContext dataPluginContext, MetricPluginHandler metricPluginHandler, WeatherPluginHandler weatherPluginHandler, IntegerPluginHandler integerPluginHandler, HeartBeatPluginHandler heartBeatPluginHandler, DualPluginHandler dualPluginHandler)
         {
             _pluginConfigRepository = pluginConfigRepository;
             _dataPluginContext = dataPluginContext;
@@ -38,6 +41,7 @@ namespace TilesDashboard.PluginSystem.Services
             _weatherPluginHandler = weatherPluginHandler;
             _integerPluginHandler = integerPluginHandler;
             _heartBeatPluginHandler = heartBeatPluginHandler;
+            _dualPluginHandler = dualPluginHandler;
         }
 
         public async Task ExecuteDataPluginForTile(string pluginName, string tileStorageId, CancellationToken cancellationToken)
@@ -85,6 +89,11 @@ namespace TilesDashboard.PluginSystem.Services
                 case TileType.HeartBeat:
                     var heartBeatPlugin = (HeartBeatDataPlugin)plugin;
                     result = await _heartBeatPluginHandler.HandlePlugin(heartBeatPlugin, pluginConfigurationForTile, cancellationToken);
+                    break;
+                case TileType.Dual:
+                    var dualPlugin = (DualPluginBase) plugin;
+                    result = await _dualPluginHandler.HandlePlugin(dualPlugin, pluginConfigurationForTile,
+                        cancellationToken);
                     break;
                 default:
                     throw new NotSupportedException($"Plugin type {plugin.TileType} is not yet supported");

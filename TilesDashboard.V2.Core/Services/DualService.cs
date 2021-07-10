@@ -14,8 +14,6 @@ namespace TilesDashboard.V2.Core.Services
         {
         }
 
-        public async Task<DualTile> GetWeatherTile(TileId tileId) => await TileRepository.GetTile<DualTile>(tileId);
-
         public async Task RecordValue(TileId tileId, decimal primary, decimal secondary)
         {
             var dualValue = new DualValue(primary, secondary, DateTimeProvider.Now);
