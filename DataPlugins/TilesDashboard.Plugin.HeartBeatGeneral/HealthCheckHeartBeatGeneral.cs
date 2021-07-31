@@ -36,7 +36,7 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
                     });
 
 
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && heartbeatDto != null)
                 {
                     return new HeartBeatData((int)stopwatcher.ElapsedMilliseconds, heartbeatDto.Version, heartbeatDto.LastAppliedMigration, Status.OK);
                 }
@@ -45,7 +45,7 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
             }
             catch (Exception ex)
             {
-                return HeartBeatData.Error(ex.Message + ex.InnerException.Message);
+                return HeartBeatData.Error(ex.Message + ex.InnerException?.Message);
             }
         }
     }

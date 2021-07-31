@@ -22,7 +22,11 @@ namespace TilesDashboard.Plugin.Crypto
             if (response.IsSuccessStatusCode)
             {
                 var responseDto = JsonSerializer.Deserialize<CryptoTickerDto>(await response.Content.ReadAsStringAsync());
-                return new MetricData(decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), MetricType.Money, Status.OK);
+                if (responseDto != null)
+                {
+                    return new MetricData(decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture),
+                        MetricType.Money, Status.OK);
+                }
             }
 
             return MetricData.Error($"Code: {response.StatusCode}");

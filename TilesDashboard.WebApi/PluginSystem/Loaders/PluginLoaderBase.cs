@@ -66,7 +66,7 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
                     {
                         TPluginType plugin = Activator.CreateInstance(type) as TPluginType;
                         plugins.Add(plugin);
-                        _logger.LogInformation($"Loaded plugin {plugin.UniquePluginName} for tiles type {plugin.TileType}.");
+                        _logger.LogInformation($"Loaded plugin {plugin?.UniquePluginName} for tiles type {plugin?.TileType}.");
                     }
                     catch (Exception exception)
                     {

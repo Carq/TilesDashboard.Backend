@@ -22,10 +22,11 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric
         public void ShouldThrowException_WhenValueIsBelowZero()
         {
             // given & when
+            // ReSharper disable once ObjectCreationAsStatement - needed by test
             Action action = () => new MoneyMetricValue(-1, DateTimeOffsetTestData.April02Year2020);
 
             // then
-            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains("-1");
+            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains("-1", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

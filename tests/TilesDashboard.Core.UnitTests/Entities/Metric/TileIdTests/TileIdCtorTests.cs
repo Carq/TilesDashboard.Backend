@@ -31,6 +31,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
         public void ShouldThrowException_WhenNameIsEmptyOrNull(string tileName)
         {
             // when
+            // ReSharper disable once ObjectCreationAsStatement - needed by test
             Action action = () => new TileId(tileName, TileType.Metric);
 
             // then
@@ -41,6 +42,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
         public void ShouldThrowException_WhenTileTypeIsUndefined()
         {
             // when
+            // ReSharper disable once ObjectCreationAsStatement - needed by test
             Action action = () => new TileId("Just tile", TileType.Undefined);
 
             // then

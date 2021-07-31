@@ -18,10 +18,10 @@ namespace TilesDashboard.WebApi.StartupConfig
             var notificationPluginContext = applicationBuilder.ApplicationServices.GetService<INotificationPluginContext>();
             var notificationPluginLoader = applicationBuilder.ApplicationServices.GetService<INotificationPluginLoader>();
 
-            var notificationPlugins = notificationPluginLoader.LoadNotificationPluginsAsync(AppDomain.CurrentDomain.BaseDirectory).Result;
+            var notificationPlugins = notificationPluginLoader?.LoadNotificationPluginsAsync(AppDomain.CurrentDomain.BaseDirectory).Result;
             InitializePluginsStorage(notificationPlugins, applicationBuilder.ApplicationServices.GetRequiredService<IPluginConfigRepository>()).Wait();
 
-            notificationPluginContext.AddPlugins(notificationPlugins);
+            notificationPluginContext?.AddPlugins(notificationPlugins);
         }
 
         private static async Task InitializePluginsStorage(IList<INotificationPlugin> loadedPlugins, IPluginConfigRepository pluginConfigRepository)

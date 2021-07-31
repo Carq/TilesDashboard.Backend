@@ -40,13 +40,13 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
                             PropertyNameCaseInsensitive = true
                         });
 
-                    if (webJobResponse.Status == "Running")
+                    if (webJobResponse?.Status == "Running")
                     {
                         return new HeartBeatData((int)stopWatch.ElapsedMilliseconds, "?", null, Status.OK);
                     }
                 }
 
-                return HeartBeatData.NoResponse(); ;
+                return HeartBeatData.NoResponse();
             }
             catch (Exception ex)
             {

@@ -3,6 +3,7 @@ using NUnit.Framework;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
 namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
 {
     internal class TileIdCompareTests
@@ -65,6 +66,7 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric.TileIdTests
             // when & then
             (tileId1 == tileId2).Should().BeFalse();
             (tileId1 != tileId2).Should().BeTrue();
+            // ReSharper disable once ExpressionIsAlwaysNull
             (tileId1.Equals(tileId2)).Should().BeFalse();
         }
 

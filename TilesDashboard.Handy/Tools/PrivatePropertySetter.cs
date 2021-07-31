@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace TilesDashboard.TestUtils
+namespace TilesDashboard.Handy.Tools
 {
     public static class PrivatePropertySetter
     {
@@ -15,7 +15,7 @@ namespace TilesDashboard.TestUtils
             var prop = typeof(T).GetField($"<{propertyName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
             if (prop == null && typeof(T).BaseType != null)
             {
-                prop = typeof(T).BaseType.GetField($"<{propertyName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+                prop = typeof(T).BaseType?.GetField($"<{propertyName}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
             }
 
             prop?.SetValue(objectWithPropertyToSet, valueToSet);

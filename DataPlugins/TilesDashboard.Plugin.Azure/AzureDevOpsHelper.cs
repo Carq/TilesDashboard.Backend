@@ -38,7 +38,7 @@ namespace TilesDashboard.Plugin.Azure
                 throw new HttpRequestException($"Request for Azure Build List has fail, Http Response Code: {buildListResponse.StatusCode}.");
             }
 
-            var lastBuild = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync()).Value.FirstOrDefault();
+            var lastBuild = JsonSerializer.Deserialize<BuildListDto>(await buildListResponse.Content.ReadAsStringAsync())?.Value.FirstOrDefault();
             if (lastBuild == null || lastBuild.StartTime.Date != DateTimeOffset.Now.Date)
             {
                 return null;

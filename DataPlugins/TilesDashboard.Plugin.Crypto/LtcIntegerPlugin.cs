@@ -21,7 +21,10 @@ namespace TilesDashboard.Plugin.Crypto
             if (response.IsSuccessStatusCode)
             {
                 var responseDto = JsonSerializer.Deserialize<CryptoTickerDto>(await response.Content.ReadAsStringAsync());
-                return new IntegerData((int)decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), Status.OK);
+                if (responseDto != null)
+                {
+                    return new IntegerData((int)decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), Status.OK);
+                }
             }
 
             return IntegerData.Error($"Code: {response.StatusCode}");

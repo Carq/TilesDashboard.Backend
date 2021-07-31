@@ -24,13 +24,15 @@ namespace TilesDashboard.Plugin.CodeCoverageSlackNotification
             decimal goal = decimal.Parse(tileConfiguration["Goal"]);
             decimal limit = decimal.Parse(tileConfiguration["Limit"]);
 
+            var oldData = await TileDataProvider.GetLast5Data(cancellation);
+
             if (newData == null || !pluginConfiguration.TryGetValue("SlackHook", out var slackHook) || string.IsNullOrWhiteSpace(slackHook))
             {
                 return;
             }
 
             var mood = CalculateMood(newData.Value, limit, goal, wish);
-            await SendMessage(CreateMessage(tileId, mood, newData.Value, limit, goal, wish), slackHook, cancellation);
+            await SendMessage(CreateMessage(tileId, mood, newData.Value, oldData[1].Value, limit, goal, wish), slackHook, cancellation);
         }
 
         private async Task SendMessage(string message, string slackHook, CancellationToken cancellationToken)
@@ -45,24 +47,27 @@ namespace TilesDashboard.Plugin.CodeCoverageSlackNotification
             await httpClient.SendAsync(request, cancellationToken);
         }
 
-        private string CreateMessage(TileId tileId, MessageMood messageMood, decimal currentValue, decimal limit, decimal goal, decimal wish)
+        private string CreateMessage(TileId tileId, MessageMood messageMood, decimal currentValue, decimal previousValue, decimal limit, decimal goal, decimal wish)
         {
             StringBuilder stringBuilder = new StringBuilder();
             Random random = new Random();
-            stringBuilder.Append($"Current Code Coverage for {tileId.Name}: *{currentValue}%* (Limit: {limit}%, Goal: {goal}%, Wish {wish}%) ");
+            var diff = currentValue - previousValue;
+            var diffIcon = diff > 0m ? ":arrow_upper_right:" : diff < 0m ? ":arrow_lower_right:" : string.Empty;
+            stringBuilder.Append($"Code Coverage for `{tileId.Name}` *{currentValue}%* ({diffIcon} `{diff}%`)");
+            stringBuilder.Append($"\n[Limit: {limit}%, Goal: {goal}%, Wish {wish}%] ");
             switch (messageMood)
             {
                 case MessageMood.Amazing:
-                    stringBuilder.AppendLine($":gem: \n{MessageMoodDictionary.AmazingMessages[random.Next(MessageMoodDictionary.AmazingMessages.Count)]}");
+                    stringBuilder.Append($":gem:\n{MessageMoodDictionary.AmazingMessages[random.Next(MessageMoodDictionary.AmazingMessages.Count)]}");
                     break;
                 case MessageMood.Good:
-                    stringBuilder.AppendLine($":green_heart: \n{MessageMoodDictionary.GoodMessages[random.Next(MessageMoodDictionary.GoodMessages.Count)]}");
+                    stringBuilder.Append($":green_heart:\n{MessageMoodDictionary.GoodMessages[random.Next(MessageMoodDictionary.GoodMessages.Count)]}");
                     break;
                 case MessageMood.CouldBeBetter:
-                    stringBuilder.AppendLine($":large_yellow_circle: \n{MessageMoodDictionary.CouldBeBetterMessages[random.Next(MessageMoodDictionary.CouldBeBetterMessages.Count)]}");
+                    stringBuilder.Append($":large_yellow_circle:\n{MessageMoodDictionary.CouldBeBetterMessages[random.Next(MessageMoodDictionary.CouldBeBetterMessages.Count)]}");
                     break;
                 case MessageMood.Bad:
-                    stringBuilder.AppendLine($":red_circle: \n{MessageMoodDictionary.BadMessages[random.Next(MessageMoodDictionary.BadMessages.Count)]}");
+                    stringBuilder.Append($":red_circle:\n{MessageMoodDictionary.BadMessages[random.Next(MessageMoodDictionary.BadMessages.Count)]}");
                     break;
             }
 

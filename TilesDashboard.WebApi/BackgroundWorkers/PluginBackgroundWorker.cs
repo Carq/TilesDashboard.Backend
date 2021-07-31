@@ -95,7 +95,7 @@ namespace TilesDashboard.WebApi.BackgroundWorkers
                   .Select(x => HandlePlugin(plugin, pluginConfigurationForTile, cancellationToken))
                   .Switch()
                   .Subscribe(
-                    plugin => SchedulePluginForTile(plugin, pluginConfigurationForTile, cancellationToken),
+                    pluginParam => SchedulePluginForTile(pluginParam, pluginConfigurationForTile, cancellationToken),
                     exception => _logger.LogError($"Error occurs during plugin processing. Plugin will be disabled. Error: {exception.Message}. Inner Exception: {exception.InnerException?.Message}", exception));
         }
 

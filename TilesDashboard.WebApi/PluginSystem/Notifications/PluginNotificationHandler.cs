@@ -8,9 +8,11 @@ using Microsoft.Extensions.Logging;
 using TilesDashboard.Contract.Events;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Extensions;
+using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase.Notification;
 using TilesDashboard.PluginSystem.Entities;
 using TilesDashboard.PluginSystem.Repositories;
+using TilesDashboard.PluginSystem.Services;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Dual;
 using TilesDashboard.V2.Core.Entities.Enums;
@@ -90,7 +92,9 @@ namespace TilesDashboard.WebApi.PluginSystem.Notifications
                 switch (eventBody.TileId.Type)
                 {
                     case TileType.Metric:
-                        await ((MetricNotificationPlugin)plugin).PerformNotificationAsync(eventBody.TileId, eventBody.TileValue as MetricValue, pluginConfiguration, tileConfiguration, cancellationToken);
+                        var convertedPlugin = (MetricNotificationPlugin)plugin;
+                        PrivatePropertySetter.SetPropertyWithNoSetter(convertedPlugin, nameof(convertedPlugin.TileDataProvider), new TileDataProvider<MetricValue>(eventBody.TileId, _tileRepository));
+                        await convertedPlugin.PerformNotificationAsync(eventBody.TileId, eventBody.TileValue as MetricValue, pluginConfiguration, tileConfiguration, cancellationToken);
                         break;
                     case TileType.Weather:
                         await ((WeatherNotificationPlugin)plugin).PerformNotificationAsync(eventBody.TileId, eventBody.TileValue as WeatherValue, pluginConfiguration, tileConfiguration, cancellationToken);

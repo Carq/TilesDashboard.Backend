@@ -4,7 +4,7 @@ namespace TilesDashboard.PluginBase
 {
     public interface IPlugin
     {
-        abstract string UniquePluginName { get; }
+        string UniquePluginName { get; }
 
         TileType TileType { get; }
 

@@ -10,6 +10,8 @@ namespace TilesDashboard.PluginBase.Notification
     {
         PluginType IPlugin.PluginType => PluginType.Notification;
 
+        ITileDataProvider<TTileData> TileDataProvider { get; }
+
         Task PerformNotificationAsync(TileId tileId, TTileData newData, IReadOnlyDictionary<string, string> pluginConfiguration, IReadOnlyDictionary<string, string> tileConfiguration, CancellationToken cancellation = default);
     }
 }

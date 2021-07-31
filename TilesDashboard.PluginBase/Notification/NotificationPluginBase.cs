@@ -19,6 +19,8 @@ namespace TilesDashboard.PluginBase.Notification
         /// </summary>
         public abstract TileType TileType { get; }
 
+        public ITileDataProvider<TTileData> TileDataProvider { get; private set; }
+
         public abstract Task PerformNotificationAsync(TileId tileId, TTileData newData, IReadOnlyDictionary<string, string> pluginConfiguration, IReadOnlyDictionary<string, string> tileConfiguration, CancellationToken cancellation = default);
     }
 }

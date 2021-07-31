@@ -28,7 +28,7 @@ namespace TilesDashboard.Plugin.OpenWeatherMap
             if (response.IsSuccessStatusCode)
             {
                 var info = JsonSerializer.Deserialize<WeatherInfoJson>(await response.Content.ReadAsStringAsync());
-                return new WeatherData(info.Temperature, info.Humidity, Status.OK);
+                if (info != null) return new WeatherData(info.Temperature, info.Humidity, Status.OK);
             }
 
             return WeatherData.Error($"Code: {response.StatusCode}");
