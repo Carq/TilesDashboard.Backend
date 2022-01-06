@@ -113,7 +113,7 @@ namespace TilesDashboard.WebApi.Controllers
         [BearerAuthorization]
         public async Task RecordIntegerValue(string tileName, [FromBody] RecordValueDto<int> integerValue)
         {
-            await _integerService.RecordValue(new TileId(tileName, TileType.Metric), integerValue.Value);
+            await _integerService.RecordValue(new TileId(tileName, TileType.Integer), integerValue.Value);
         }
 
         [HttpPost("integer/id/{storageId}/record")]
