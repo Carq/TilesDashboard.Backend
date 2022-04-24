@@ -108,7 +108,7 @@ namespace TilesDashboard.Core.UnitTests.Services.MetricServiceTests
             Func<Task> action = async () => await TestCandidate.RecordValue(metricTileId, MetricType.Time, 66m);
 
             // then
-            action.Should().ThrowExactly<NotSupportedException>();
+            action.Should().ThrowExactlyAsync<NotSupportedException>();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace TilesDashboard.Handy.UnitTests.Events.EventDispatcherTests
                                 };
 
             // then
-            action.Should().Throw<ArgumentNullException>();
+            action.Should().ThrowExactlyAsync<ArgumentNullException>();
         }
 
         [Test]

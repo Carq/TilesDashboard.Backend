@@ -11,7 +11,7 @@ namespace TilesDashboard.Handy.UnitTests.Tools
         public void ShouldThrowException_WhenNullListIsNull()
         {
             // given && when && then
-            new DateTimeOffsetProvider().Now.Should().BeCloseTo(DateTimeOffset.Now, 999);
+            new DateTimeOffsetProvider().Now.Should().BeCloseTo(DateTimeOffset.Now, TimeSpan.FromSeconds(1));
         }
     }
 }
