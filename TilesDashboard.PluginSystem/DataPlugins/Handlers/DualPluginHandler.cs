@@ -28,7 +28,7 @@ namespace TilesDashboard.PluginSystem.DataPlugins.Handlers
             _logger.LogDebug($"Dual plugin: \"{plugin.UniquePluginName}\", Value: {data}");
             if (data.Status.Is(Status.OK))
             {
-                await _dualService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Primary, data.Secondary);
+                await _dualService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Primary, data.Secondary, null);
             }
 
             return data;

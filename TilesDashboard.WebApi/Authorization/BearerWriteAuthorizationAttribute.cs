@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace TilesDashboard.WebApi.Authorization
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-    public sealed class BearerAuthorizationAttribute : TypeFilterAttribute
+    public sealed class BearerWriteAuthorizationAttribute : TypeFilterAttribute
     {
-        public BearerAuthorizationAttribute() : base(typeof(BearerAuthorizationFilter))
+        public BearerWriteAuthorizationAttribute() : base(typeof(BearerWriteAuthorizationFilter))
         {
         }
     }
