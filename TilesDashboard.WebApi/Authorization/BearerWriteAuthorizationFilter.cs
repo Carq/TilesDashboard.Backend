@@ -6,7 +6,7 @@ using TilesDashboard.WebApi.Configuration;
 
 namespace TilesDashboard.WebApi.Authorization
 {
-    public class BearerAuthorizationFilter : IAuthorizationFilter
+    public class BearerWriteAuthorizationFilter : IAuthorizationFilter
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
