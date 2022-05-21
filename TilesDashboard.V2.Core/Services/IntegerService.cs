@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
@@ -14,14 +15,14 @@ namespace TilesDashboard.V2.Core.Services
         {
         }
 
-        public async Task RecordValue(TileId tileId, int integerValue)
+        public async Task RecordValue(TileId tileId, int integerValue, DateTimeOffset? occurredOn)
         {
-            await TileRepository.RecordValue(tileId, new IntegerValue(integerValue, DateTimeProvider.Now));
+            await TileRepository.RecordValue(tileId, new IntegerValue(integerValue, occurredOn ?? DateTimeProvider.Now));
         }
 
-        public async Task RecordValue(StorageId tileStorageId, int integerValue)
+        public async Task RecordValue(StorageId tileStorageId, int integerValue, DateTimeOffset? occurredOn)
         {
-            await TileRepository.RecordValue(tileStorageId, new IntegerValue(integerValue, DateTimeProvider.Now), TileType.Integer);
+            await TileRepository.RecordValue(tileStorageId, new IntegerValue(integerValue, occurredOn ?? DateTimeProvider.Now), TileType.Integer);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace TilesDashboard.PluginSystem.DataPlugins.Handlers
             _logger.LogDebug($"Integer plugin: \"{plugin.UniquePluginName}\", Value: {data.Value}");
             if (data.Status.Is(Status.OK))
             {
-                await _integerService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Value);
+                await _integerService.RecordValue(new StorageId(pluginConfigForTile.TileStorageId), data.Value, null);
             }
 
             return data;

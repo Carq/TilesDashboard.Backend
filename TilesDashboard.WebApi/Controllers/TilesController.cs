@@ -113,14 +113,14 @@ namespace TilesDashboard.WebApi.Controllers
         [BearerWriteAuthorization]
         public async Task RecordIntegerValue(string tileName, [FromBody] RecordValueDto<int> integerValue)
         {
-            await _integerService.RecordValue(new TileId(tileName, TileType.Integer), integerValue.Value);
+            await _integerService.RecordValue(new TileId(tileName, TileType.Integer), integerValue.Value, integerValue.OccurredOn);
         }
 
         [HttpPost("integer/id/{storageId}/record")]
         [BearerWriteAuthorization]
         public async Task RecordIntegerValueByStorageId(string storageId, [FromBody] RecordValueDto<int> integerValue)
         {
-            await _integerService.RecordValue(new StorageId(storageId), integerValue.Value);
+            await _integerService.RecordValue(new StorageId(storageId), integerValue.Value, integerValue.OccurredOn);
         }
 
         [HttpPost("heartbeat/{tileName}/record")]
