@@ -1,12 +1,9 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace TilesDashboard.PluginBase.Notification
+﻿namespace TilesDashboard.PluginBase.Notification
 {
-    public interface INotificationPlugin : IBasePlugin
+    public interface INotificationPlugin : IPlugin
     {
-        Task PerformNotificationAsync(object newData, CancellationToken cancellationToken);
+        PluginType IPlugin.PluginType => PluginType.Notification;
 
-        PluginType IBasePlugin.Type => PluginType.Notification;
+
     }
 }

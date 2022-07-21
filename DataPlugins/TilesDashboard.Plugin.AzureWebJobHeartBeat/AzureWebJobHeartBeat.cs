@@ -7,12 +7,12 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.Plugin.AzureWebJobHeartBeat.Dto;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
 
 namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
 {
-    public class AzureWebJobHeartBeat : HeartBeatPluginBase
+    public class AzureWebJobHeartBeat : HeartBeatDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(AzureWebJobHeartBeat)}";
 
@@ -40,13 +40,13 @@ namespace TilesDashboard.Plugin.AzureWebJobHeartBeat
                             PropertyNameCaseInsensitive = true
                         });
 
-                    if (webJobResponse.Status == "Running")
+                    if (webJobResponse?.Status == "Running")
                     {
                         return new HeartBeatData((int)stopWatch.ElapsedMilliseconds, "?", null, Status.OK);
                     }
                 }
 
-                return HeartBeatData.NoResponse(); ;
+                return HeartBeatData.NoResponse();
             }
             catch (Exception ex)
             {

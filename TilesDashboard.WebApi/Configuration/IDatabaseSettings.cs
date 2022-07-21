@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.V2.Core.Configuration
+﻿namespace TilesDashboard.WebApi.Configuration
 {
     public interface IDatabaseConfiguration
     {

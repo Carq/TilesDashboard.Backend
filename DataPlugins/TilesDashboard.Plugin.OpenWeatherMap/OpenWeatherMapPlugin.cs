@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.WeatherPlugin;
 
 namespace TilesDashboard.Plugin.OpenWeatherMap
@@ -28,7 +28,7 @@ namespace TilesDashboard.Plugin.OpenWeatherMap
             if (response.IsSuccessStatusCode)
             {
                 var info = JsonSerializer.Deserialize<WeatherInfoJson>(await response.Content.ReadAsStringAsync());
-                return new WeatherData(info.Temperature, info.Humidity, Status.OK);
+                if (info != null) return new WeatherData(info.Temperature, info.Humidity, Status.OK);
             }
 
             return WeatherData.Error($"Code: {response.StatusCode}");

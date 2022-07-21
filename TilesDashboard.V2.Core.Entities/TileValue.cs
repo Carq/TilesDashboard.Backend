@@ -2,7 +2,7 @@
 
 namespace TilesDashboard.V2.Core.Entities
 {
-    public class TileValue
+    public class TileValue : ITileValue
     {
         protected TileValue(DateTimeOffset addedOn)
         {

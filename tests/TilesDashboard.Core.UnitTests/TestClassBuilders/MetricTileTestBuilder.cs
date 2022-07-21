@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TilesDashboard.TestUtils;
+using TilesDashboard.Handy.Tools;
 using TilesDashboard.TestUtils.TestClassBuilder;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
@@ -13,7 +13,7 @@ namespace TilesDashboard.Core.UnitTests.TestClassBuilders
 
         public static MetricTileTestBuilder New(string tileName = "metricName")  => new MetricTileTestBuilder(tileName);
 
-        public static MetricTileTestBuilder NewPercentageMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName, MetricType.Percentage);
+        public static MetricTileTestBuilder NewPercentageMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName);
 
         public static MetricTileTestBuilder NewMoneyMetric(string tileName = "metricName")  => new MetricTileTestBuilder(tileName, MetricType.Money);
 

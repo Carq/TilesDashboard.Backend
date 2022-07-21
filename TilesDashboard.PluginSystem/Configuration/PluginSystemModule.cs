@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginSystem.Repositories;
+using TilesDashboard.PluginSystem.Services;
 using TilesDashboard.PluginSystem.Storage;
 
 namespace TilesDashboard.PluginSystem.Configuration
@@ -12,6 +13,7 @@ namespace TilesDashboard.PluginSystem.Configuration
             PluginSystemMongoMapping.RegisterMappings();
             builder.RegisterType<PluginConfigRepository>().As<IPluginConfigRepository>().InstancePerLifetimeScope();
             builder.RegisterType<PluginSystemStorage>().As<IPluginSystemStorage>().InstancePerLifetimeScope();
+            builder.RegisterType<DataPluginService>().As<IDataPluginService>().InstancePerLifetimeScope();
             builder.RegisterType<CancelletionTokenProvider>().As<ICancellationTokenProvider>().SingleInstance();
         }
     }

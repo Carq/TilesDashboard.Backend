@@ -2,7 +2,7 @@
 
 namespace TilesDashboard.PluginBase.Data.MetricPlugin
 {
-    public class MetricData : Result
+    public class MetricData : PluginDataResult
     {
         public MetricData(Status status) : base(status)
         {

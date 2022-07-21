@@ -5,7 +5,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.Handy.Extensions;
-using TilesDashboard.PluginBase.Data;
+using TilesDashboard.PluginBase;
 
 namespace TilesDashboard.WebApi.PluginSystem.Loaders
 {
@@ -38,12 +38,12 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
         }
 
         protected IList<TPluginType> LoadDataPluginsFromDlls<TPluginType>(string[] pluginPaths)
-           where TPluginType : class, IDataPlugin
+           where TPluginType : class, IPlugin
         {
             var loadedPlugins = new List<TPluginType>();
             foreach (var pluginPath in pluginPaths)
             {
-                _logger.LogInformation($"Loading Data plugins from {pluginPath}.");
+                _logger.LogInformation($"Loading plugins from {pluginPath}.");
                 PluginLoadContext loadContext = new PluginLoadContext(pluginPath);
                 var pluginAssembly = loadContext.LoadFromAssemblyName(new AssemblyName(Path.GetFileNameWithoutExtension(pluginPath)));
                 loadedPlugins.AddRange(LoadDataPluginsFromAssembly<TPluginType>(pluginAssembly));
@@ -55,18 +55,18 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
 
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Allowed here")]
         protected IList<TPluginType> LoadDataPluginsFromAssembly<TPluginType>(Assembly assembly)
-            where TPluginType : class, IDataPlugin
+            where TPluginType : class, IPlugin
         {
             var plugins = new List<TPluginType>();
             foreach (Type type in assembly.GetTypes())
             {
-                if (typeof(TPluginType).IsAssignableFrom(type) && !type.IsAbstract)
+                if (IsAssignableToGenericType(type, typeof(TPluginType)) && !type.IsAbstract)
                 {
                     try
                     {
                         TPluginType plugin = Activator.CreateInstance(type) as TPluginType;
                         plugins.Add(plugin);
-                        _logger.LogInformation($"Loaded plugin {plugin.UniquePluginName} for tiles type {plugin.TileType}.");
+                        _logger.LogInformation($"Loaded plugin {plugin?.UniquePluginName} for tiles type {plugin?.TileType}.");
                     }
                     catch (Exception exception)
                     {
@@ -76,6 +76,28 @@ namespace TilesDashboard.WebApi.PluginSystem.Loaders
             }
 
             return plugins;
+        }
+
+        private static bool IsAssignableToGenericType(Type givenType, Type genericType)
+        {
+            if (genericType.IsAssignableFrom(givenType))
+            {
+                return true;
+            }
+
+            var interfaceTypes = givenType.GetInterfaces();
+            foreach (var it in interfaceTypes)
+            {
+                if (it.IsGenericType && genericType.IsGenericType && it.GetGenericTypeDefinition() == genericType.GetGenericTypeDefinition())
+                {
+                    var genericArgumentOfGivenType = it.GetGenericArguments()[0];
+                    var genericArgumentOfGenericType = genericType.GetGenericArguments()[0];
+
+                    return genericArgumentOfGenericType.IsAssignableFrom(genericArgumentOfGivenType);
+                }
+            }
+
+            return false;
         }
     }
 }

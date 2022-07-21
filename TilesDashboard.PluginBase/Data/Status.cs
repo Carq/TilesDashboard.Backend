@@ -1,4 +1,4 @@
-﻿namespace TilesDashboard.PluginBase
+﻿namespace TilesDashboard.PluginBase.Data
 {
     public enum Status
     {

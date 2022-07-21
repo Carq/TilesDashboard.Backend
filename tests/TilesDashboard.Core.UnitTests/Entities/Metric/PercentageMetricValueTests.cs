@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using System;
+using System.Globalization;
 using TilesDashboard.Core.UnitTests.TestData;
 using TilesDashboard.V2.Core.Entities.Metric;
 
@@ -25,10 +26,11 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric
         public void ShouldThrowException_WhenValueIsOutOfRange(decimal value)
         {
             // given & when
+            // ReSharper disable once ObjectCreationAsStatement - needed by test
             Action action = () => new PercentageMetricValue(value, DateTimeOffsetTestData.April02Year2020);
 
             // then
-            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains(value.ToString());
+            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains(value.ToString(CultureInfo.InvariantCulture), StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

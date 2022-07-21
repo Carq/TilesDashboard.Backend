@@ -4,12 +4,13 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
+using TilesDashboard.Plugin.Crypto.Dto;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.IntegerPlugin;
 
 namespace TilesDashboard.Plugin.Crypto
 {
-    public class LtcIntegerPlugin : IntegerPluginBase
+    public class LtcIntegerPlugin : IntegerDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(LtcIntegerPlugin)}";
 
@@ -20,7 +21,10 @@ namespace TilesDashboard.Plugin.Crypto
             if (response.IsSuccessStatusCode)
             {
                 var responseDto = JsonSerializer.Deserialize<CryptoTickerDto>(await response.Content.ReadAsStringAsync());
-                return new IntegerData((int)decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), Status.OK);
+                if (responseDto != null)
+                {
+                    return new IntegerData((int)decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), Status.OK);
+                }
             }
 
             return IntegerData.Error($"Code: {response.StatusCode}");

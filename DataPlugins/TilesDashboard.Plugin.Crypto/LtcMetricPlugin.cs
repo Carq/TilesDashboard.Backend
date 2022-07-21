@@ -4,13 +4,14 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
+using TilesDashboard.Plugin.Crypto.Dto;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.MetricPlugin;
 using TilesDashboard.V2.Core.Entities.Metric;
 
 namespace TilesDashboard.Plugin.Crypto
 {
-    public class LtcMetricPlugin : MetricPluginBase
+    public class LtcMetricPlugin : MetricDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(LtcMetricPlugin)}";
 
@@ -21,7 +22,11 @@ namespace TilesDashboard.Plugin.Crypto
             if (response.IsSuccessStatusCode)
             {
                 var responseDto = JsonSerializer.Deserialize<CryptoTickerDto>(await response.Content.ReadAsStringAsync());
-                return new MetricData(decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture), MetricType.Money, Status.OK);
+                if (responseDto != null)
+                {
+                    return new MetricData(decimal.Parse(responseDto.Items.LtcPln.Rate, CultureInfo.InvariantCulture),
+                        MetricType.Money, Status.OK);
+                }
             }
 
             return MetricData.Error($"Code: {response.StatusCode}");

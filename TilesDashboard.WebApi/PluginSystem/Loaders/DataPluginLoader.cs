@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using TilesDashboard.PluginBase.Data;
-using TilesDashboard.WebApi.PluginSystem.Loaders;
 
-namespace TilesDashboard.WebApi.PluginSystem
+namespace TilesDashboard.WebApi.PluginSystem.Loaders
 {
     public class DataPluginLoader : PluginLoaderBase, IDataPluginLoader
     {

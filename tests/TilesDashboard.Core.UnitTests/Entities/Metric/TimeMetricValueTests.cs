@@ -24,10 +24,11 @@ namespace TilesDashboard.Core.UnitTests.Entities.Metric
         public void ShouldThrowException_WhenValueIsOutOfRange()
         {
             // given & when
+            // ReSharper disable once ObjectCreationAsStatement - needed by test
             Action action = () => new TimeMetricValue(-1, DateTimeOffsetTestData.April02Year2020);
 
             // then
-            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains("-1");
+            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains("-1", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

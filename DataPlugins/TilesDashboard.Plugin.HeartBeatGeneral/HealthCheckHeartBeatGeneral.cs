@@ -6,12 +6,12 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using TilesDashboard.Plugin.HeartBeatGeneral.Dto;
-using TilesDashboard.PluginBase;
+using TilesDashboard.PluginBase.Data;
 using TilesDashboard.PluginBase.Data.HeartBeatPlugin;
 
 namespace TilesDashboard.Plugin.HeartBeatGeneral
 {
-    public class HealthCheckHeartBeatGeneral : HeartBeatPluginBase
+    public class HealthCheckHeartBeatGeneral : HeartBeatDataPlugin
     {
         public override string UniquePluginName => $"TileCorePlugins.{nameof(HealthCheckHeartBeatGeneral)}";
 
@@ -36,7 +36,7 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
                     });
 
 
-                if (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode && heartbeatDto != null)
                 {
                     return new HeartBeatData((int)stopwatcher.ElapsedMilliseconds, heartbeatDto.Version, heartbeatDto.LastAppliedMigration, Status.OK);
                 }
@@ -45,7 +45,7 @@ namespace TilesDashboard.Plugin.HeartBeatGeneral
             }
             catch (Exception ex)
             {
-                return HeartBeatData.Error(ex.Message + ex.InnerException.Message);
+                return HeartBeatData.Error(ex.Message + ex.InnerException?.Message);
             }
         }
     }

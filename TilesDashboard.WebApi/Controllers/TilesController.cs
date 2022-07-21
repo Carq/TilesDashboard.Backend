@@ -82,73 +82,73 @@ namespace TilesDashboard.WebApi.Controllers
         }
 
         [HttpPost("weather/{tileName}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordWeatherValue(string tileName, [FromBody] RecordWeatherDataDto weatherDataDto)
         {
             await _weatherService.RecordValue(new TileId(tileName, TileType.Weather), weatherDataDto.Temperature, weatherDataDto.Humidity);
         }
 
         [HttpPost("weather/id/{storageId}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordWeatherValueByStorageId([MaxLength(StorageId.Length)] string storageId, [FromBody] RecordWeatherDataDto weatherDataDto)
         {
             await _weatherService.RecordValue(new StorageId(storageId), weatherDataDto.Temperature, weatherDataDto.Humidity);
         }
 
         [HttpPost("metric/{tileName}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordMetricValue(string tileName, [FromBody] RecordMetricData<decimal> metricData)
         {
             await _metricService.RecordValue(new TileId(tileName, TileType.Metric), metricData.Type.Convert<MetricType>(), metricData.Value);
         }
 
         [HttpPost("metric/id/{storageId}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordWeatherValueByStorageId(string storageId, [FromBody] RecordMetricData<decimal> metricData)
         {
             await _metricService.RecordValue(new StorageId(storageId), metricData.Type.Convert<MetricType>(), metricData.Value);
         }
 
         [HttpPost("integer/{tileName}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordIntegerValue(string tileName, [FromBody] RecordValueDto<int> integerValue)
         {
-            await _integerService.RecordValue(new TileId(tileName, TileType.Metric), integerValue.Value);
+            await _integerService.RecordValue(new TileId(tileName, TileType.Integer), integerValue.Value, integerValue.OccurredOn);
         }
 
         [HttpPost("integer/id/{storageId}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordIntegerValueByStorageId(string storageId, [FromBody] RecordValueDto<int> integerValue)
         {
-            await _integerService.RecordValue(new StorageId(storageId), integerValue.Value);
+            await _integerService.RecordValue(new StorageId(storageId), integerValue.Value, integerValue.OccurredOn);
         }
 
         [HttpPost("heartbeat/{tileName}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordHeartBeatValue(string tileName, [FromBody] RecordHeartBeatValueDto hearbeatValue)
         {
             await _heartBeatService.RecordValue(new TileId(tileName, TileType.HeartBeat), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
         }
 
         [HttpPost("heartbeat/id/{storageId}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordHeartBeatValueStorageId(string storageId, [FromBody] RecordHeartBeatValueDto hearbeatValue)
         {
             await _heartBeatService.RecordValue(new StorageId(storageId), hearbeatValue.ResponseTimeInMs, hearbeatValue.AppVersion, hearbeatValue.AdditionalInfo);
         }
 
         [HttpPost("dual/{tileName}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordDualValue(string tileName, [FromBody] RecordDualValue dualValue)
         {
-            await _dualService.RecordValue(new TileId(tileName, TileType.Dual), dualValue.Primary, dualValue.Secondary);
+            await _dualService.RecordValue(new TileId(tileName, TileType.Dual), dualValue.Primary, dualValue.Secondary, dualValue.OccurredOn);
         }
 
         [HttpPost("dual/id/{storageId}/record")]
-        [BearerAuthorization]
+        [BearerWriteAuthorization]
         public async Task RecordDualValueStorageId(string storageId, [FromBody] RecordDualValue dualValue)
         {
-            await _dualService.RecordValue(new StorageId(storageId), dualValue.Primary, dualValue.Secondary);
+            await _dualService.RecordValue(new StorageId(storageId), dualValue.Primary, dualValue.Secondary, dualValue.OccurredOn);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using TilesDashboard.PluginBase;
+﻿using TilesDashboard.PluginBase.Data;
 
 namespace TilesDashboard.WebApi.PluginSystem.Extensions
 {

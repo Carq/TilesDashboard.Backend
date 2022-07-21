@@ -1,25 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using TilesDashboard.PluginBase;
 using TilesDashboard.PluginBase.Notification;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
+using TilesDashboard.V2.Core.Entities.Weather;
 
 namespace TileDashboard.TestNotificationPlugins
 {
-    public class WeatherExceptionNotificationPlugin : NotificationPluginBase
+    public class WeatherExceptionNotificationPlugin : NotificationPluginBase<WeatherValue>
     {
-        public WeatherExceptionNotificationPlugin(IPluginConfigProvider pluginConfigProvider)
-        : base(pluginConfigProvider)
-        {
-        }
+           public override string UniquePluginName => nameof(WeatherExceptionNotificationPlugin);
 
-        public override TileId TileId => new TileId("Gliwice", TileType.Weather);
+        public override TileType TileType => TileType.Weather;
 
-        public override Task PerformNotificationAsync(object newData, CancellationToken cancellationToken)
+        public override Task PerformNotificationAsync(TileId tileId, WeatherValue newData, IReadOnlyDictionary<string, string> pluginConfiguration, IReadOnlyDictionary<string, string> tileConfiguration, CancellationToken cancellation = default)
         {
-            throw new NotImplementedException("Test Notification exception");
+            throw new NotImplementedException($"Exception from {tileId}");
         }
     }
 }

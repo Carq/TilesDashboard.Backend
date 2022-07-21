@@ -5,9 +5,8 @@ using TilesDashboard.Contract.Events;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.PluginBase;
-using TilesDashboard.PluginBase.Notification;
-using TilesDashboard.V2.Core.Configuration;
-using TilesDashboard.WebApi.BackgroundWorkers;
+using TilesDashboard.PluginSystem.DataPlugins;
+using TilesDashboard.PluginSystem.DataPlugins.Handlers;
 using TilesDashboard.WebApi.Hubs;
 using TilesDashboard.WebApi.Middlewares;
 using TilesDashboard.WebApi.PluginSystem;
@@ -54,16 +53,18 @@ namespace TilesDashboard.WebApi.Configuration
             builder.RegisterType<NotificationPluginLoader>().As<INotificationPluginLoader>();
             builder.RegisterType<NotificationPluginRepository>().As<INotificationPluginRepository>();
             builder.RegisterType<NotificationPluginContext>().As<INotificationPluginContext>().SingleInstance();
-            builder.RegisterType<PluginNotificationEventHandler>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
+            builder.RegisterType<PluginNotificationHandler>().As<IEventHandler<NewDataEvent>>().InstancePerLifetimeScope();
         }
 
         private static void RegisterDataPluginStuff(ContainerBuilder builder)
         {
             builder.RegisterType<DataPluginLoader>().As<IDataPluginLoader>();
+            builder.RegisterType<DataPluginContext>().As<IDataPluginContext>().SingleInstance();
             builder.RegisterType<WeatherPluginHandler>();
             builder.RegisterType<MetricPluginHandler>();
             builder.RegisterType<IntegerPluginHandler>();
             builder.RegisterType<HeartBeatPluginHandler>();
+            builder.RegisterType<DualPluginHandler>();
         }
     }
 }

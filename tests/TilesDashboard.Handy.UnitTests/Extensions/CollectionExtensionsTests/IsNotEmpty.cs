@@ -15,6 +15,7 @@ namespace TilesDashboard.Handy.UnitTests.Extensions.CollectionExtensionsTests
             IList<int> listWithOneElement = null;
 
             // when
+            // ReSharper disable once ExpressionIsAlwaysNull - needed by test
             Action action = () => listWithOneElement.IsNotEmpty();
 
             // then

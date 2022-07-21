@@ -28,8 +28,8 @@ namespace TilesDashboard.Handy.Events
                 throw new ArgumentNullException(nameof(eventBody));
             }
 
-            var handlers = _resolver.ResolveOptional<IEnumerable<IEventHandler<TEvent>>>() ?? Array.Empty<IEventHandler<TEvent>>();
-            if (!handlers.Any())
+            var handlers = _resolver.ResolveOptional<IEnumerable<IEventHandler<TEvent>>>()?.ToList();
+            if (handlers == null || !handlers.Any())
             {
                 _logger.LogWarning($"Event {eventBody.GetType().Name} has no Event Handlers.");
                 return;

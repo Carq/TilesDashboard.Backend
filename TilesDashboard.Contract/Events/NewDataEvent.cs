@@ -5,14 +5,17 @@ namespace TilesDashboard.Contract.Events
 {
     public class NewDataEvent : IEvent
     {
-        public NewDataEvent(TileId tileId, object newValue)
+        public NewDataEvent(TileId tileId, StorageId tileStorageId, TileValue tileValue)
         {
             TileId = tileId;
-            NewValue = newValue;
+            TileStorageId = tileStorageId;
+            TileValue = tileValue;
         }
 
         public TileId TileId { get; }
 
-        public object NewValue { get; }
+        public StorageId TileStorageId { get; }
+
+        public TileValue TileValue { get; }
     }
 }

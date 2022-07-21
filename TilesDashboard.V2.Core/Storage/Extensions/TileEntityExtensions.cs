@@ -2,7 +2,7 @@
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 
-namespace TilesDashboard.Core.Domain.Extensions
+namespace TilesDashboard.V2.Core.Storage.Extensions
 {
     public static class TileEntityExtensions
     {

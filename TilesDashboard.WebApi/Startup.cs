@@ -39,7 +39,7 @@ namespace TilesDashboard.WebApi
             services.AddControllers().AddJsonOptions(jsonOption =>
                                                      {
                                                          jsonOption.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
-                                                         jsonOption.JsonSerializerOptions.IgnoreNullValues = true;
+                                                         jsonOption.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                                                      });
             services.AddSignalR();
         }
@@ -70,6 +70,7 @@ namespace TilesDashboard.WebApi
             });
 
             app.LoadNotificationPlugins();
+            app.LoadDataPlugins();
         }
     }
 }

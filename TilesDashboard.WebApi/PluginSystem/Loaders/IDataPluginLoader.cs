@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TilesDashboard.PluginBase.Data;
 
-namespace TilesDashboard.WebApi.PluginSystem
+namespace TilesDashboard.WebApi.PluginSystem.Loaders
 {
     public interface IDataPluginLoader
     {

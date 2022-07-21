@@ -1,7 +1,6 @@
 ﻿using FakeItEasy;
 using FluentAssertions;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -90,17 +89,17 @@ namespace TilesDashboard.Core.UnitTests.Services.TileBaseServiceTests
             metricTileResult.TileEntity.TileId.Type.Should().Be(TileType.Metric);
             metricTileResult.Data.Should().HaveCount(2);
             metricTileResult.Data[0].AddedOn.Should().Be(DateTimeOffsetTestData.June28Year2020At0639);
-            (metricTileResult.Data[0] as PercentageMetricValue).Value.Should().Be(metricValue1);
+            (metricTileResult.Data[0] as PercentageMetricValue)?.Value.Should().Be(metricValue1);
             metricTileResult.Data[1].AddedOn.Should().Be(DateTimeOffsetTestData.June28Year2020At0639.AddHours(1));
-            (metricTileResult.Data[1] as PercentageMetricValue).Value.Should().Be(metrciValue2);
+            (metricTileResult.Data[1] as PercentageMetricValue)?.Value.Should().Be(metrciValue2);
 
             var weatherTileResult = result[1];
             weatherTileResult.TileEntity.TileId.Name.Should().Be(weatherName);
             weatherTileResult.TileEntity.TileId.Type.Should().Be(TileType.Weather);
             weatherTileResult.Data.Should().HaveCount(1);
             weatherTileResult.Data[0].AddedOn.Should().Be(DateTimeOffsetTestData.April02Year2020);
-            (weatherTileResult.Data[0] as WeatherValue).Temperature.Should().Be(temperature);
-            (weatherTileResult.Data[0] as WeatherValue).Humidity.Should().Be(humidity);
+            (weatherTileResult.Data[0] as WeatherValue)?.Temperature.Should().Be(temperature);
+            (weatherTileResult.Data[0] as WeatherValue)?.Humidity.Should().Be(humidity);
         }
     }
 }

@@ -24,10 +24,11 @@ namespace TilesDashboard.Core.UnitTests.Entities.Weather
         public void ShouldThrowException_WhenHumidityIsBelowZero()
         {
             // given & when
+            // ReSharper disable once ObjectCreationAsStatement - needed by test
             Action action = () => new WeatherValue(5.123m, -1m, DateTimeOffsetTestData.April02Year2020);
 
             // then
-            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains("-1");
+            action.Should().Throw<ArgumentOutOfRangeException>().And.Message.Contains("-1", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

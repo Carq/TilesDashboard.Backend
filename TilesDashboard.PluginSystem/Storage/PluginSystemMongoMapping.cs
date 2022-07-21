@@ -1,8 +1,8 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using TilesDashboard.PluginBase;
 using TilesDashboard.PluginSystem.Entities;
-using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Enums;
 
 namespace TilesDashboard.PluginSystem.Storage
@@ -19,14 +19,22 @@ namespace TilesDashboard.PluginSystem.Storage
                 cm.AutoMap();
                 cm.SetIgnoreExtraElements(true);
                 cm.MapProperty(c => c.TileType).SetSerializer(new EnumSerializer<TileType>(BsonType.String));
+                cm.MapProperty(c => c.PluginType).SetSerializer(new EnumSerializer<PluginType>(BsonType.String));
             });
 
             BsonClassMap.RegisterClassMap<PluginTileConfig>(cm =>
-          {
-              cm.AutoMap();
-              cm.SetIgnoreExtraElements(true);
-              cm.MapProperty(c => c.TileStorageId).SetSerializer(new StringSerializer(BsonType.ObjectId));
-          });
+            {
+                cm.AutoMap();
+                cm.SetIgnoreExtraElements(true);
+                cm.MapProperty(c => c.TileStorageId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
+
+            BsonClassMap.RegisterClassMap<NotificationPluginTileConfig>(cm =>
+            {
+                cm.AutoMap();
+                cm.SetIgnoreExtraElements(true);
+                cm.MapProperty(c => c.TileStorageId).SetSerializer(new StringSerializer(BsonType.ObjectId));
+            });
         }
     }
 }

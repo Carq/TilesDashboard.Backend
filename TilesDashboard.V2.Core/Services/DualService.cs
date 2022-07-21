@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using TilesDashboard.Handy.Tools;
 using TilesDashboard.V2.Core.Entities;
 using TilesDashboard.V2.Core.Entities.Dual;
@@ -14,17 +15,15 @@ namespace TilesDashboard.V2.Core.Services
         {
         }
 
-        public async Task<DualTile> GetWeatherTile(TileId tileId) => await TileRepository.GetTile<DualTile>(tileId);
-
-        public async Task RecordValue(TileId tileId, decimal primary, decimal secondary)
+        public async Task RecordValue(TileId tileId, decimal primary, decimal secondary, DateTimeOffset? occurredOn)
         {
-            var dualValue = new DualValue(primary, secondary, DateTimeProvider.Now);
+            var dualValue = new DualValue(primary, secondary, occurredOn ?? DateTimeProvider.Now);
             await TileRepository.RecordValue(tileId, dualValue);
         }
 
-        public async Task RecordValue(StorageId tileStorageId, decimal primary, decimal secondary)
+        public async Task RecordValue(StorageId tileStorageId, decimal primary, decimal secondary, DateTimeOffset? occurredOn)
         {
-            var dualValue = new DualValue(primary, secondary, DateTimeProvider.Now);
+            var dualValue = new DualValue(primary, secondary, occurredOn ?? DateTimeProvider.Now);
             await TileRepository.RecordValue(tileStorageId, dualValue, TileType.Dual);
         }
     }

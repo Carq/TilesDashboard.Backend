@@ -7,7 +7,6 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using TilesDashboard.Contract.Events;
-using TilesDashboard.Core.Domain.Extensions;
 using TilesDashboard.Handy.Events;
 using TilesDashboard.Handy.Extensions;
 using TilesDashboard.Handy.Tools;
@@ -37,7 +36,7 @@ namespace TilesDashboard.V2.Core.Repositories
         public async Task<StorageId> CheckIfExist(TileId tileId)
         {
             var filter = TileEntityExtensions.TileEntityFilter(tileId);
-            var projection = Builders<TileEntity>.Projection.Expression<string>(x => x.Id);
+            var projection = Builders<TileEntity>.Projection.Expression(x => x.Id);
 
             var storageId = await _tileStorage.TilesInformation
                                           .Find(filter)
@@ -55,7 +54,7 @@ namespace TilesDashboard.V2.Core.Repositories
         public async Task<TileId> CheckIfExist(StorageId id, TileType tileType)
         {
             var filter = TileEntityExtensions.TileEntityFilter(id, tileType);
-            var projection = Builders<TileEntity>.Projection.Expression<TileId>(x => x.TileId);
+            var projection = Builders<TileEntity>.Projection.Expression(x => x.TileId);
 
             var tileId = await _tileStorage.TilesInformation
                                           .Find(filter)
@@ -177,7 +176,7 @@ namespace TilesDashboard.V2.Core.Repositories
                 new UpdateOptions() { IsUpsert = true, },
                 cancellationToken);
 
-            await _eventDispatcher.PublishAsync(new NewDataEvent(tileId, tileValue), cancellationToken);
+            await _eventDispatcher.PublishAsync(new NewDataEvent(tileId, tileStorageId, tileValue), cancellationToken);
         }
     }
 }

@@ -1,0 +1,49 @@
+name: build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release TilesDashboard.sln
+
+      - name: Run unit tests
+        run: dotnet test --configuration Release
+
+      - name: Create release package
+        run: dotnet publish TilesDashboard.WebApi/TilesDashboard.WebApi.csproj --configuration Release --output release --runtime linux-x64 --self-contained false
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: release
+          path: release
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: mieszkanie
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v2.0.8
+        with:
+          name: release
+          path: release
+
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: release
