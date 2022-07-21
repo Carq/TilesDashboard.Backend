@@ -9,16 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup .NET Core
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: "6.0.x"
-
       - name: Build with dotnet
         run: dotnet build --configuration Release TilesDashboard.sln
 
       - name: Run unit tests
-        run: dotnet test --configuration Release
+        run: dotnet test --configuration Release --no-restore
 
       - name: Create release package
         run: dotnet publish TilesDashboard.WebApi/TilesDashboard.WebApi.csproj --configuration Release --output release --runtime linux-x64 --self-contained false

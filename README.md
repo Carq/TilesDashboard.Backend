@@ -1,4 +1,6 @@
-# TilesDashboard.Backend [![Actions Status](https://github.com/Carq/TilesDashboard.Backend/workflows/.NET%20Core/badge.svg)](https://github.com/Carq/TilesDashboard.Backend/actions)
+# TilesDashboard.Backend
+
+[![build](https://github.com/Carq/TilesDashboard.Backend/actions/workflows/build.yml/badge.svg)](https://github.com/Carq/TilesDashboard.Backend/actions/workflows/build.yml)
 
 # Overview
 
