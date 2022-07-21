@@ -13,6 +13,7 @@
     <PackageReference Include="Autofac" Version="6.3.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.4.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

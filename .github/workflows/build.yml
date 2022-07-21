@@ -21,7 +21,7 @@ jobs:
         run: dotnet test --configuration Release
 
       - name: Create release package
-        run: dotnet publish --configuration Release --output release
+        run: dotnet publish TilesDashboard.WebApi/TilesDashboard.WebApi.csproj --configuration Release --output release --runtime linux-x64 --self-contained true
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
@@ -32,7 +32,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: mieszkanie
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Download a Build Artifact
