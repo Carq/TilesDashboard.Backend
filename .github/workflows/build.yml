@@ -19,7 +19,7 @@ jobs:
         run: dotnet publish TilesDashboard.WebApi/TilesDashboard.WebApi.csproj --configuration Release --output release --runtime linux-x64 --self-contained false
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v4
         with:
           name: release
           path: release
@@ -31,7 +31,7 @@ jobs:
 
     steps:
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v2.0.8
+        uses: actions/download-artifact@v4
         with:
           name: release
           path: release
